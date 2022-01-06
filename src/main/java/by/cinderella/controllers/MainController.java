@@ -10,9 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MainController {
     @GetMapping("")
-    public String mainPAge(HttpServletRequest request, Model model) {
+    public String mainPage(HttpServletRequest request, Model model) {
         model.addAttribute("title", "Главная");
 
         return  "index";
+    }
+
+    @GetMapping("/about")
+    public String aboutPage(HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Обо мне");
+
+        return  "main/about";
+    }
+
+    @GetMapping("/contacts")
+    public String contactsPage(HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Контакты");
+
+        return  "main/contacts";
     }
 }
