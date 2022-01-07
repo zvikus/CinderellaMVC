@@ -13,42 +13,54 @@
     </header>
 
     <main>
-        <p>Научу тратить минимум усилий на поддержание порядка!</p>
+        <h1>ПРЕОБРАЖЕНИЕ ВАШЕГО ДОМА</h1>
 
-            <ul class="" style="font-size:17px">
-                <li>
-                    <p>
-                        <span style="font-size:17px">Наведу порядок:&nbsp;в шкафу, в детской, на кухне, в ванной,&nbsp;в кладовке, на балконе, в гараже и т.д.</span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span style="font-size:17px">Упорядочу домашние документы и медикаменты.</span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span style="font-size:17px">Организую переезд.</span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span style="font-size:17px">Помогу с составлением меню на неделю/месяц и планированием закупок продуктов</span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span style="font-size:17px">Подарочные сертификаты на услуги организации пространства</span>
-                    </p>
-                </li>
-            </ul>
+        <img th:src="@{/img/photo/L1.jpg}" class="reg-image"  style="float: right;
+                                            max-width: 350px;"/>
+        <h4>Приветствую Вас на моем сайте!</h4>
+        <p>Меня зовут Любовь - я организатор пространства.</p>
+        <p>Здесь есть вся информация об услугах по наведению порядка в доме <br/>и проектировании <strong>удобных</strong> кухонь и шкафов!</p>
 
-        <p>
-            Помогу навести порядок один раз и научу поддерживать его всегда!
-        </p>
-        <p>
-            Заказать консультацию <a th:href="@{/contacts}" target="_self">здесь</a>
-        </p>
+
+        <div style="width: 100%; clear: both;">
+            <div class="row row-cols-1 row-cols-md-2 mb-3 text-center pt-5">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">Порядок в доме</h4>
+                        </div>
+                        <div class="card-body">
+                            <a th:href="@{/services/order}" >
+                                <div class="img-container">
+                                    <img th:src="@{/img/order.jpg}" class="reg-image"  style="
+                                                max-width: 100%;"/>
+                                </div>
+                            </a>
+                            <button type="button" class="w-100 btn btn-lg btn-outline-primary"  onclick="location.href = '/services/order'">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">Проекты мебели</h4>
+                        </div>
+                        <div class="card-body">
+                            <a th:href="@{/services/design}" >
+                                <div class="img-container">
+                                    <img th:src="@{/img/design.jpg}" class="reg-image"  style="
+                                                max-width: 100%;"/>
+                                </div>
+                            </a>
+
+                            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="location.href = '/services/design'">Подробнее</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 
     <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">

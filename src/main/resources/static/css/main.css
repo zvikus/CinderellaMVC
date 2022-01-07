@@ -1,8 +1,21 @@
+@font-face {
+  font-family: 'Neuron';
+
+  src: url('/fonts/Neuron.ttf');
+}
+
+@font-face {
+  font-family: 'HighwayPro';
+
+  src: url('/fonts/HighwayPro.ttf');
+}
+
+
 body {
-  background-image: linear-gradient(180deg, #6370a424, #FFF 100px, #FFF);
+  background-image: linear-gradient(180deg, #6370a424, #FFF 200px, #FFF);
   background-repeat: no-repeat;
 
-  font-family: 'Russo One',sans-serif;
+  font-family: 'Neuron',sans-serif;
   color: #6370a4 !important;
 }
 
@@ -40,3 +53,20 @@ a {
 .hidden {
     display: none !important;
 }
+
+.reg-image {
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.img-container {
+    margin: 10px auto;
+    max-width: 300px;
+
+}
+
+footer {
+    width: 100%;
+    float: left;
+}
+

@@ -29,4 +29,18 @@ public class MainController {
 
         return  "main/contacts";
     }
+
+    @GetMapping("/services/order")
+    public String orderPage(HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Порядок в доме");
+
+        return  "main/services/order";
+    }
+
+    @GetMapping("/services/design")
+    public String designPage(HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Проекты мебели");
+
+        return  "main/services/design";
+    }
 }
