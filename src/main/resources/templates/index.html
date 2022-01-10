@@ -13,13 +13,14 @@
     </header>
 
     <main>
-        <h1>ПРЕОБРАЖЕНИЕ ВАШЕГО ДОМА</h1>
+        <h1>ПОРЯДОК В ДОМЕ</h1>
 
         <img th:src="@{/img/photo/L1.jpg}" class="reg-image"  style="float: right;
                                             max-width: 350px;"/>
-        <h4>Приветствую Вас на моем сайте!</h4>
-        <p>Меня зовут Любовь - я организатор пространства.</p>
+        <p>Приветствую Вас на моем сайте!</p>
+        <p>Меня зовут Любовь. <br/> Я организатор пространства.</p>
         <p>Здесь есть вся информация об услугах по наведению порядка в доме <br/>и проектировании <strong>удобных</strong> кухонь и шкафов!</p>
+        <p class="mt-5"><small>*Шпаргалки для хозяек ищи в моём блоге <a href="https://www.instagram.com/cinderella.minsk/">инстаграм <img th:src="@{/img/socialNetworkIcons/instagram.png}" height="70px" width="70px"></a></small></p>
 
 
         <div style="width: 100%; clear: both;">
@@ -27,7 +28,7 @@
                 <div class="col">
                     <div class="card mb-4 rounded-3 shadow-sm">
                         <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Порядок в доме</h4>
+                            <h2 class="my-0 fw-normal">Порядок в доме</h2>
                         </div>
                         <div class="card-body">
                             <a th:href="@{/services/order}" >
@@ -36,14 +37,14 @@
                                                 max-width: 100%;"/>
                                 </div>
                             </a>
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary"  onclick="location.href = '/services/order'">Подробнее</button>
+                            <button type="button" class="w-100 btn btn-lg btn-outline-primary"  onclick="location.href = '/services/order'">Подробнее об услуге</button>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card mb-4 rounded-3 shadow-sm">
                         <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Проекты мебели</h4>
+                            <h2 class="my-0 fw-normal">Проекты мебели</h2>
                         </div>
                         <div class="card-body">
                             <a th:href="@{/services/design}" >
@@ -53,7 +54,7 @@
                                 </div>
                             </a>
 
-                            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="location.href = '/services/design'">Подробнее</button>
+                            <button type="button" class="w-100 btn btn-lg btn-primary" onclick="location.href = '/services/design'">Подробнее об услуге</button>
                         </div>
                     </div>
                 </div>
