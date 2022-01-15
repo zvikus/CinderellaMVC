@@ -10,6 +10,13 @@
   src: url('/fonts/HighwayPro.ttf');
 }
 
+.left {
+    float:left;
+}
+
+.right {
+    float:right;
+}
 
 body {
   background-image: linear-gradient(180deg, #6370a424, #FFF 200px, #FFF);
@@ -23,6 +30,18 @@ h1 {
     text-align: center;
     text-decoration: underline;
     margin-bottom: 40px;
+}
+
+.card-body h1 {
+    text-decoration: none;
+}
+
+.card-header h4 {
+    font-size: calc(1.75rem + .3vw);
+}
+
+.card-header h4.smaller {
+    line-height: calc(2.15rem + .3vw);
 }
 
 .text-dark {
@@ -60,6 +79,19 @@ a {
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
+.reg-image.left {
+    margin-right: 15px;
+}
+
+.reg-image.right {
+    margin-left: 15px;
+}
+
+a:active .reg-image,
+a:hover .reg-image  {
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
 .img-container {
     margin: 10px auto;
     max-width: 300px;
@@ -69,5 +101,16 @@ a {
 footer {
     width: 100%;
     float: left;
+}
+
+.card .btn-outline-primary {
+    color: #6370a4;
+    border-color: #6370a4;
+}
+
+.card .btn-outline-primary:hover,
+.card .btn-outline-primary:active {
+    color: #fff;
+    background-color: #6370a4;
 }
 
