@@ -114,3 +114,9 @@ footer {
     background-color: #6370a4;
 }
 
+a.back-arrow {
+    text-decoration: none;
+    font-size: 58px;
+    line-height: 40px;
+}
+
