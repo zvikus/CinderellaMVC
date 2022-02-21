@@ -1,0 +1,26 @@
+<header th:fragment="adminHeader" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+        <a th:href="@{/admin}" class="d-flex align-items-center text-dark text-decoration-none">
+            <img th:src="@{/img/cinderella_icon.png}" style="float: left; width: 50px;"/>
+            <span class="fs-4">ОРГАНИЗАЦИЯ ПРОСТРАНСТВА</span>
+        </a>
+
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/organizers}">Органайзеры</a>
+            <!--            <a class="me-3 py-2 text-dark text-decoration-none" href="/">Услуги</a>-->
+            <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/products}">Продукты</a>
+        </nav>
+        <div class="d-inline-flex ms-md-auto hidden">
+            <button type="button" class="btn btn-outline-dark me-2">Войти</button>
+            <button type="button" class="btn btn-warning">Регистрация</button>
+        </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check" viewBox="0 0 16 16">
+            <title>Check</title>
+            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+        </symbol>
+    </svg>
+
+</header>

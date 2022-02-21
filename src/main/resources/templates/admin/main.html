@@ -1,13 +1,44 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Hello World!</title>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
 </head>
+
 <body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>АДМИНИСТРИРОВАНИЕ</h1>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Выйти"/>
+        </form>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
 </body>
+
+
+
+
+
+
+
+
+
+
 </html>

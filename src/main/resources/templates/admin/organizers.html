@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>ОРГАНАЙЗЕРЫ</h1>
+
+        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        Ссылка
+                    </td>
+                    <td>
+                        Ширина
+                    </td>
+                    <td>
+                        Высота
+                    </td>
+                    <td>
+                        Глубина
+                    </td>
+                    <td>
+                        Категория
+                    </td>
+                    <td>
+                        Продавец
+                    </td>
+                    <td>
+                        Цена
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="el : ${organizers}" class="alert alert-info mt-2">
+                    <td>
+                        <a th:href="${el.link}">
+                            <h3 th:text="${el.name}"/>
+                        </a>
+                    </td>
+
+                    <td th:text="${el.width}"/>
+                    <td th:text="${el.height}"/>
+                    <td th:text="${el.length}"/>
+
+                    <td>
+                        <ul>
+                            <li class="list-unstyled" th:each="category : ${el.categories}">
+                                <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+                            </li>
+                        </ul>
+
+                    </td>
+
+                    <td th:text="${el.seller.label}"/>
+                    <td th:text="${el.price}"/>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

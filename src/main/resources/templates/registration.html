@@ -1,27 +1,45 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Spring Security Example </title>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
 </head>
+
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>Регистрация</h1>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+
+        <div th:if="${message}">
+            <div th:text="${message}">
+
+            </div>
+        </div>
+
+        <form th:action="@{/registration}" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Регистрация"/></div>
+        </form>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
 </div>
 
-<div th:if="${message}">
-    <div th:text="${message}">
-
-    </div>
-</div>
-
-<form th:action="@{/registration}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Регистрация"/></div>
-</form>
 </body>
+
 </html>
