@@ -2,15 +2,12 @@ package by.cinderella.controllers;
 
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.organizer.OrganizerCategory;
-import by.cinderella.model.organizer.Seller;
 import by.cinderella.repos.OrganizerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.expression.Sets;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -74,5 +71,33 @@ public class AdminController {
         organizerRepo.save(organizer);
 
         return "redirect:/admin/organizers";
+    }
+
+    @GetMapping("/organizer/{organizerId}/remove")
+    public String removeOrganizer(@PathVariable(value = "organizerId") Long organizerId,
+                                Model model) {
+        if (!organizerRepo.existsById(organizerId)) {
+            return "redirect:/admin/organizers";
+        }
+
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        organizerRepo.delete(organizer.get());
+
+        return "redirect:/admin/organizers";
+    }
+
+    @GetMapping("/organizer/{organizerId}/edit")
+    public String editOrganizer(@PathVariable(value = "organizerId") Long organizerId,
+                                  Model model) {
+        if (!organizerRepo.existsById(organizerId)) {
+            return "redirect:/admin/organizers";
+        }
+
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        model.addAttribute("organizer", organizer.get());
+
+        return  "admin/addOrganizer";
     }
 }
