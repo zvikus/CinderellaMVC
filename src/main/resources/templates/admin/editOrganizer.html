@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>ДОБАВИТЬ ОРГАНАЙЗЕР</h1>
+
+        <form action="/admin/editOrganizer" method="post" class="needs-validation">
+            <!--            <ul class="list-unstyled">-->
+            <input
+                    type="hidden"
+                    th:name="id"
+                    th:value="${organizer.id}" />
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <label for="name">
+                        Название
+                    </label>
+                    <input th:value="${organizer.name}"  type="text" id="name" name="name" placeholder="Название" class="form-control mt-2" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="price">
+                        Цена
+                    </label>
+                    <input th:value="${organizer.price}"  type="number" id="price" name="price" placeholder="" class="form-control mt-2">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="link">
+                    Ссылка
+                </label>
+                <input th:value="${organizer.link}"  type="text" id="link" name="link" placeholder="Адрес" class="form-control mt-2" required>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="height">
+                        Высота
+                    </label>
+                    <input th:value="${organizer.height}"  type="number" id="height" name="height" placeholder="" class="form-control mt-2" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="width">
+                        Ширина
+                    </label>
+                    <input th:value="${organizer.width}"  type="number" id="width" name="width" placeholder="" class="form-control mt-2" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="length">
+                        Глубина
+                    </label>
+                    <input th:value="${organizer.length}"  type="number" id="length" name="length" placeholder="" class="form-control mt-2" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="seller">
+                    Продавец
+                </label>
+                <select name="seller" id="seller" class="custom-select d-block w-100" th:field="*{organizer.seller}">
+                    <option th:each="seller : ${T(by.cinderella.model.organizer.Seller).values()}"
+                            th:value="${seller}" th:text="${seller.label}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+
+                <ul class="list-unstyled">
+                    <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox">
+                        <input type="checkbox" name="categories" class="custom-control-input"
+                               th:id="${feat}"
+                               th:value="${feat}"
+                               th:field="*{organizer.categories}"
+                        />
+                        <label class="custom-control-label"
+                               th:for="${feat}"
+                               th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"
+                        />
+                    </li>
+                    <!--                        -->
+                    <!--                            <input type="checkbox" th:field="*{selectedCategories}" th:value="${feat}" />-->
+                    <!--                            <label-->
+                    <!--                                    th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"></label>-->
+                    <!--                        </li>-->
+                </ul>
+            </div>
+
+            <!--            </ul>-->
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}" />
+
+            <button type="submit" class="btn btn-success mt-5 left">Сохранить</button>
+        </form>
+
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

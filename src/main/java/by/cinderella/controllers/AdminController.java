@@ -68,6 +68,7 @@ public class AdminController {
 
                                Model model) {
 
+        organizer.setLastUpdated(new Date());
         organizerRepo.save(organizer);
 
         return "redirect:/admin/organizers";
@@ -97,7 +98,40 @@ public class AdminController {
         Optional<Organizer> organizer = organizerRepo.findById(organizerId);
 
         model.addAttribute("organizer", organizer.get());
+        model.addAttribute("title", "Администрирование - Редактировать " + organizer.get().getName());
+        model.addAttribute("categories", new HashSet<>());
 
-        return  "admin/addOrganizer";
+        return  "admin/editOrganizer";
+    }
+
+    @GetMapping("/organizer/{organizerId}/copy")
+    public String copyOrganizer(@PathVariable(value = "organizerId") Long organizerId,
+                                Model model) {
+        if (!organizerRepo.existsById(organizerId)) {
+            return "redirect:/admin/organizers";
+        }
+
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        organizer.get().setId(null);
+        model.addAttribute("organizer", organizer.get());
+        model.addAttribute("title", "Администрирование - Редактировать " + organizer.get().getName());
+        model.addAttribute("categories", new HashSet<>());
+
+        return  "admin/editOrganizer";
+    }
+
+    @PostMapping("/editOrganizer")
+    public String editOrganizer(Organizer organizer,
+
+                               Model model) {
+
+        organizer.setLastUpdated(new Date());
+
+        organizerRepo.save(organizer);
+
+
+
+        return "redirect:/admin/organizers";
     }
 }
