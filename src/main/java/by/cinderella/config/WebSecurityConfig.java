@@ -33,6 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
+                    .rememberMe().key("uniqueAndSecret")
+
+                .and()
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()

@@ -22,7 +22,8 @@ public class AdminController {
 
     @ModelAttribute("organizerCategories")
     public Set<OrganizerCategory> populateFeatures() {
-        Set<OrganizerCategory> result  = new HashSet<>();
+        Set<OrganizerCategory> result  = new TreeSet<>();
+
         Collections.addAll(result, OrganizerCategory.values());
         return result;
     }

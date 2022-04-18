@@ -1,12 +1,9 @@
 package by.cinderella.model.organizer;
 
-import by.cinderella.model.Role;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Entity
 public class Organizer {
@@ -17,11 +14,11 @@ public class Organizer {
 
     private String name;
 
-    private Integer length;
-    private Integer width;
-    private Integer height;
+    private Double length;
+    private Double width;
+    private Double height;
 
-    private Integer price;
+    private Double price;
 
     private String link;
 
@@ -52,35 +49,35 @@ public class Organizer {
         this.name = name;
     }
 
-    public Integer getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public void setLength(Integer length) {
+    public void setLength(Double length) {
         this.length = length;
     }
 
-    public Integer getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public void setWidth(Integer width) {
+    public void setWidth(Double width) {
         this.width = width;
     }
 
-    public Integer getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

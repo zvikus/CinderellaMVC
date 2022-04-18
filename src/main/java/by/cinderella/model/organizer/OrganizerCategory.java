@@ -22,7 +22,31 @@ public enum OrganizerCategory {
     CABINET_SLIDING_SHELVES("Выдвижные полки", ParentCategory.CABINET),
     CABINET_WARDROBE("Гардеробная", ParentCategory.CABINET),
     CABINET_OFF_SEASON_STORAGE("Несезонное хранение", ParentCategory.CABINET),
-    CABINET_UNDERWEAR_SOCKS("Носки/нижнее белье", ParentCategory.CABINET);
+    CABINET_UNDERWEAR_SOCKS("Носки/нижнее белье", ParentCategory.CABINET),
+
+    KITCHEN_WASHING_AREA("Зона мойки", ParentCategory.KITCHEN),
+    KITCHEN_COOKING_AREA("Зона готовки", ParentCategory.KITCHEN),
+    KITCHEN_GRAINS("Хранение круп", ParentCategory.KITCHEN),
+    KITCHEN_SPICES("Хранение специй", ParentCategory.KITCHEN),
+    KITCHEN_DISHES("Хранение посуды", ParentCategory.KITCHEN),
+    KITCHEN_TEA_ZONE("Чайная зона", ParentCategory.KITCHEN),
+    KITCHEN_TOP_BOXES("Верхние шкафы", ParentCategory.KITCHEN),
+    KITCHEN_BOTTOM_BOXES("Нижние шкафы", ParentCategory.KITCHEN),
+    KITCHEN_DRAWERS("Выдвижные ящики", ParentCategory.KITCHEN),
+    KITCHEN_BAKERY("Все для выпечки", ParentCategory.KITCHEN),
+    KITCHEN_VEGETABLES("Хранение овощей", ParentCategory.KITCHEN),
+    KITCHEN_TRASH_BOX("Утилизация мусора", ParentCategory.KITCHEN),
+    KITCHEN_RESERVES("Хранение запасов", ParentCategory.KITCHEN),
+    KITCHEN_CONTAINERS("Хранение контейнеров", ParentCategory.KITCHEN),
+    KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
+    KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
+
+    MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
+
+    DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
+    DOCUMENTS_HORIZONTAL("Горизонтальное хранение", ParentCategory.DOCUMENTS),
+
+    CABLES_CABLES("Хранение проводов", ParentCategory.CABLES);
 
 
 
@@ -36,7 +60,11 @@ public enum OrganizerCategory {
 
     public enum ParentCategory {
         REFRIGERATOR("Холодильник"),
-        CABINET("Шкаф");
+        CABINET("Шкаф"),
+        KITCHEN("Кухня"),
+        MEDICINE("Аптечка"),
+        DOCUMENTS("Документы"),
+        CABLES("Провода");
 
         public final String label;
 
