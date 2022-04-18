@@ -22,6 +22,8 @@ public class Organizer {
 
     private String link;
 
+    private String imageName;
+
 
     private Date lastUpdated;
 
@@ -79,6 +81,14 @@ public class Organizer {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getLink() {

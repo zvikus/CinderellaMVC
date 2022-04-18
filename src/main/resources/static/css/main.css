@@ -123,3 +123,7 @@ a.back-arrow {
     line-height: 40px;
 }
 
+.organizer-image {
+    max-width: 100px;
+}
+

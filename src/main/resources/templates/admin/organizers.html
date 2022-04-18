@@ -21,6 +21,9 @@
             <thead>
                 <tr>
                     <td>
+                        &nbsp;
+                    </td>
+                    <td>
                         Название
                     </td>
                     <td>
@@ -47,7 +50,12 @@
             <tbody>
                 <tr th:each="el : ${organizers}" class="">
                     <td>
-                        <a th:href="${el.link}">
+                        <a th:href="${el.link}"  target="_blank">
+                            <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="${el.link}" target="_blank">
                             <h4 th:text="${el.name}"/>
                         </a>
                     </td>

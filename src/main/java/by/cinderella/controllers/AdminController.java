@@ -4,12 +4,16 @@ import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.organizer.OrganizerCategory;
 import by.cinderella.repos.OrganizerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -19,6 +23,9 @@ public class AdminController {
 
     @Autowired
     private OrganizerRepo organizerRepo;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @ModelAttribute("organizerCategories")
     public Set<OrganizerCategory> populateFeatures() {
@@ -66,8 +73,21 @@ public class AdminController {
 
     @PostMapping("/addOrganizer")
     public String addOrganizer(Organizer organizer,
+                                @RequestParam("image") MultipartFile image,
+                               Model model) throws IOException {
 
-                               Model model) {
+        if (image != null) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuidFileName = UUID.randomUUID().toString();
+            String resultFileName = uuidFileName + image.getOriginalFilename();
+
+            image.transferTo(new File(uploadPath + "/" + resultFileName));
+
+            organizer.setImageName(resultFileName);
+        }
 
         organizer.setLastUpdated(new Date());
         organizerRepo.save(organizer);
