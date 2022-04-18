@@ -39,6 +39,9 @@
                         Категория
                     </td>
                     <td>
+                        Материал
+                    </td>
+                    <td>
                         Продавец
                     </td>
                     <td>
@@ -73,6 +76,7 @@
 
                     </td>
 
+                    <td th:text="${el.material?.label}" class="fs-5"/>
                     <td th:text="${el.seller.label}" class="fs-5"/>
                     <td th:text="${el.price}"/>
 

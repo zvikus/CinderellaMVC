@@ -35,6 +35,8 @@ public class Organizer {
 
     private Seller seller;
 
+    private Material material;
+
     public Long getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class Organizer {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }

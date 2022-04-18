@@ -9,6 +9,9 @@
             <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/organizers}">Органайзеры</a>
             <!--            <a class="me-3 py-2 text-dark text-decoration-none" href="/">Услуги</a>-->
             <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/products}">Продукты</a>
+            <form th:action="@{/logout}" method="post" id="logout" class="me-3 py-2">
+                <a class="me-3 py-2 text-dark text-decoration-none" href="#" onclick="document.getElementById('logout').submit();">Выйти</a>
+            </form>
         </nav>
         <div class=" ms-md-auto hidden">
 <!--            d-inline-flex-->

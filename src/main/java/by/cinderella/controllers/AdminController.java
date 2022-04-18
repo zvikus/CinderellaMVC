@@ -146,7 +146,8 @@ public class AdminController {
     public String editOrganizer(Organizer organizer,
                                 @RequestParam("image") MultipartFile image,
                                Model model) throws IOException {
-        if (image != null) {
+        if (image != null
+                && !image.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
@@ -157,6 +158,9 @@ public class AdminController {
             image.transferTo(new File(uploadPath + "/" + resultFileName));
 
             organizer.setImageName(resultFileName);
+        } else {
+            Optional<Organizer> originalOrganizer = organizerRepo.findById(organizer.getId());
+            organizer.setImageName(originalOrganizer.get().getImageName());
         }
 
         organizer.setLastUpdated(new Date());

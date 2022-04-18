@@ -21,13 +21,25 @@
             <div th:if="${param.logout}">
                 You have been logged out.
             </div>
-            <form th:action="@{/login}" method="post">
-                <div><label> User Name : <input type="text" name="username"/> </label></div>
-                <div><label> Password: <input type="password" name="password"/> </label></div>
-                <div><label> Remember Me: <input type="checkbox" name="remember-me"/> </label></div>
-                <div><input type="submit" value="Sign In"/></div>
+            <form th:action="@{/login}" method="post" class="login-form">
+                <div class="form-floating mb-3">
+                    <input type="text"
+                           name="username"
+                           class="form-control rounded-4" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Email адрес</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password"
+                           name="password"
+                           class="form-control rounded-4" id="floatingPassword" placeholder="Пароль">
+                    <label for="floatingPassword">Пароль</label>
+                </div>
+
+                <div class="mb-4"><label> Запомнить меня: <input type="checkbox" name="remember-me"/> </label></div>
+                <div><button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Войти</button></div>
+
+                <div><button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" onclick="/registration">Регистрация</button></div>
             </form>
-            <a href="/registration">Регистрация</a>
 
         </main>
 

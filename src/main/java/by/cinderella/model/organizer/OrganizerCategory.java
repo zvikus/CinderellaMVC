@@ -46,7 +46,12 @@ public enum OrganizerCategory {
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
     DOCUMENTS_HORIZONTAL("Горизонтальное хранение", ParentCategory.DOCUMENTS),
 
-    CABLES_CABLES("Хранение проводов", ParentCategory.CABLES);
+    CABLES_CABLES("Хранение проводов", ParentCategory.CABLES),
+
+    BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
+    BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),
+    BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
+    BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM);
 
 
 
@@ -64,7 +69,9 @@ public enum OrganizerCategory {
         KITCHEN("Кухня"),
         MEDICINE("Аптечка"),
         DOCUMENTS("Документы"),
-        CABLES("Провода");
+        CABLES("Провода"),
+
+        BATHROOM("Ванная");
 
         public final String label;
 

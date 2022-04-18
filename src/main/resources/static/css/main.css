@@ -127,3 +127,20 @@ a.back-arrow {
     max-width: 100px;
 }
 
+.login-form {
+    max-width: 500px;
+    margin: 1.75rem auto;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.categories-list-item {
+    width: 25%;
+    min-width: 310px;
+}
+
+

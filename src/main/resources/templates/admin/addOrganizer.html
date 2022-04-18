@@ -61,20 +61,32 @@
                 </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="seller">
-                        Продавец
-                    </label>
-                    <select name="seller" id="seller" class="custom-select d-block w-100">
-                        <option th:each="seller : ${T(by.cinderella.model.organizer.Seller).values()}"
-                                th:value="${seller}" th:text="${seller.label}"></option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="seller">
+                            Продавец
+                        </label>
+                        <select name="seller" id="seller" class="custom-select d-block w-100">
+                            <option th:each="seller : ${T(by.cinderella.model.organizer.Seller).values()}"
+                                    th:value="${seller}" th:text="${seller.label}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="material">
+                            Материал
+                        </label>
+                        <select name="material" id="material" class="custom-select d-block w-100">
+                            <option th:each="material : ${T(by.cinderella.model.organizer.Material).values()}"
+                                    th:value="${material}" th:text="${material.label}"></option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3">
 
-                    <ul class="list-unstyled">
-                        <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox">
+                    <ul class="list-unstyled categories-list">
+                        <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
                             <input type="checkbox" name="categories" class="custom-control-input"
                                    th:id="${feat}"
                                    th:value="${feat}"
