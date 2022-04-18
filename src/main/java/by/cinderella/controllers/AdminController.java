@@ -144,8 +144,20 @@ public class AdminController {
 
     @PostMapping("/editOrganizer")
     public String editOrganizer(Organizer organizer,
+                                @RequestParam("image") MultipartFile image,
+                               Model model) throws IOException {
+        if (image != null) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuidFileName = UUID.randomUUID().toString();
+            String resultFileName = uuidFileName + image.getOriginalFilename();
 
-                               Model model) {
+            image.transferTo(new File(uploadPath + "/" + resultFileName));
+
+            organizer.setImageName(resultFileName);
+        }
 
         organizer.setLastUpdated(new Date());
 

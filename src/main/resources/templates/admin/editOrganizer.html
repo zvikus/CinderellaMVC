@@ -15,7 +15,7 @@
     <main>
         <h1>ДОБАВИТЬ ОРГАНАЙЗЕР</h1>
 
-        <form action="/admin/editOrganizer" method="post" class="needs-validation">
+        <form action="/admin/editOrganizer" method="post" class="needs-validation"  enctype="multipart/form-data">
             <!--            <ul class="list-unstyled">-->
             <input
                     type="hidden"
@@ -34,6 +34,9 @@
                     </label>
                     <input th:value="${organizer.price}"  type="number" id="price" step="any" name="price" placeholder="" class="form-control mt-2">
                 </div>
+            </div>
+            <div class="mb-3">
+                <input type="file" name="image">
             </div>
             <div class="mb-3">
                 <label for="link">
