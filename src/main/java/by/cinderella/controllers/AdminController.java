@@ -158,7 +158,7 @@ public class AdminController {
             image.transferTo(new File(uploadPath + "/" + resultFileName));
 
             organizer.setImageName(resultFileName);
-        } else {
+        } else if (organizer.getId() != null) {
             Optional<Organizer> originalOrganizer = organizerRepo.findById(organizer.getId());
             organizer.setImageName(originalOrganizer.get().getImageName());
         }

@@ -28,6 +28,7 @@ public class Organizer {
     private Date lastUpdated;
 
 
+
     @ElementCollection(targetClass = OrganizerCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "organizer_category", joinColumns = @JoinColumn(name = "organizer_id"))
     @Enumerated(EnumType.STRING)
