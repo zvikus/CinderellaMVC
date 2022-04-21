@@ -51,7 +51,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="el : ${organizers}" class="">
+                <tr th:each="el : ${organizerPage.content}" class="">
                     <td>
                         <a th:href="${el.link}"  target="_blank">
                             <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
@@ -89,6 +89,28 @@
             </tbody>
         </table>
 
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li th:class="${organizerPage.number == 0} ? 'page-item disabled' : 'page-item'" class="page-item ">
+                    <a class="page-link" th:href="@{/admin/organizers(size=${organizerPage.size}, page=${organizerPage.number})}"
+                       tabindex="-1">Предыдущая</a>
+                </li>
+                <li th:if="${organizerPage.totalPages > 0}"
+                    th:class="${pageNumber==organizerPage.number + 1} ? 'page-item active' : 'page-item'"
+                    th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/admin/organizers(size=${organizerPage.size}, page=${pageNumber})}"
+                       class="page-link"
+                       th:text=${pageNumber}
+                    ></a>
+                </li>
+                <li th:class="${organizerPage.totalPages == organizerPage.number + 1} ? 'page-item disabled' : 'page-item'" >
+                    <a class="page-link"
+                       th:href="@{/admin/organizers(size=${organizerPage.size}, page=${organizerPage.number + 2})}"
+                       tabindex="-1">Следующая</a>
+                </li>
+            </ul>
+        </nav>
 
     </main>
 

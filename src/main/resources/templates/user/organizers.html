@@ -16,6 +16,62 @@
         <h1>ОРГАНАЙЗЕРЫ</h1>
 
 <!--        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>-->
+        <div class="bd-example">
+            <p>
+                <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
+                    Фильтр
+                </button>
+            </p>
+            <div class="collapse" id="filterBox" style="">
+                <div class="card card-body">
+                    <form action="/user/organizers" method="GET">
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Цена
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
+                                    <label for="priceFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
+                                    <label for="priceTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 filter-label">
+                                Категория
+                            </div>
+                            <div class="col-md-8">
+                                <ul class="list-unstyled categories-list">
+                                    <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                        <input type="checkbox" name="categories" class="custom-control-input"
+                                               th:id="${feat}"
+                                               th:value="${feat}"
+                                        />
+                                        <label class="custom-control-label"
+                                               th:for="${feat}"
+                                               th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <button class="btn btn-outline-primary regular-button"
+                                type="submit">
+                            Принять
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-striped table-sm">
             <thead>

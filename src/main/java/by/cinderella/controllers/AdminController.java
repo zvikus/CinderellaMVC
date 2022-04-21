@@ -3,8 +3,11 @@ package by.cinderella.controllers;
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.organizer.OrganizerCategory;
 import by.cinderella.repos.OrganizerRepo;
+import by.cinderella.services.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,11 +29,14 @@ public class AdminController {
     @Autowired
     private OrganizerRepo organizerRepo;
 
+    @Autowired
+    private OrganizerService organizerService;
+
     @Value("${upload.path}")
     private String uploadPath;
 
     @ModelAttribute("organizerCategories")
-    public Set<OrganizerCategory> populateFeatures() {
+    public Set<OrganizerCategory> organizerCategories() {
         Set<OrganizerCategory> result  = new TreeSet<>();
 
         Collections.addAll(result, OrganizerCategory.values());
@@ -51,12 +59,26 @@ public class AdminController {
     }
 
     @GetMapping("/organizers")
-    public String organizerPage(HttpServletRequest request, Model model) {
-        Iterable<Organizer> organizers = organizerRepo.findAll();
+    public String organizerPage(HttpServletRequest request, Model model,
+                                @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<Organizer> organizerPage = organizerService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("title", "Администрирование - Органайзеры");
 
-        model.addAttribute("organizers", organizers);
+        model.addAttribute("organizerPage", organizerPage);
+
+        int totalPages = organizerPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
         return  "admin/organizers";
     }
 

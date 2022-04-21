@@ -65,11 +65,11 @@ a {
 }
 
 .container {
-  max-width: 960px;
+  /*max-width: 960px;*/
 }
 
 .pricing-header {
-  max-width: 700px;
+  /*max-width: 700px;*/
 }
 
 .hidden {
@@ -105,12 +105,15 @@ footer {
     float: left;
 }
 
+.btn-outline-primary.regular-button,
 .card .btn-outline-primary {
     color: #6370a4;
     border-color: #6370a4;
     font-weight: bold;
 }
 
+.btn-outline-primary.regular-button:hover,
+.btn-outline-primary.regular-button:active
 .card .btn-outline-primary:hover,
 .card .btn-outline-primary:active {
     color: #fff;
