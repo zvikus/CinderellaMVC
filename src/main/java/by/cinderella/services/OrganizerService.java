@@ -46,8 +46,17 @@ public class OrganizerService {
         Page<Organizer> organizerPage =
                 //organizerRepo.findAllByPriceBetween(priceFrom, priceTo,
                 organizerRepo.findAll(
-                        OrganizerSpecification.priceBounds(filter.getPriceFrom(), filter.getPriceTo())
-                                .and(OrganizerSpecification.categoriesIn(filter.getCategories())),
+                        OrganizerSpecification.nameLike(filter.getNameLike())
+
+                                .and(OrganizerSpecification.priceBounds(filter.getPriceFrom(), filter.getPriceTo()))
+                                .and(OrganizerSpecification.widthBounds(filter.getWidthFrom(), filter.getWidthTo()))
+                                .and(OrganizerSpecification.heightBounds(filter.getHeightFrom(), filter.getHeightTo()))
+                                .and(OrganizerSpecification.lengthBounds(filter.getLengthFrom(), filter.getLengthTo()))
+
+                                .and(OrganizerSpecification.categoriesIn(filter.getCategories()))
+                                .and(OrganizerSpecification.materialIn(filter.getMaterial()))
+                                .and(OrganizerSpecification.sellersIn(filter.getSeller()))
+                        ,
 
                         PageRequest.of(currentPage, pageSize, Sort.by("lastUpdated").descending().and(Sort.by("name"))));
 
