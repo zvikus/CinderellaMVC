@@ -10,6 +10,8 @@ public enum Seller {
     VEK_21("21 ВЕК"),
     OZ_BY("OZ.BY"),
     GROSHYK("Грошык"),
+    OMA("ОМА"),
+    EASYDOM("easydom.by"),
     FIXPRICE("Fix Price");
 
     public final String label;

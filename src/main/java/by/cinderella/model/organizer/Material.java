@@ -8,6 +8,7 @@ public enum Material {
     CERAMICS("Керамика"),
     METAL("Металл"),
     WOOD("Дерево"),
+    TEXTILE("Ткань"),
     CHEMICALS("Бытовая химия");
 
     public final String label;

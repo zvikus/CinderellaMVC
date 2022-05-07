@@ -18,6 +18,7 @@ public enum OrganizerCategory {
     CABINET_TIE("Галстуки", ParentCategory.CABINET),
     CABINET_TROUSERS("Брюки", ParentCategory.CABINET),
     CABINET_SCARF("Шарфы", ParentCategory.CABINET),
+    CABINET_MEZZANINE("Антресоли", ParentCategory.CABINET),
     CABINET_HEADDRESS("Головные уборы", ParentCategory.CABINET),
     CABINET_SLIDING_SHELVES("Выдвижные полки", ParentCategory.CABINET),
     CABINET_WARDROBE("Гардеробная", ParentCategory.CABINET),
@@ -40,16 +41,18 @@ public enum OrganizerCategory {
     KITCHEN_CONTAINERS("Хранение контейнеров", ParentCategory.KITCHEN),
     KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
     KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
+    KITCHEN_PETS("Домашние животные", ParentCategory.KITCHEN),
 
     MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
 
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
-    DOCUMENTS_HORIZONTAL("Горизонтальное хранение", ParentCategory.DOCUMENTS),
+    DOCUMENTS_HORIZONTAL("Гориз-е хранение", ParentCategory.DOCUMENTS),
 
     CABLES_CABLES("Хранение проводов", ParentCategory.CABLES),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
     BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),
+    BATHROOM_WASHING("Зона стирки", ParentCategory.BATHROOM),
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
     BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM);
 
