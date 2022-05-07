@@ -15,7 +15,29 @@
     <main>
         <h1>ДОБАВИТЬ ОРГАНАЙЗЕР</h1>
 
-        <form action="/admin/addOrganizer" method="post" class="needs-validation" enctype="multipart/form-data">
+        <div th:if="${message}" >
+            <div th:text="${message}" class="text-danger">
+
+            </div>
+        </div>
+        <div>
+            <form action="/admin/checkOrganizer" method="post" class="needs-validation" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="link">
+                        Ссылка для проверки
+                    </label>
+                    <input type="url" id="checkLink" name="link" placeholder="" class="form-control mt-2" required>
+                </div>
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}" />
+
+                <button type="submit" class="btn btn-success mt-1 left">Проверить</button>
+            </form>
+        </div>
+        <div class="left pt-md-5">
+            <form action="/admin/addOrganizer" method="post" class="needs-validation" enctype="multipart/form-data">
 <!--            <ul class="list-unstyled">-->
                 <div class="row">
                     <div class="col-md-9 mb-3">
@@ -38,7 +60,7 @@
                     <label for="link">
                         Ссылка
                     </label>
-                    <input type="text" id="link" name="link" placeholder="" class="form-control mt-2" required>
+                    <input type="url" id="link" name="link" placeholder="" class="form-control mt-2" required>
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -112,6 +134,7 @@
 
             <button type="submit" class="btn btn-success mt-5 left">Добавить</button>
         </form>
+        </div>
 
 
     </main>

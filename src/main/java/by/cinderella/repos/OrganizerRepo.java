@@ -18,4 +18,6 @@ public interface OrganizerRepo extends JpaRepository<Organizer, Long>,
                                                  Double top, Pageable pageable);
 
     public Page<Organizer> findAll(Specification<Organizer> spec, Pageable pageable);
+
+    public List<Organizer> findByLink(String link);
 }

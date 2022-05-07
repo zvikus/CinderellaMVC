@@ -1,5 +1,6 @@
 package by.cinderella.controllers;
 
+import by.cinderella.model.User;
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.organizer.OrganizerCategory;
 import by.cinderella.repos.OrganizerRepo;
@@ -98,6 +99,16 @@ public class AdminController {
                                 @RequestParam("image") MultipartFile image,
                                Model model) throws IOException {
 
+        List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
+
+        if (!organizerFromDB.isEmpty()) {
+            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            model.addAttribute("organizer", organizer);
+            model.addAttribute("categories", new HashSet<>());
+            return "admin/addOrganizer";
+        }
+
+
         if (image != null) {
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
@@ -115,6 +126,27 @@ public class AdminController {
         organizerRepo.save(organizer);
 
         return "redirect:/admin/organizers";
+    }
+
+    @PostMapping("/checkOrganizer")
+    public String checkOrganizer(Organizer organizer,
+                               Model model) throws IOException {
+
+        List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
+
+        if (!organizerFromDB.isEmpty()) {
+            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            model.addAttribute("organizer", new Organizer());
+            model.addAttribute("categories", new HashSet<>());
+            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            return "admin/addOrganizer";
+        } else {
+            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            model.addAttribute("organizer", new Organizer());
+            model.addAttribute("categories", new HashSet<>());
+            model.addAttribute("message", "Органайзер с такой ссылкой в системе не найден!");
+            return "admin/addOrganizer";
+        }
     }
 
     @GetMapping("/organizer/{organizerId}/remove")
