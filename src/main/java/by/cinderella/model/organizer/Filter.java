@@ -23,6 +23,9 @@ public class Filter {
     private Set<Seller> seller;
     private Set<Material> material;
 
+    public Filter() {
+    }
+
     public Filter(String nameLike, Double lengthFrom, Double widthFrom, Double heightFrom, Double lengthTo, Double widthTo, Double heightTo, Double priceFrom, Double priceTo, Set<OrganizerCategory> categories, Set<Seller> seller, Set<Material> material) {
         this.nameLike = nameLike;
         this.lengthFrom = lengthFrom;

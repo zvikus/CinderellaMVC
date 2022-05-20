@@ -207,6 +207,9 @@
                         Название
                     </td>
                     <td>
+                        Цена
+                    </td>
+                    <td>
                         Ширина
                     </td>
                     <td>
@@ -224,9 +227,7 @@
                     <td>
                         Продавец
                     </td>
-                    <td>
-                        Цена
-                    </td>
+
 <!--                    <td>&nbsp;</td>-->
                 </tr>
             </thead>
@@ -242,6 +243,7 @@
                             <h4 th:text="${el.name}"/>
                         </a>
                     </td>
+                    <td th:text="${el.price}"/>
 
                     <td th:text="${el.width}"/>
                     <td th:text="${el.height}"/>
@@ -258,7 +260,6 @@
 
                     <td th:text="${el.material?.label}" class="fs-5"/>
                     <td th:text="${el.seller.label}" class="fs-5"/>
-                    <td th:text="${el.price}"/>
 
 <!--                    <td>-->
 <!--                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}">Удалить</a><br/>-->

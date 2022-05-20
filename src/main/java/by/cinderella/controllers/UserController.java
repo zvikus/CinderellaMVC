@@ -83,26 +83,32 @@ public class UserController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(50);
 
+        /*Filter filterFromSession = (Filter) request.getSession().getAttribute("ORGANIZER_FILTER");
 
+        if (filterFromSession != null) {
+
+        }*/
 
         Filter filter = new Filter(
-                name.orElse(""),
+                name.orElse(null),
 
-                lengthFrom.orElse((double) 0),
-                widthFrom.orElse((double) 0),
-                heightFrom.orElse((double) 0),
+                lengthFrom.orElse(null),
+                widthFrom.orElse(null),
+                heightFrom.orElse(null),
 
-                lengthTo.orElse((double) Integer.MAX_VALUE),
-                widthTo.orElse((double) Integer.MAX_VALUE),
-                heightTo.orElse((double) Integer.MAX_VALUE),
+                lengthTo.orElse(null),
+                widthTo.orElse(null),
+                heightTo.orElse(null),
 
-                priceFrom.orElse((double) 0),
-                priceTo.orElse((double) Integer.MAX_VALUE),
+                priceFrom.orElse(null),
+                priceTo.orElse(null),
 
-                categories.orElse(this.organizerCategories()),
-                sellers.orElse(this.organizerSellers()),
-                materials.orElse(this.organizerMaterials())
+                categories.orElse(null),
+                sellers.orElse(null),
+                materials.orElse(null)
         );
+
+        //request.getSession().setAttribute("ORGANIZER_FILTER", filter);
 
         Page<Organizer> organizerPage = organizerService.findPaginatedAndFiltered(filter,
                 PageRequest.of(currentPage - 1, pageSize));

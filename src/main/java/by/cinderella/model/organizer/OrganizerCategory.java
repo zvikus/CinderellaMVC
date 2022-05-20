@@ -12,6 +12,7 @@ public enum OrganizerCategory {
 
     CABINET_BAGS("Сумки", ParentCategory.CABINET),
     CABINET_SHOES("Обувь", ParentCategory.CABINET),
+    CABINET_WEAR("Одежда", ParentCategory.CABINET),
     CABINET_BARBELL("Штанга", ParentCategory.CABINET),
     CABINET_STACKS("Стопки", ParentCategory.CABINET),
     CABINET_DECORATIONS("Украшения", ParentCategory.CABINET),
@@ -24,6 +25,7 @@ public enum OrganizerCategory {
     CABINET_WARDROBE("Гардеробная", ParentCategory.CABINET),
     CABINET_OFF_SEASON_STORAGE("Несезонное хранение", ParentCategory.CABINET),
     CABINET_UNDERWEAR_SOCKS("Носки/нижнее белье", ParentCategory.CABINET),
+    CABINET_MAINTENANCE("Хозяйственный отдел", ParentCategory.CABINET),
 
     KITCHEN_WASHING_AREA("Зона мойки", ParentCategory.KITCHEN),
     KITCHEN_COOKING_AREA("Зона готовки", ParentCategory.KITCHEN),
@@ -43,18 +45,28 @@ public enum OrganizerCategory {
     KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
     KITCHEN_PETS("Домашние животные", ParentCategory.KITCHEN),
 
-    MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
+
 
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
     DOCUMENTS_HORIZONTAL("Гориз-е хранение", ParentCategory.DOCUMENTS),
 
+    MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
     CABLES_CABLES("Хранение проводов", ParentCategory.CABLES),
+    OTHER_GARAGE("Гараж", ParentCategory.OTHER),
+    OTHER_BALCONY("Балкон/Кладовка", ParentCategory.OTHER),
+    OTHER_RELOCATION("Переезд", ParentCategory.OTHER),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
     BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),
     BATHROOM_WASHING("Зона стирки", ParentCategory.BATHROOM),
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
-    BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM);
+    BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM),
+
+    CHILDREN_CREATION("Зона творчества", ParentCategory.CHILDREN),
+    CHILDREN_BOARD_GAMES("Настольные игры", ParentCategory.CHILDREN),
+    CHILDREN_EDUCATION("Зона учебы", ParentCategory.CHILDREN),
+    CHILDREN_CONSTRUCTORS("Конструкторы", ParentCategory.CHILDREN),
+    CHILDREN_TOYS("Игрушки", ParentCategory.CHILDREN);
 
 
 
@@ -73,6 +85,9 @@ public enum OrganizerCategory {
         MEDICINE("Аптечка"),
         DOCUMENTS("Документы"),
         CABLES("Провода"),
+        CHILDREN("Детская"),
+
+        OTHER("Другое"),
 
         BATHROOM("Ванная");
 

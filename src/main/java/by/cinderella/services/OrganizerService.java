@@ -1,17 +1,44 @@
 package by.cinderella.services;
 
-import by.cinderella.model.organizer.Filter;
-import by.cinderella.model.organizer.Organizer;
-import by.cinderella.model.organizer.OrganizerSpecification;
+import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class OrganizerService {
     @Autowired
     private OrganizerRepo organizerRepo;
+
+    @ModelAttribute("organizerCategories")
+    public Set<OrganizerCategory> organizerCategories() {
+        Set<OrganizerCategory> result  = new TreeSet<>();
+
+        Collections.addAll(result, OrganizerCategory.values());
+        return result;
+    }
+
+    @ModelAttribute("organizerSellers")
+    public Set<Seller> organizerSellers() {
+        Set<Seller> result  = new TreeSet<>();
+
+        Collections.addAll(result, Seller.values());
+        return result;
+    }
+
+    @ModelAttribute("organizerMaterials")
+    public Set<Material> organizerMaterials() {
+        Set<Material> result  = new TreeSet<>();
+
+        Collections.addAll(result, Material.values());
+        return result;
+    }
 
     public Page<Organizer> findPaginated(Pageable pageable) {
         int pageSize = pageable.getPageSize();
@@ -37,11 +64,13 @@ public class OrganizerService {
         return organizerPage;
     }*/
 
-    public Page<Organizer> findPaginatedAndFiltered(Filter filter,
+    public Page<Organizer> findPaginatedAndFiltered(Filter userFilter,
                                                     Pageable pageable) {
 
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
+
+        Filter filter = this.iitFilter(userFilter);
 
         Page<Organizer> organizerPage =
                 //organizerRepo.findAllByPriceBetween(priceFrom, priceTo,
@@ -63,4 +92,77 @@ public class OrganizerService {
         return organizerPage;
     }
 
+
+    private Filter iitFilter(Filter userFilter) {
+        Filter filter = new Filter();
+
+        if (userFilter.getNameLike() != null) {
+            filter.setNameLike(userFilter.getNameLike().replaceAll(" ", "%"));
+        } else {
+            filter.setNameLike("");
+        }
+
+        if (userFilter.getLengthFrom() != null) {
+            filter.setLengthFrom(userFilter.getLengthFrom());
+        } else {
+            filter.setLengthFrom((double) 0);
+        }
+        if (userFilter.getWidthFrom() != null) {
+            filter.setWidthFrom(userFilter.getWidthFrom());
+        } else {
+            filter.setWidthFrom((double) 0);
+        }
+        if (userFilter.getHeightFrom() != null) {
+            filter.setHeightFrom(userFilter.getHeightFrom());
+        } else {
+            filter.setHeightFrom((double) 0);
+        }
+
+
+        if (userFilter.getLengthTo() != null) {
+            filter.setLengthTo(userFilter.getLengthTo());
+        } else {
+            filter.setLengthTo((double) Integer.MAX_VALUE);
+        }
+        if (userFilter.getWidthTo() != null) {
+            filter.setWidthTo(userFilter.getWidthTo());
+        } else {
+            filter.setWidthTo((double) Integer.MAX_VALUE);
+        }
+        if (userFilter.getHeightTo() != null) {
+            filter.setHeightTo(userFilter.getHeightTo());
+        } else {
+            filter.setHeightTo((double) Integer.MAX_VALUE);
+        }
+
+        if (userFilter.getPriceFrom() != null) {
+            filter.setPriceFrom(userFilter.getPriceFrom());
+        } else {
+            filter.setPriceFrom((double) 0);
+        }
+        if (userFilter.getPriceTo() != null) {
+            filter.setPriceTo(userFilter.getPriceTo());
+        } else {
+            filter.setPriceTo((double) Integer.MAX_VALUE);
+        }
+
+
+        if (userFilter.getCategories() != null) {
+            filter.setCategories(userFilter.getCategories());
+        } else {
+            filter.setCategories(this.organizerCategories());
+        }
+        if (userFilter.getSeller() != null) {
+            filter.setSeller(userFilter.getSeller());
+        } else {
+            filter.setSeller(this.organizerSellers());
+        }
+        if (userFilter.getMaterial() != null) {
+            filter.setMaterial(userFilter.getMaterial());
+        } else {
+            filter.setMaterial(this.organizerMaterials());
+        }
+
+        return filter;
+    }
 }
