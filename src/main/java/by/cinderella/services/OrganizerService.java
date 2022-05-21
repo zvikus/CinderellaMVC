@@ -70,7 +70,7 @@ public class OrganizerService {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
 
-        Filter filter = this.iitFilter(userFilter);
+        Filter filter = this.initFilter(userFilter);
 
         Page<Organizer> organizerPage =
                 //organizerRepo.findAllByPriceBetween(priceFrom, priceTo,
@@ -93,7 +93,7 @@ public class OrganizerService {
     }
 
 
-    private Filter iitFilter(Filter userFilter) {
+    private Filter initFilter(Filter userFilter) {
         Filter filter = new Filter();
 
         if (userFilter.getNameLike() != null) {

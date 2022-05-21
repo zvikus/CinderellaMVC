@@ -21,6 +21,11 @@
                 <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
                     Фильтр
                 </button>
+                <form th:action="@{/user/destroyFilter}" method="post">
+                        <button class="btn btn-outline-primary regular-button" type="submit" >
+                            Сбросить фильтр
+                        </button>
+                </form>
             </p>
             <div class="collapse" id="filterBox" style="">
                 <div class="card card-body">
@@ -31,7 +36,8 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="name" class="form-control rounded-4" id="name" placeholder="0">
+                                    <input th:value="${filter.nameLike}"
+                                            type="text" name="name" class="form-control rounded-4" id="name" placeholder="0">
                                     <label for="name">Название</label>
                                 </div>
                             </div>
@@ -42,13 +48,15 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
+                                    <input th:value="${filter.priceFrom}"
+                                            type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
                                     <label for="priceFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
+                                    <input th:value="${filter.priceTo}"
+                                            type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
                                     <label for="priceTo">До</label>
                                 </div>
                             </div>
@@ -60,13 +68,15 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
+                                    <input th:value="${filter.widthFrom}"
+                                            type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
                                     <label for="widthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
+                                    <input th:value="${filter.widthTo}"
+                                            type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
                                     <label for="widthTo">До</label>
                                 </div>
                             </div>
@@ -77,13 +87,15 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
+                                    <input th:value="${filter.heightFrom}"
+                                            type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
                                     <label for="heightFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
+                                    <input th:value="${filter.heightTo}"
+                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
                                     <label for="heightTo">До</label>
                                 </div>
                             </div>
@@ -94,13 +106,15 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
+                                    <input th:value="${filter.lengthFrom}"
+                                            type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
                                     <label for="lengthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
+                                    <input th:value="${filter.lengthTo}"
+                                            type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
                                     <label for="lengthTo">До</label>
                                 </div>
                             </div>
@@ -121,6 +135,7 @@
                                         <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
                                             <input type="checkbox" name="categories" class="custom-control-input"
                                                    th:id="${feat}"
+                                                   th:field="*{filter.categories}"
                                                    th:value="${feat}"
                                             />
                                             <label class="custom-control-label"
@@ -149,6 +164,7 @@
                                             <input type="checkbox" name="sellers" class="custom-control-input"
                                                    th:id="${feat}"
                                                    th:value="${feat}"
+                                                   th:field="*{filter.sellers}"
                                             />
                                             <label class="custom-control-label"
                                                    th:for="${feat}"
@@ -176,6 +192,7 @@
                                             <input type="checkbox" name="materials" class="custom-control-input"
                                                    th:id="${feat}"
                                                    th:value="${feat}"
+                                                   th:field="*{filter.materials}"
                                             />
                                             <label class="custom-control-label"
                                                    th:for="${feat}"
@@ -187,6 +204,10 @@
                             </div>
                         </div>
 
+                        <input
+                                type="hidden"
+                                name="page"
+                                value="1" />
 
                         <button class="btn btn-outline-primary regular-button"
                                 type="submit">

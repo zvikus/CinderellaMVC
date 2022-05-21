@@ -1,5 +1,6 @@
 package by.cinderella.controllers;
 
+import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.services.OrganizerService;
@@ -9,10 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -80,40 +78,61 @@ public class UserController {
 
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(1);
+        int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
         int pageSize = size.orElse(50);
 
-        /*Filter filterFromSession = (Filter) request.getSession().getAttribute("ORGANIZER_FILTER");
+        request.getSession().setAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE, currentPage);
 
-        if (filterFromSession != null) {
+        Filter filter;
 
-        }*/
+        if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
+            Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+            filter = new Filter(
+                    name.orElse(filterFromSession.getNameLike()),
 
-        Filter filter = new Filter(
-                name.orElse(null),
+                    lengthFrom.orElse(filterFromSession.getLengthFrom()),
+                    widthFrom.orElse(filterFromSession.getWidthFrom()),
+                    heightFrom.orElse(filterFromSession.getHeightFrom()),
 
-                lengthFrom.orElse(null),
-                widthFrom.orElse(null),
-                heightFrom.orElse(null),
+                    lengthTo.orElse(filterFromSession.getLengthTo()),
+                    widthTo.orElse(filterFromSession.getWidthTo()),
+                    heightTo.orElse(filterFromSession.getHeightTo()),
 
-                lengthTo.orElse(null),
-                widthTo.orElse(null),
-                heightTo.orElse(null),
+                    priceFrom.orElse(filterFromSession.getPriceFrom()),
+                    priceTo.orElse(filterFromSession.getPriceTo()),
 
-                priceFrom.orElse(null),
-                priceTo.orElse(null),
+                    categories.orElse(filterFromSession.getCategories()),
+                    sellers.orElse(filterFromSession.getSeller()),
+                    materials.orElse(filterFromSession.getMaterial())
+            );
+        } else {
+            filter = new Filter(
+                    name.orElse(null),
 
-                categories.orElse(null),
-                sellers.orElse(null),
-                materials.orElse(null)
-        );
+                    lengthFrom.orElse(null),
+                    widthFrom.orElse(null),
+                    heightFrom.orElse(null),
 
-        //request.getSession().setAttribute("ORGANIZER_FILTER", filter);
+                    lengthTo.orElse(null),
+                    widthTo.orElse(null),
+                    heightTo.orElse(null),
+
+                    priceFrom.orElse(null),
+                    priceTo.orElse(null),
+
+                    categories.orElse(null),
+                    sellers.orElse(null),
+                    materials.orElse(null)
+            );
+        }
+
+        request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filter);
 
         Page<Organizer> organizerPage = organizerService.findPaginatedAndFiltered(filter,
                 PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("title", "Администрирование - Органайзеры");
+        model.addAttribute("filter", filter);
 
         model.addAttribute("organizerPage", organizerPage);
 
@@ -126,5 +145,12 @@ public class UserController {
         }
 
         return  "user/organizers";
+    }
+
+    @PostMapping("/destroyFilter")
+    public String destroySession(HttpServletRequest request) {
+        request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
+
+        return "redirect:/user/organizers";
     }
 }

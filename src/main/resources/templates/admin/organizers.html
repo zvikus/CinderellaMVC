@@ -15,7 +15,219 @@
     <main>
         <h1>ОРГАНАЙЗЕРЫ</h1>
 
-        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>
+        <div class="bd-example">
+            <div class="row">
+                <div class="col-md-2">
+                    <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
+                        Фильтр
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <form th:action="@{/user/destroyFilter}" method="post">
+                        <button class="btn btn-outline-primary regular-button" type="submit" >
+                            Сбросить фильтр
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <form method="get" th:action="@{/admin/addOrganizer}">
+                        <button class="btn btn-outline-primary regular-button" type="submit" >
+                            Добавить органайзер
+                        </button>
+                    </form>
+                </div>
+
+            </p>
+            <div class="collapse" id="filterBox" style="">
+                <div class="card card-body">
+                    <form action="/user/organizers" method="GET">
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Название
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.nameLike}"
+                                           type="text" name="name" class="form-control rounded-4" id="name" placeholder="0">
+                                    <label for="name">Название</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Цена
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.priceFrom}"
+                                           type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
+                                    <label for="priceFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.priceTo}"
+                                           type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
+                                    <label for="priceTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Ширина
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.widthFrom}"
+                                           type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
+                                    <label for="widthFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.widthTo}"
+                                           type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
+                                    <label for="widthTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Высота
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightFrom}"
+                                           type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
+                                    <label for="heightFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightTo}"
+                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
+                                    <label for="heightTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Глубина
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.lengthFrom}"
+                                           type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
+                                    <label for="lengthFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.lengthTo}"
+                                           type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
+                                    <label for="lengthTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 filter-label">
+                                Категория
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#categoryBox" aria-expanded="false" aria-controls="categoryBox">
+                                        Категории
+                                    </button>
+                                </p>
+                                <div class="collapse" id="categoryBox" style="">
+                                    <ul class="list-unstyled categories-list">
+                                        <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                            <input type="checkbox" name="categories" class="custom-control-input"
+                                                   th:id="${feat}"
+                                                   th:field="*{filter.categories}"
+                                                   th:value="${feat}"
+                                            />
+                                            <label class="custom-control-label"
+                                                   th:for="${feat}"
+                                                   th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"
+                                            />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 filter-label">
+                                Продавец
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#sellersBox" aria-expanded="false" aria-controls="sellersBox">
+                                        Продавцы
+                                    </button>
+                                </p>
+                                <div class="collapse" id="sellersBox" style="">
+                                    <ul class="list-unstyled categories-list">
+                                        <li th:each="feat : ${organizerSellers}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                            <input type="checkbox" name="sellers" class="custom-control-input"
+                                                   th:id="${feat}"
+                                                   th:value="${feat}"
+                                                   th:field="*{filter.sellers}"
+                                            />
+                                            <label class="custom-control-label"
+                                                   th:for="${feat}"
+                                                   th:text="${feat.label}"
+                                            />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 filter-label">
+                                Материал
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#materialBox" aria-expanded="false" aria-controls="materialBox">
+                                        Материалы
+                                    </button>
+                                </p>
+                                <div class="collapse" id="materialBox" style="">
+                                    <ul class="list-unstyled categories-list">
+                                        <li th:each="feat : ${organizerMaterials}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                            <input type="checkbox" name="materials" class="custom-control-input"
+                                                   th:id="${feat}"
+                                                   th:value="${feat}"
+                                                   th:field="*{filter.materials}"
+                                            />
+                                            <label class="custom-control-label"
+                                                   th:for="${feat}"
+                                                   th:text="${feat.label}"
+                                            />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input
+                                type="hidden"
+                                name="page"
+                                value="1" />
+
+                        <button class="btn btn-outline-primary regular-button"
+                                type="submit">
+                            Принять
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-striped table-sm">
             <thead>
@@ -60,6 +272,9 @@
                     <td>
                         <a th:href="${el.link}" target="_blank">
                             <h4 th:text="${el.name}"/>
+                        </a><br/>
+                        <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
+                            <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
                     <td th:text="${el.price}"/>

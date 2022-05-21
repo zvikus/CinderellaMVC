@@ -1,11 +1,13 @@
 package by.cinderella.model.organizer;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Filter {
+public class Filter implements Serializable {
+
     private String nameLike;
 
     private Double lengthFrom;
@@ -135,5 +137,21 @@ public class Filter {
 
     public void setMaterial(Set<Material> material) {
         this.material = material;
+    }
+
+    public Set<Seller> getSellers() {
+        return seller;
+    }
+
+    public void setSellers(Set<Seller> seller) {
+        this.seller = seller;
+    }
+
+    public Set<Material> getMaterials() {
+        return material;
+    }
+
+    public void setMaterials(Set<Material> materials) {
+        this.material = materials;
     }
 }
