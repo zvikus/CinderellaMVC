@@ -23,7 +23,7 @@
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <form th:action="@{/user/destroyFilter}" method="post">
+                    <form th:action="@{/admin/destroyFilter}" method="post">
                         <button class="btn btn-outline-primary regular-button" type="submit" >
                             Сбросить фильтр
                         </button>
@@ -40,7 +40,7 @@
             </p>
             <div class="collapse" id="filterBox" style="">
                 <div class="card card-body">
-                    <form action="/user/organizers" method="GET">
+                    <form action="/admin/organizers" method="GET">
                         <div class="row filter-label">
                             <div class="col-md-4">
                                 Название

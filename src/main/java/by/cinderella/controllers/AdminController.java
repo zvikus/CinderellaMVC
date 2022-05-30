@@ -44,6 +44,22 @@ public class AdminController {
         return result;
     }
 
+    @ModelAttribute("organizerSellers")
+    public Set<Seller> organizerSellers() {
+        Set<Seller> result  = new TreeSet<>();
+
+        Collections.addAll(result, Seller.values());
+        return result;
+    }
+
+    @ModelAttribute("organizerMaterials")
+    public Set<Material> organizerMaterials() {
+        Set<Material> result  = new TreeSet<>();
+
+        Collections.addAll(result, Material.values());
+        return result;
+    }
+
 
     @GetMapping("")
     public String mainPage(HttpServletRequest request, Model model) {
@@ -286,6 +302,13 @@ public class AdminController {
         organizerRepo.save(organizer);
 
 
+
+        return "redirect:/admin/organizers";
+    }
+
+    @PostMapping("/destroyFilter")
+    public String destroySession(HttpServletRequest request) {
+        request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
 
         return "redirect:/admin/organizers";
     }
