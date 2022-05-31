@@ -14,25 +14,37 @@
 
     <main>
         <h1>Регистрация</h1>
-        <div th:if="${param.error}">
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}">
-            You have been logged out.
-        </div>
 
-        <div th:if="${message}">
-            <div th:text="${message}">
+        <div class="login-form">
+            <div th:if="${message}">
+                <div th:text="${message}">
 
+                </div>
             </div>
         </div>
 
-        <form th:action="@{/registration}" method="post">
-            <div><label> Логин: <input type="text" name="username"/> </label></div>
-            <div><label> Email: <input type="email" name="email"/> </label></div>
-            <div><label> Пароль: <input type="password" name="password"/> </label></div>
-            <div><label> Подтвердите пароль: <input type="password" name="confirmPassword"/> </label></div>
-            <div><input type="submit" value="Регистрация"/></div>
+        <form th:action="@{/registration}" method="post" class="login-form">
+            <div class="form-floating mb-3">
+                <input type="text" name="username" id="username" required
+                       class="form-control rounded-4" placeholder=""/>
+                <label for="username"> Логин:  </label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" name="email" id="email" required
+                       class="form-control rounded-4" placeholder=""/>
+                <label for="email">Email:</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" name="password" id="password" required
+                       class="form-control rounded-4" placeholder=""/>
+                <label for="password"> Пароль:  </label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" name="confirmPassword" id="confirmPassword" required
+                       class="form-control rounded-4" placeholder=""/>
+                <label for="confirmPassword"> Подтвердите пароль:  </label>
+            </div>
+            <div><button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Регистрация</button></div>
         </form>
 
     </main>

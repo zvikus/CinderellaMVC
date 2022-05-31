@@ -15,24 +15,27 @@
         <main>
             <h1>Логин</h1>
 
-            <div th:if="${param.error}">
-                Invalid username and password.
-            </div>
-            <div th:if="${param.logout}">
-                You have been logged out.
-            </div>
+            <div class="login-form">
+                <div th:if="${param.error}">
+                    Неверный логин или пароль.<br/>
+                    Если Вы новый пользователь, проверьте почту, адрес которой вводили при регистрации.
+                </div>
+                <div th:if="${param.logout}">
+                    Вы вышли из системы.
+                </div>
 
-            <div th:if="${message}">
-                <div th:text="${message}">
+                <div th:if="${message}">
+                    <div th:text="${message}">
 
+                    </div>
                 </div>
             </div>
             <form th:action="@{/login}" method="post" class="login-form">
                 <div class="form-floating mb-3">
                     <input type="text"
                            name="username"
-                           class="form-control rounded-4" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInput">Email адрес</label>
+                           class="form-control rounded-4" id="floatingInput" placeholder="">
+                    <label for="floatingInput">Логин</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password"
