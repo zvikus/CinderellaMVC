@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 
 @Component
 @RequestMapping("/user")
-@PreAuthorize("hasAnyAuthority('USER, ADMIN')")
+@PreAuthorize("hasAnyAuthority('USER, ADMIN, SADMIN')")
 public class UserController {
     @Autowired
     private OrganizerRepo organizerRepo;

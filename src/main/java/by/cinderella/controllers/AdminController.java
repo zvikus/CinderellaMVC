@@ -1,7 +1,6 @@
 package by.cinderella.controllers;
 
 import by.cinderella.config.Constants;
-import by.cinderella.model.User;
 import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.services.OrganizerService;
@@ -24,7 +23,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAnyAuthority('ADMIN, SADMIN')")
 public class AdminController {
 
     @Autowired

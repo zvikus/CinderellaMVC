@@ -1,6 +1,5 @@
 package by.cinderella.repos;
 
-import by.cinderella.model.User;
 import by.cinderella.model.organizer.Organizer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

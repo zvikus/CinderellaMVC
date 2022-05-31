@@ -28,8 +28,10 @@
         </div>
 
         <form th:action="@{/registration}" method="post">
-            <div><label> User Name : <input type="text" name="username"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><label> Логин: <input type="text" name="username"/> </label></div>
+            <div><label> Email: <input type="email" name="email"/> </label></div>
+            <div><label> Пароль: <input type="password" name="password"/> </label></div>
+            <div><label> Подтвердите пароль: <input type="password" name="confirmPassword"/> </label></div>
             <div><input type="submit" value="Регистрация"/></div>
         </form>
 

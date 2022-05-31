@@ -21,6 +21,12 @@
             <div th:if="${param.logout}">
                 You have been logged out.
             </div>
+
+            <div th:if="${message}">
+                <div th:text="${message}">
+
+                </div>
+            </div>
             <form th:action="@{/login}" method="post" class="login-form">
                 <div class="form-floating mb-3">
                     <input type="text"

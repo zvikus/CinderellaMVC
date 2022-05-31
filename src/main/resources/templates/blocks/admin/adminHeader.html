@@ -1,4 +1,4 @@
-<header th:fragment="adminHeader" xmlns:th="http://www.w3.org/1999/xhtml">
+<header th:fragment="adminHeader" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <a th:href="@{/admin}" class="d-flex align-items-center text-dark text-decoration-none">
             <img th:src="@{/img/cinderella_icon.png}" style="float: left; width: 50px;"/>
@@ -6,6 +6,9 @@
         </a>
 
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a sec:authorize="hasAuthority('SADMIN')"
+                    class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/users}"> Пользователи </a>
+
             <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/organizers}">Органайзеры</a>
             <!--            <a class="me-3 py-2 text-dark text-decoration-none" href="/">Услуги</a>-->
             <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/products}">Продукты</a>
