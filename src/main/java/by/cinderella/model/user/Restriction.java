@@ -2,6 +2,7 @@ package by.cinderella.model.user;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @Table(name = "restriction")

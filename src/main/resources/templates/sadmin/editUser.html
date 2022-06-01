@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>РЕДАКТИРОВАТЬ</h1>
+
+        <form action="/admin/editUser" method="post" class="needs-validation"  enctype="multipart/form-data">
+            <!--            <ul class="list-unstyled">-->
+            <input
+                    type="hidden"
+                    th:name="id"
+                    th:value="${user.id}" />
+<!--            <input-->
+<!--                    type="hidden"-->
+<!--                    th:name="registrationDate"-->
+<!--                    th:value="${user.registrationDate}" />-->
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <label for="username">
+                        Имя пользователя
+                    </label>
+                    <input th:value="${user.username}"  type="text" id="username" name="username" placeholder="Название" class="form-control mt-2" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="active">
+                        Активация
+                    </label>
+                    <input id="active" type="checkbox" name="active" th:checked="${user.active}" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email">
+                    Email
+                </label>
+                <input th:value="${user.email}"  type="email" id="email" name="email" placeholder="Адрес" class="form-control mt-2" required>
+            </div>
+            <div class="mb-3">
+                <label for="email">
+                    Код активации
+                </label>
+                <input th:value="${user.activationCode}"  type="activationCode" id="activationCode" name="activationCode" class="form-control mt-2">
+            </div>
+
+            <div class="mb-3">
+                <label for="registrationDate">
+                    Дата регистрации
+                </label>
+                <div id="registrationDate" th:text="${#calendars.format(user.registrationDate, 'dd/MMM/yyyy HH:mm')}"/>
+            </div>
+            <div class="mb-3">
+                <label for="activationDate">
+                    Дата активации
+                </label>
+                <div id="activationDate" th:text="${#calendars.format(user.activationDate, 'dd/MMM/yyyy HH:mm')}"/>
+            </div>
+
+            <div class="mb-3">
+                <ul class="list-unstyled categories-list">
+                    <li th:each="feat : ${userRoles}" class="custom-control custom-checkbox categories-list-item mb-2">
+                        <input type="checkbox" name="roles" class="custom-control-input"
+                               th:id="${feat}"
+                               th:value="${feat}"
+                               th:field="*{user.roles}"
+                        />
+                        <label class="custom-control-label"
+                               th:for="${feat}"
+                               th:text="${feat}"
+                        />
+                    </li>
+                </ul>
+            </div>
+            <div class="mb-3">
+                <ul class="list-unstyled categories-list">
+                    <li th:each="feat : ${services}" class="custom-control custom-checkbox categories-list-item mb-2">
+                        <input type="checkbox" name="services" class="custom-control-input"
+                               th:id="${feat.id}"
+                               th:value="${feat.id}"
+                        />
+                        <label class="custom-control-label"
+                               th:for="${feat.id}"
+                               th:text="${feat.name}"
+                        />
+                    </li>
+                </ul>
+            </div>
+
+            <!--            </ul>-->
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}" />
+
+            <button type="submit" class="btn btn-success mt-5 left">Сохранить</button>
+        </form>
+
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

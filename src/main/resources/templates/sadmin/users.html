@@ -24,70 +24,59 @@
                         &nbsp;
                     </td>
                     <td>
-                        Название
+                        Имя пользователя
                     </td>
                     <td>
-                        Цена
+                        Email
                     </td>
                     <td>
-                        Ширина
+                        Дата регистрации
                     </td>
                     <td>
-                        Высота
+                        Дата активации
                     </td>
                     <td>
-                        Глубина
+                        Роли
                     </td>
                     <td>
-                        Категория
+                        Купленные продукты
                     </td>
                     <td>
-                        Материал
+
                     </td>
-                    <td>
-                        Продавец
-                    </td>
-                    <td>&nbsp;</td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="el : ${organizerPage.content}" class="">
-                    <td>
-                        <a th:href="${el.link}"  target="_blank">
-                            <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
-                        </a>
+                <tr th:each="el,iter : ${users}" class="" >
+                    <td th:text="${iter.index  + 1}">
                     </td>
-                    <td>
-                        <a th:href="${el.link}" target="_blank">
-                            <h4 th:text="${el.name}"/>
-                        </a><br/>
-                        <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
-                            <img th:src="@{/img/icons/copy.png}" width="30" height="30">
-                        </a>
-                    </td>
-                    <td th:text="${el.price}"/>
+                    <td th:text="${el.username}"/>
 
-                    <td th:text="${el.width}"/>
-                    <td th:text="${el.height}"/>
-                    <td th:text="${el.length}"/>
+                    <td th:text="${el.email}"/>
+
+                    <td th:text="${#calendars.format(el.registrationDate, 'dd/MMM/yyyy HH:mm')}"/>
+                    <td th:text="${#calendars.format(el.activationDate, 'dd/MMM/yyyy HH:mm')}"/>
 
                     <td class="fs-6">
                         <ul>
-                            <li class="list-unstyled" th:each="category : ${el.categories}">
-                                <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+                            <li class="list-unstyled" th:each="role : ${el.roles}">
+                                <span th:text="${role}"/>
+                            </li>
+                        </ul>
+
+                    </td>
+                    <td class="fs-6">
+                        <ul>
+                            <li class="list-unstyled" th:each="restriction : ${el.restrictions}">
+                                <span th:text="${restriction.service.name}"/>
                             </li>
                         </ul>
 
                     </td>
 
-                    <td th:text="${el.material?.label}" class="fs-5"/>
-                    <td th:text="${el.seller.label}" class="fs-5"/>
-
-
                     <td>
-                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}">Удалить</a><br/>
-                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/copy}">Копировать</a><br/>
-                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}">Редактировать</a>
+                        <a onclick="" th:href="@{/admin/user/} + ${el.id} + @{/remove}">Удалить</a><br/>
+                        <a th:href="@{/admin/user/} + ${el.id} + @{/edit}">Редактировать</a>
                     </td>
                 </tr>
                 </tbody>

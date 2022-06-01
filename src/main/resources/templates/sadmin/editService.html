@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+
+    </header>
+
+    <main>
+        <h1>РЕДАКТИРОВАТЬ УСЛУГУ</h1>
+
+        <form action="/admin/editService" method="post" class="needs-validation"  enctype="multipart/form-data">
+            <input
+                    type="hidden"
+                    th:name="id"
+                    th:value="${service.id}" />
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <label for="name">
+                        Название сервиса
+                    </label>
+                    <input th:value="${service.name}"  type="text" id="name" name="name" placeholder="Название" class="form-control mt-2" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="cost">
+                    Цена
+                </label>
+                <input th:value="${service.cost}"  type="cost" id="cost" name="cost" placeholder="Цена" class="form-control mt-2" required>
+            </div>
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}" />
+
+            <button type="submit" class="btn btn-success mt-5 left">Сохранить</button>
+        </form>
+
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>
