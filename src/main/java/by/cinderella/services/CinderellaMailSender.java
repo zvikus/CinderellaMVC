@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
-public class MailSender {
+public class CinderellaMailSender {
 
     @Value("{spring.mail.username}")
     private String username;

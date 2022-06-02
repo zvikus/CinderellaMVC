@@ -27,8 +27,8 @@ public class UserService implements UserDetailsService {
     @Value("${application.url}")
     private String applicationUrl;
 
-    @Autowired MailSender mailSender;
-
+    @Autowired
+    CinderellaMailSender mailSender;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
