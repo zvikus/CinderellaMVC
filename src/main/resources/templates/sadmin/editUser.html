@@ -81,18 +81,21 @@
                 </ul>
             </div>
             <div class="mb-3">
-                <ul class="list-unstyled categories-list">
-                    <li th:each="feat : ${services}" class="custom-control custom-checkbox categories-list-item mb-2">
-                        <input type="checkbox" name="services" class="custom-control-input"
-                               th:id="${feat.id}"
-                               th:value="${feat.id}"
-                        />
-                        <label class="custom-control-label"
-                               th:for="${feat.id}"
-                               th:text="${feat.name}"
-                        />
-                    </li>
-                </ul>
+                    <div class="row">
+                        <h4>Подключенные услуги:</h4>
+                    </div>
+                    <div class="row" th:each="restriction : ${user.restrictions}">
+                        <span class="col-md-2" >
+                            <strong th:text="${restriction.service.name}"></strong>
+                        </span>
+                        <span class="col-md-2" ><u>Дата покупки:</u></span>
+                        <span class="col-md-2" th:text="${#calendars.format(restriction.activationDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <span class="col-md-2" ><u>Дата окончания действия:</u></span>
+                        <span class="col-md-2" th:text="${#calendars.format(restriction.expirationDate, 'dd/MMM/yyyy HH:mm')}"></span>
+                        <span class="col-md-2">
+                            <a th:href="@{/admin/restriction/} + ${restriction.id} + @{/remove}">Удалить</a>
+                        </span>
+                    </div>
             </div>
 
             <!--            </ul>-->

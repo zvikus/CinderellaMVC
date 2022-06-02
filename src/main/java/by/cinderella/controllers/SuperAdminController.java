@@ -52,8 +52,6 @@ public class SuperAdminController {
 
         Optional<User> user = userRepo.findById(userId);
 
-        model.addAttribute("services", serviceRepo.findAll());
-
         model.addAttribute("user", user.get());
         model.addAttribute("title", "Администрирование - Редактировать " + user.get().getUsername());
         model.addAttribute("roles", new HashSet<>());
@@ -63,37 +61,15 @@ public class SuperAdminController {
 
     @PostMapping("/editUser")
     public String editUser(User user,
-                           @RequestParam("services") Optional<Set<Long>> services,
                                 Model model) throws IOException {
 
-
-        Set<Restriction> restrictions = new HashSet<>();
-        for(Long serviceId : services.get()) {
-            Optional<Service> service = serviceRepo.findById(serviceId);
-            Restriction restriction = new Restriction();
-            restriction.setActivationDate(new Date());
-            restriction.setUser(user);
-
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MONTH, 1);
-            restriction.setExpirationDate(cal.getTime());
-
-            restriction.setService(service.get());
-
-            restrictionRepo.save(restriction);
-
-            restrictions.add(restriction);
-        }
-        user.setRestrictions(restrictions);
-
         user.setActivationDate(new Date());
-
         userRepo.save(user);
-
-
-
         return "redirect:/admin/users";
     }
+
+
+
 
     @GetMapping("/services")
     public String getServices(HttpServletRequest request, Model model) {
@@ -136,5 +112,47 @@ public class SuperAdminController {
         serviceRepo.save(service);
 
         return "redirect:/admin/services";
+    }
+
+    @GetMapping("/addRestriction")
+    public String addRestriction(Model model) {
+
+        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("services", serviceRepo.findAll());
+        model.addAttribute("title", "Администрирование - Новая услуга");
+
+        return  "sadmin/addRestriction";
+    }
+
+    @PostMapping("/addRestriction")
+    public String addRestriction(@RequestParam("username") Optional<Long> userId,
+                                 @RequestParam("service") Optional<Long> serviceId,
+                             @RequestParam("term") Optional<Integer> term,
+                              Model model) throws IOException {
+
+        Optional<Service> service = serviceRepo.findById(serviceId.get());
+        Optional<User> user = userRepo.findById(userId.get());
+
+
+        Restriction restriction = new Restriction();
+
+        restriction.setActivationDate(new Date());
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, term.get());
+        restriction.setExpirationDate(cal.getTime());
+        service.ifPresent(value -> restriction.setService(service.get()));
+
+
+        user.ifPresent(value -> {
+            restriction.setUser(user.get());
+            user.get().getRestrictions().add(restriction);
+        });
+
+        userRepo.save(user.get());
+        restrictionRepo.save(restriction);
+
+        return "redirect:/admin/users";
     }
 }
