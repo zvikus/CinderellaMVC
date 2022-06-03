@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -18,6 +19,55 @@
 
     <version>1.0-SNAPSHOT</version>
 
+
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>
+                    dev
+                </spring.profiles.active>
+                <spring.datasource.url>
+                    jdbc:mysql://176.57.68.124:3306/cinderella_test_migration
+                </spring.datasource.url>
+                <application.url>
+                    http://localhost:8080
+                </application.url>
+                <spring.jpa.show-sql>
+                    true
+                </spring.jpa.show-sql>
+                <organizer.search.service.id>
+                    35
+                </organizer.search.service.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <properties>
+                <spring.datasource.url>
+                    jdbc:mysql://176.57.68.124:3306/cinderella
+                </spring.datasource.url>
+                <application.url>
+                    https://cinderella.by
+                </application.url>
+                <spring.jpa.show-sql>
+                    false
+                </spring.jpa.show-sql>
+                <organizer.search.service.id>
+                    35
+                </organizer.search.service.id>
+            </properties>
+        </profile>
+    </profiles>
 
     <properties>
         <java.version>8</java.version>
