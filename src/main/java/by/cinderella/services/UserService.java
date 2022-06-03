@@ -1,10 +1,15 @@
 package by.cinderella.services;
 
+import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Role;
 import by.cinderella.model.user.User;
+import by.cinderella.repos.RestrictionRepo;
+import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,14 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private RestrictionRepo restrictionRepo;
+
+    @Autowired
+    private ServiceRepo serviceRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -83,5 +92,31 @@ public class UserService implements UserDetailsService {
 
         userRepo.save(user);
         return true;
+    }
+
+    public boolean checkUserRestriction(Long serviceId) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        Optional<by.cinderella.model.user.Service> service = serviceRepo.findById(serviceId);
+        if (!service.isPresent()) {
+            return true;
+        }
+        List<Restriction> restrictions = restrictionRepo.findAllByUserAndService(user, Optional.of(service.get()));
+
+        for (Restriction restriction : restrictions) {
+            if (restriction.getExpirationDate().after(new Date())) {
+                return  true;
+            }
+        }
+
+
+
+        return false;
     }
 }

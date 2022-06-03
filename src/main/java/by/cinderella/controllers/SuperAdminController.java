@@ -63,6 +63,10 @@ public class SuperAdminController {
     public String editUser(User user,
                                 Model model) throws IOException {
 
+        User parentUser = userRepo.getById(user.getId());
+
+        user.setRegistrationDate(parentUser.getRegistrationDate());
+        user.setPassword(parentUser.getPassword());
         user.setActivationDate(new Date());
         userRepo.save(user);
         return "redirect:/admin/users";
@@ -154,5 +158,20 @@ public class SuperAdminController {
         restrictionRepo.save(restriction);
 
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/restriction/{restrictionId}/{userId}/remove")
+    public String removeRestriction(@PathVariable(value = "restrictionId") Long restrictionId,
+                                    @PathVariable(value = "userId") Long userId,
+                                  Model model) {
+        if (!restrictionRepo.existsById(restrictionId)) {
+            return "redirect:/admin/user/" + userId + "/edit";
+        }
+
+        Optional<Restriction> restriction = restrictionRepo.findById(restrictionId);
+
+        restrictionRepo.delete(restriction.get());
+
+        return "redirect:/admin/user/" + userId + "/edit";
     }
 }

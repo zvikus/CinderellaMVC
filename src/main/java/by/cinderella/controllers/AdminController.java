@@ -4,11 +4,14 @@ import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.services.OrganizerService;
+import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +45,9 @@ public class AdminController {
         Collections.addAll(result, OrganizerCategory.values());
         return result;
     }
+
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute("organizerSellers")
     public Set<Seller> organizerSellers() {
@@ -95,6 +101,10 @@ public class AdminController {
 
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
+        if (!userService.checkUserRestriction((long) 5)) {
+            return "redirect:/user";
+        }
+
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
         int pageSize = size.orElse(50);
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE, currentPage);

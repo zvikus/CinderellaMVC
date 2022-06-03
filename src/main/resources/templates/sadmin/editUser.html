@@ -93,7 +93,7 @@
                         <span class="col-md-2" ><u>Дата окончания действия:</u></span>
                         <span class="col-md-2" th:text="${#calendars.format(restriction.expirationDate, 'dd/MMM/yyyy HH:mm')}"></span>
                         <span class="col-md-2">
-                            <a th:href="@{/admin/restriction/} + ${restriction.id} + @{/remove}">Удалить</a>
+                            <a th:href="@{/admin/restriction/} + ${restriction.id} + @{/} + ${user.id} + @{/remove}">Удалить</a>
                         </span>
                     </div>
             </div>
