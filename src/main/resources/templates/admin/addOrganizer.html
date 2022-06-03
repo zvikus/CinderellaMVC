@@ -8,7 +8,7 @@
 <body>
 
 <div class="container py-3">
-    <header th:insert="blocks/admin/adminHeader :: adminHeader">
+    <header th:insert="blocks/header :: header">
 
     </header>
 
@@ -16,7 +16,7 @@
         <h1>ДОБАВИТЬ ОРГАНАЙЗЕР</h1>
 
         <div th:if="${message}" >
-            <div th:text="${message}" class="text-danger">
+            <div th:utext="${message}" class="text-danger">
 
             </div>
         </div>

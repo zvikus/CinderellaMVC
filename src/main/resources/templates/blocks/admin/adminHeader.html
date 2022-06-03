@@ -1,25 +1,42 @@
 <header th:fragment="adminHeader" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-        <a th:href="@{/admin}" class="d-flex align-items-center text-dark text-decoration-none">
+        <a th:href="@{/}" class="d-flex align-items-center text-dark text-decoration-none">
             <img th:src="@{/img/cinderella_icon.png}" style="float: left; width: 50px;"/>
             <span class="fs-4">ОРГАНИЗАЦИЯ ПРОСТРАНСТВА</span>
         </a>
 
-        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <a sec:authorize="hasAuthority('SADMIN')"
-                    class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/users}"> Пользователи </a>
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto navbar navbar-expand-lg navbar-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
 
-            <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/organizers}">Органайзеры</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/services}">Услуги</a>
-            <form th:action="@{/logout}" method="post" id="logout" class="me-3 py-2">
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#" onclick="document.getElementById('logout').submit();">Выйти</a>
-            </form>
+                    <li class="nav-item">
+                        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/about}">Обо мне</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/contacts}">Контакты</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Администрирование
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" th:href="@{/admin/users}" sec:authorize="hasAuthority('SADMIN')">Пользователи</a>
+                            <a class="dropdown-item" th:href="@{/admin/services}" sec:authorize="hasAuthority('SADMIN')">Услуги</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/admin/organizers}">Органайзеры</a>
+                        </div>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" id="logout" class="pt-2">
+                            <a class="me-3 py-2 text-dark text-decoration-none" href="#" onclick="document.getElementById('logout').submit();">Выйти</a>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/login}">Войти</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
-        <div class=" ms-md-auto hidden">
-<!--            d-inline-flex-->
-            <button type="button" class="btn btn-outline-dark me-2">Войти</button>
-            <button type="button" class="btn btn-warning">Регистрация</button>
-        </div>
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

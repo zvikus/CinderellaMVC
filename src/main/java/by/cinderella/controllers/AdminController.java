@@ -1,5 +1,6 @@
 package by.cinderella.controllers;
 
+import antlr.StringUtils;
 import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
@@ -28,6 +29,9 @@ import java.util.stream.IntStream;
 @RequestMapping("/admin")
 @PreAuthorize("hasAnyAuthority('ADMIN, SADMIN')")
 public class AdminController {
+
+    @Value("${application.url}")
+    private String applicationUrl;
 
     @Autowired
     private OrganizerRepo organizerRepo;
@@ -191,7 +195,12 @@ public class AdminController {
         List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
 
         if (!organizerFromDB.isEmpty()) {
-            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            String message = String.format("Органайзер с такой ссылкой уже существует!\n" +
+                            "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
+                    applicationUrl,
+                    organizerFromDB.get(0).getId()
+            );
+            model.addAttribute("message", message);
             model.addAttribute("organizer", organizer);
             model.addAttribute("categories", new HashSet<>());
             return "admin/addOrganizer";
@@ -224,13 +233,16 @@ public class AdminController {
         List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
 
         if (!organizerFromDB.isEmpty()) {
-            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
+            String message = String.format("Органайзер с такой ссылкой уже существует!\n" +
+                    "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
+                    applicationUrl,
+                    organizerFromDB.get(0).getId()
+            );
+            model.addAttribute("message", message);
             model.addAttribute("organizer", new Organizer());
             model.addAttribute("categories", new HashSet<>());
-            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
             return "admin/addOrganizer";
         } else {
-            model.addAttribute("message", "Органайзер с такой ссылкой уже существует!");
             model.addAttribute("organizer", new Organizer());
             model.addAttribute("categories", new HashSet<>());
             model.addAttribute("message", "Органайзер с такой ссылкой в системе не найден!");

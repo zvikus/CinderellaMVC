@@ -1,4 +1,4 @@
---bs-body-font-size:2.2rem
+/*--bs-body-font-size:2.2rem*/
 
 @font-face {
   font-family: 'Neuron';
@@ -112,8 +112,12 @@ footer {
     font-weight: bold;
 }
 
+.btn-outline-primary.regular-button:hover {
+
+}
+
 .btn-outline-primary.regular-button:hover,
-.btn-outline-primary.regular-button:active
+.btn-outline-primary.regular-button:active,
 .card .btn-outline-primary:hover,
 .card .btn-outline-primary:active {
     color: #fff;
