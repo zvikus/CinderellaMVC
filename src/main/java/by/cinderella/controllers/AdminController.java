@@ -33,6 +33,9 @@ public class AdminController {
     @Value("${application.url}")
     private String applicationUrl;
 
+    @Value("${organizer.search.service.id}")
+    private Integer searchServiceId;
+
     @Autowired
     private OrganizerRepo organizerRepo;
 
@@ -105,7 +108,7 @@ public class AdminController {
 
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
-        if (!userService.checkUserRestriction((long) 5)) {
+        if (!userService.checkUserRestriction((long) searchServiceId)) {
             return "redirect:/user";
         }
 

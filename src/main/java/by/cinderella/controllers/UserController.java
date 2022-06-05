@@ -6,6 +6,7 @@ import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,10 @@ import java.util.stream.IntStream;
 @RequestMapping("/user")
 @PreAuthorize("hasAnyAuthority('USER, ADMIN, SADMIN')")
 public class UserController {
+    @Value("${organizer.search.service.id}")
+    private Integer searchServiceId;
+
+
     @Autowired
     private OrganizerRepo organizerRepo;
 
@@ -84,7 +89,7 @@ public class UserController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
 
-        if (!userService.checkUserRestriction((long) 5)) {
+        if (!userService.checkUserRestriction((long) searchServiceId)) {
             return "redirect:/user";
         }
 

@@ -63,7 +63,7 @@
                     false
                 </spring.jpa.show-sql>
                 <organizer.search.service.id>
-                    35
+                    256
                 </organizer.search.service.id>
             </properties>
         </profile>
