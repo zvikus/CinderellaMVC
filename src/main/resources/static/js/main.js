@@ -35,11 +35,55 @@ function copyTextToClipboard(text) {
 
 
 $( document ).ready(function() {
-    console.log( "ready!" );
     /*$("#filterButton").on("click", function() {
         $('.filterBox').collapse();
     })*/
     $(".link-copy").on("click", function(e){
         copyTextToClipboard(e.currentTarget.dataset.url)
     })
+
+    $(".alert").hide();
+
+    $(".submit-form-link").on("click", function (event) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                  $(document).ajaxSend(function(e, xhr, options) {
+                    xhr.setRequestHeader(header, token);
+                  });
+
+                  $().dropdown('dispose');
+                  $().dropdown('close');
+
+                /*$(this).closest(".dropdown").dropdown('dispose');
+                $(".dropdown-toggle").dropdown('dispose')*/
+
+                var form = $(this).parent(),
+                    self = this;
+                var alert = $(this).closest(".alert-box").find(".alert");
+
+                                   $.ajax({
+                                       type: "POST",
+                                       url: form[0].action,
+                                       cache: false,
+                                       timeout: 60000,
+                                       success: function (message) {
+                                            $(self).closest(".dropdown").dropdown('dispose');
+                                           alert.find("strong").text("Добавлено!");
+                                           alert.fadeTo(2000, 500).slideUp(500, function() {
+                                                 alert.slideUp(500);
+                                               });
+
+                                       },
+                                       error: function (message) {
+                                            $(self).closest(".dropdown").dropdown('dispose');
+                                           alert.find("strong").text("Добавлено ранее!");
+                                           alert.fadeTo(2000, 500).slideUp(500, function() {
+                                                 alert.slideUp(500);
+                                               });
+                                       }
+                                   });
+                               });
 });

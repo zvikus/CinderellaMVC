@@ -2,22 +2,30 @@ package by.cinderella.controllers;
 
 import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.*;
+import by.cinderella.model.user.OrganizerList;
+import by.cinderella.model.user.User;
+import by.cinderella.repos.OrganizerListRepo;
 import by.cinderella.repos.OrganizerRepo;
+import by.cinderella.repos.UserRepo;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,6 +36,11 @@ public class UserController {
     @Value("${organizer.search.service.id}")
     private Integer searchServiceId;
 
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private OrganizerListRepo organizerListRepo;
 
     @Autowired
     private OrganizerRepo organizerRepo;
@@ -66,6 +79,105 @@ public class UserController {
     public String mainPage() {
         return "user/main";
     }
+
+    @GetMapping("/userOrganizers")
+    public String getUserOrganizers(HttpServletRequest request, Model model) {
+        if (!userService.checkUserRestriction((long) searchServiceId)) {
+            return "redirect:/user";
+        }
+
+        model.addAttribute("organizerList", userService.getAuthUser().getOrganizerLists());
+
+        return  "user/userOrganizers";
+    }
+
+    @GetMapping("/userOrganizers/{organizerListId}/remove")
+    public String removeOrganizerList(HttpServletRequest request, Model model,
+                                      @PathVariable("organizerListId") Long organizerListId) {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+        if (organizerList.isPresent()) {
+            User user = userService.getAuthUser();
+            Set<OrganizerList> userOrganizerList = user.getOrganizerLists();
+            userOrganizerList.remove(organizerList.get());
+            user.setOrganizerLists(userOrganizerList);
+            userRepo.save(user);
+            organizerList.get().setOrganizerList(new HashSet<>());
+            organizerListRepo.save(organizerList.get());
+            organizerListRepo.delete(organizerList.get());
+        }
+        return "redirect:/user/userOrganizers";
+    }
+    @GetMapping("/userOrganizersList/{organizerListId}/{organizerId}/remove")
+    public String removeOrganizerFromOrganizerList(HttpServletRequest request, Model model,
+                                                   @PathVariable("organizerId") Long organizerId,
+                                                   @PathVariable("organizerListId") Long organizerListId) {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        if (organizerList.isPresent()
+                && organizer.isPresent()) {
+            Set<Organizer> organizers = organizerList.get().getOrganizerList();
+
+            organizers.remove(organizer.get());
+
+            organizerList.get().setOrganizerList(organizers);
+            organizerList.get().setLastUpdated(new Date());
+
+            organizerListRepo.save(organizerList.get());
+        }
+        return "redirect:/user/userOrganizersList/" + organizerListId + "/show";
+    }
+
+    @PostMapping("/newOrganizerList")
+    public String addUserOrganizerList(OrganizerList organizerList,
+            HttpServletRequest request, Model model) {
+        if (!userService.checkUserRestriction((long) searchServiceId)) {
+            return "redirect:/user";
+        }
+
+        User user = userService.getAuthUser();
+        organizerList.setCreated(new Date());
+        organizerList.setUser(user);
+
+        user.getOrganizerLists().add(organizerList);
+
+        userRepo.save(user);
+        organizerListRepo.save(organizerList);
+
+        return "redirect:/user/userOrganizers";
+    }
+
+    @PostMapping("/addToUserList/{organizerId}/{organizerListId}")
+    public ResponseEntity<String> addOrganizerToUserList(HttpServletRequest request, Model model,
+                                                 @PathVariable("organizerId") Long organizerId,
+                                                 @PathVariable("organizerListId") Long organizerListId) {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        if (organizerList.isPresent()
+            && organizer.isPresent()) {
+            if (!organizerList.get().getOrganizerList().contains(organizer.get())) {
+                organizerList.get().getOrganizerList().add(organizer.get());
+                organizerListRepo.save(organizerList.get());
+            } else {
+                return new ResponseEntity<String>(HttpStatus.ALREADY_REPORTED);
+            }
+        }
+
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+    @GetMapping("/userOrganizersList/{organizerListId}/show")
+    public String getUserOrganizersList(HttpServletRequest request, Model model,
+                                                    @PathVariable("organizerListId") Long organizerListId) {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+
+        model.addAttribute("organizerList", organizerList.get());
+
+        return "user/userOrganizersList";
+    }
+
+
 
     @GetMapping("/organizers")
     public String organizerPage(HttpServletRequest request, Model model,
@@ -150,6 +262,8 @@ public class UserController {
         model.addAttribute("filter", filter);
 
         model.addAttribute("organizerPage", organizerPage);
+
+        model.addAttribute("organizerLists", userService.getAuthUser().getOrganizerLists());
 
         int totalPages = organizerPage.getTotalPages();
         if (totalPages > 0) {

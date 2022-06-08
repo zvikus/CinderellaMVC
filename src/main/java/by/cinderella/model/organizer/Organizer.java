@@ -1,5 +1,7 @@
 package by.cinderella.model.organizer;
 
+import by.cinderella.model.user.OrganizerList;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ public class Organizer {
     private Long id;
 
     private String name;
+    private String articleNumber;
 
     private Double length;
     private Double width;
@@ -28,6 +31,9 @@ public class Organizer {
     private Date lastUpdated;
 
 
+
+    @ManyToMany(mappedBy = "organizerList")
+    private Set<OrganizerList> organizerList = new HashSet<>();
 
     @ElementCollection(targetClass = OrganizerCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "organizer_category", joinColumns = @JoinColumn(name = "organizer_id"))
@@ -132,5 +138,21 @@ public class Organizer {
 
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    public String getArticleNumber() {
+        return articleNumber;
+    }
+
+    public void setArticleNumber(String articleNumber) {
+        this.articleNumber = articleNumber;
+    }
+
+    public Set<OrganizerList> getOrganizerList() {
+        return organizerList;
+    }
+
+    public void setOrganizerList(Set<OrganizerList> organizerList) {
+        this.organizerList = organizerList;
     }
 }

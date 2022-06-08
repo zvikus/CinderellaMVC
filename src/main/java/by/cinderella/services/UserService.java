@@ -96,10 +96,7 @@ public class UserService implements UserDetailsService {
 
     public boolean checkUserRestriction(Long serviceId) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        User user = userRepo.findByUsername(username);
+        User user = this.getAuthUser();
         if (user == null) {
             return false;
         }
@@ -118,5 +115,12 @@ public class UserService implements UserDetailsService {
 
 
         return false;
+    }
+
+    public User getAuthUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        return userRepo.findByUsername(username);
     }
 }

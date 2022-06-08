@@ -26,18 +26,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    /*
-    https://stackoverflow.com/questions/14570025/how-to-hibernate-annotate-mapstring-setstring-or-mapstring-mapstring-st
-    @ElementCollection(fetch=FetchType.EAGER)
-    @JoinTable(name = "Attribute",
-            joinColumns = @JoinColumn(name = "fkAccount"))
-    @MapKeyColumn(name = "name")
-    // next line is working for Map<String, String>, but not here!
-    @Column(name = "value")
-    prvate Map<String, Set<String>> attributes = new HashMap<String, Set<String>>();*/
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Restriction> restrictions;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OrganizerList> organizerLists;
 
     public Long getId() {
         return id;
@@ -117,5 +110,13 @@ public class User {
 
     public void setActivationDate(Date activationDate) {
         this.activationDate = activationDate;
+    }
+
+    public Set<OrganizerList> getOrganizerLists() {
+        return organizerLists;
+    }
+
+    public void setOrganizerLists(Set<OrganizerList> organizerLists) {
+        this.organizerLists = organizerLists;
     }
 }

@@ -229,37 +229,37 @@
             </div>
         </div>
 
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-sm table-hover">
             <thead>
                 <tr>
-                    <td>
+                    <th>
                         &nbsp;
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Название
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Цена
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Ширина
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Высота
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Глубина
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Категория
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Материал
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         Продавец
-                    </td>
-                    <td>&nbsp;</td>
+                    </th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -272,7 +272,7 @@
                     <td>
                         <a th:href="${el.link}" target="_blank">
                             <h4 th:text="${el.name}"/>
-                        </a><br/>
+                        </a>
                         <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
