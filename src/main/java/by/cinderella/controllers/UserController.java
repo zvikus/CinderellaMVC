@@ -7,8 +7,10 @@ import by.cinderella.model.user.User;
 import by.cinderella.repos.OrganizerListRepo;
 import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.OrganizerPDFExporter;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -19,13 +21,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,6 +36,9 @@ import java.util.stream.IntStream;
 public class UserController {
     @Value("${organizer.search.service.id}")
     private Integer searchServiceId;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
     private UserRepo userRepo;
@@ -89,6 +93,18 @@ public class UserController {
         model.addAttribute("organizerList", userService.getAuthUser().getOrganizerLists());
 
         return  "user/userOrganizers";
+    }
+
+    @GetMapping("/userOrganizers/{organizerListId}/pdf")
+    public void exportToPDF(HttpServletResponse response,
+                            @PathVariable("organizerListId") Long organizerListId)
+            throws IOException, DocumentException, URISyntaxException {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+        if (organizerList.isPresent()) {
+            OrganizerPDFExporter exporter = new OrganizerPDFExporter(uploadPath, organizerList.get());
+
+            exporter.export(response);
+        }
     }
 
     @GetMapping("/userOrganizers/{organizerListId}/remove")

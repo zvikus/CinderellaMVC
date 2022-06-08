@@ -16,7 +16,14 @@
         <h1 th:text="${organizerList.name}"></h1>
 
         <!--        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>-->
-
+        <div class="bd-example mb-3">
+            <form th:action="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf}" method="get">
+                <button class="btn btn-outline-primary regular-button"
+                        type="submit">
+                    Скачать PDF
+                </button>
+            </form>
+        </div>
         <table class="table table-striped table-sm table-hover">
             <thead>
             <tr>
