@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -136,7 +137,9 @@ public class AdminController {
 
                     categories.orElse(filterFromSession.getCategories()),
                     sellers.orElse(filterFromSession.getSeller()),
-                    materials.orElse(filterFromSession.getMaterial())
+                    materials.orElse(filterFromSession.getMaterial()),
+                    "lastUpdated",
+                    Sort.Direction.DESC
             );
         } else {
             filter = new Filter(
@@ -155,7 +158,9 @@ public class AdminController {
 
                     categories.orElse(null),
                     sellers.orElse(null),
-                    materials.orElse(null)
+                    materials.orElse(null),
+                    "lastUpdated",
+                    Sort.Direction.DESC
             );
         }
 
@@ -330,7 +335,7 @@ public class AdminController {
         return "redirect:/admin/organizers";
     }
 
-    @PostMapping("/destroyFilter")
+    @GetMapping("/destroyFilter")
     public String destroySession(HttpServletRequest request) {
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
 

@@ -1,5 +1,7 @@
 package by.cinderella.model.organizer;
 
+import org.springframework.data.domain.Sort;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,10 +27,17 @@ public class Filter implements Serializable {
     private Set<Seller> seller;
     private Set<Material> material;
 
+    private String sortingField;
+    private Sort.Direction sortDirection;
+
     public Filter() {
     }
 
-    public Filter(String nameLike, Double lengthFrom, Double widthFrom, Double heightFrom, Double lengthTo, Double widthTo, Double heightTo, Double priceFrom, Double priceTo, Set<OrganizerCategory> categories, Set<Seller> seller, Set<Material> material) {
+    public Filter(String nameLike, Double lengthFrom, Double widthFrom, Double heightFrom,
+                  Double lengthTo, Double widthTo, Double heightTo,
+                  Double priceFrom, Double priceTo, Set<OrganizerCategory> categories,
+                  Set<Seller> seller, Set<Material> material, String sortingField,
+                  Sort.Direction sortDirection) {
         this.nameLike = nameLike;
         this.lengthFrom = lengthFrom;
         this.widthFrom = widthFrom;
@@ -41,6 +50,8 @@ public class Filter implements Serializable {
         this.categories = categories;
         this.seller = seller;
         this.material = material;
+        this.sortingField = sortingField;
+        this.sortDirection = sortDirection;
     }
 
     public String getNameLike() {
@@ -153,5 +164,21 @@ public class Filter implements Serializable {
 
     public void setMaterials(Set<Material> materials) {
         this.material = materials;
+    }
+
+    public String getSortingField() {
+        return sortingField;
+    }
+
+    public void setSortingField(String sortingField) {
+        this.sortingField = sortingField;
+    }
+
+    public Sort.Direction getSortDirection() {
+        return sortDirection;
+    }
+
+    public void setSortDirection(Sort.Direction sortDirection) {
+        this.sortDirection = sortDirection;
     }
 }

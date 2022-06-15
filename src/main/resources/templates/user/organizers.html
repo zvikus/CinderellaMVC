@@ -21,7 +21,7 @@
                 <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
                     Фильтр
                 </button>
-                <form th:action="@{/user/destroyFilter}" method="post">
+                <form th:action="@{/user/destroyFilter}" method="get">
                         <button class="btn btn-outline-primary regular-button" type="submit" >
                             Сбросить фильтр
                         </button>
@@ -218,26 +218,46 @@
             </div>
         </div>
 
-        <table class="table table-striped table-sm table-hover">
+        <table class="table table-striped table-sm table-hover dataTable">
             <thead>
                 <tr>
                     <th>
                         &nbsp;
                     </th>
-                    <th>
-                        Название
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='name') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='name',
+                                                sortDirection=((${filter.sortingField}=='name') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Название
+                        </a>
                     </th>
-                    <th>
-                        Цена
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='price') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='price',
+                                                sortDirection=((${filter.sortingField}=='price') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Цена
+                        </a>
                     </th>
-                    <th>
-                        Ширина
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='width') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='width',
+                                                sortDirection=((${filter.sortingField}=='width') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Ширина
+                        </a>
                     </th>
-                    <th>
-                        Высота
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='height',
+                                                sortDirection=((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Высота
+                        </a>
                     </th>
-                    <th>
-                        Глубина
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='length') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='length',
+                                                sortDirection=((${filter.sortingField}=='length') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Глубина
+                        </a>
                     </th>
                     <th>
                         Категория

@@ -22,22 +22,22 @@
                 <li class="nav-item pt-2">
                     <a class="nav-link" th:href="@{/contacts}">Контакты</a>
                 </li>
-                <li class="nav-item dropdown  pt-2 " sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Администрирование
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/admin/users}" sec:authorize="hasAuthority('SADMIN')">Пользователи</a>
-                        <a class="dropdown-item" th:href="@{/admin/services}" sec:authorize="hasAuthority('SADMIN')">Услуги</a>
-<!--                            <div class="dropdown-divider"></div>-->
-                        <a class="dropdown-item" th:href="@{/admin/organizers}">Органайзеры</a>
-                    </div>
-                </li>
                 <li class="nav-item dropdown  pt-2" sec:authorize="hasAnyAuthority('USER', 'ADMIN', 'SADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" id="userNavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Личный кабинет
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/admin/users}" sec:authorize="hasAuthority('SADMIN')">Пользователи</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/admin/services}" sec:authorize="hasAuthority('SADMIN')">Услуги</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" th:href="@{/admin/organizers}" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">Администр. Органайзеров</a>
+                        </li>
+                        <div class="dropdown-divider" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')"></div>
                         <li>
                             <a class="dropdown-item" th:href="@{/user/userOrganizers}">Мои органайзеры</a>
                         </li>

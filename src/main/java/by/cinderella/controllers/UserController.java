@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -174,6 +175,7 @@ public class UserController {
             && organizer.isPresent()) {
             if (!organizerList.get().getOrganizerList().contains(organizer.get())) {
                 organizerList.get().getOrganizerList().add(organizer.get());
+                organizerList.get().setLastUpdated(new Date());
                 organizerListRepo.save(organizerList.get());
             } else {
                 return new ResponseEntity<String>(HttpStatus.ALREADY_REPORTED);
@@ -215,7 +217,11 @@ public class UserController {
                                 @RequestParam("materials") Optional<Set<Material>> materials,
 
                                 @RequestParam("page") Optional<Integer> page,
-                                @RequestParam("size") Optional<Integer> size) {
+                                @RequestParam("size") Optional<Integer> size,
+
+                                @RequestParam("sortingField") Optional<String> sortingField,
+                                @RequestParam("sortDirection") Optional<String> sortDirectionString
+                                ) {
 
         if (!userService.checkUserRestriction((long) searchServiceId)) {
             return "redirect:/user";
@@ -230,6 +236,9 @@ public class UserController {
 
         if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
             Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+
+            Sort.Direction sortDirection = sortDirectionString.map(Sort.Direction::fromString).orElseGet(filterFromSession::getSortDirection);
+
             filter = new Filter(
                     name.orElse(filterFromSession.getNameLike()),
 
@@ -246,7 +255,11 @@ public class UserController {
 
                     categories.orElse(filterFromSession.getCategories()),
                     sellers.orElse(filterFromSession.getSeller()),
-                    materials.orElse(filterFromSession.getMaterial())
+                    materials.orElse(filterFromSession.getMaterial()),
+
+                    sortingField.orElse(filterFromSession.getSortingField()),
+                    sortDirection
+
             );
         } else {
             filter = new Filter(
@@ -265,7 +278,11 @@ public class UserController {
 
                     categories.orElse(null),
                     sellers.orElse(null),
-                    materials.orElse(null)
+                    materials.orElse(null),
+
+
+                    sortingField.orElse("lastUpdated"),
+                    Sort.Direction.DESC
             );
         }
 
@@ -292,7 +309,7 @@ public class UserController {
         return  "user/organizers";
     }
 
-    @PostMapping("/destroyFilter")
+    @GetMapping("/destroyFilter")
     public String destroySession(HttpServletRequest request) {
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
 

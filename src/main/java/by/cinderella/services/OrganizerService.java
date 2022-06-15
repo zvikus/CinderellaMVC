@@ -51,19 +51,6 @@ public class OrganizerService {
         return organizerPage;
     }
 
-    /*public Page<Organizer> findPaginatedAndFiltered(Double priceFrom,
-                                                    Double priceTo,
-                                                    Pageable pageable){
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-
-        Page<Organizer> organizerPage
-                = organizerRepo.findAllByPriceBetween(priceFrom, priceTo, PageRequest.of(currentPage, pageSize,
-                Sort.by("lastUpdated").descending().and(Sort.by("name"))));
-
-        return organizerPage;
-    }*/
-
     public Page<Organizer> findPaginatedAndFiltered(Filter userFilter,
                                                     Pageable pageable) {
 
@@ -87,7 +74,7 @@ public class OrganizerService {
                                 .and(OrganizerSpecification.sellersIn(filter.getSeller()))
                         ,
 
-                        PageRequest.of(currentPage, pageSize, Sort.by("lastUpdated").descending().and(Sort.by("name"))));
+                        PageRequest.of(currentPage, pageSize, Sort.by(filter.getSortDirection(), filter.getSortingField()).and(Sort.by("name"))));
 
         return organizerPage;
     }
@@ -162,6 +149,9 @@ public class OrganizerService {
         } else {
             filter.setMaterial(this.organizerMaterials());
         }
+
+        filter.setSortingField(userFilter.getSortingField());
+        filter.setSortDirection(userFilter.getSortDirection());
 
         return filter;
     }
