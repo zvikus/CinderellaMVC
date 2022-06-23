@@ -3,6 +3,7 @@ package by.cinderella.services;
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.organizer.OrganizerCategory;
 import by.cinderella.model.user.OrganizerList;
+import by.cinderella.model.user.UserOrganizer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.BaseFont;
@@ -34,7 +35,7 @@ public class OrganizerPDFExporter {
     private void addTableHeader(PdfPTable table) {
         Font font = new Font(baseFont, 10, Font.BOLD);
         font.setColor(BaseColor.WHITE);
-        Stream.of("", "Ссылка", "Цена", "Ширина", "Высота", "Глубина", "Категория", "Материал", "Продавец")
+        Stream.of("", "Ссылка", "Цена", "Ширина", "Глубина", "Высота", "Категория", "Материал", "Продавец", "Кол-во", "Комментарий")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -47,8 +48,10 @@ public class OrganizerPDFExporter {
 
     private void writeTableData(PdfPTable table) throws URISyntaxException, BadElementException, IOException{
         Font regularFont = new Font(baseFont, 10, Font.NORMAL, BaseColor.BLACK);
+        Font regularFontBlue = new Font(baseFont, 10, Font.BOLD, BaseColor.RED);
         Font linkFont = new Font(baseFont, 12, Font.NORMAL, fontColor);
-        for (Organizer organizer : this.organizerList.getOrganizerList()) {
+        for (UserOrganizer userOrganizer : this.organizerList.getUserOrganizerList()) {
+            Organizer organizer = userOrganizer.getOrganizer();
 
             try {
                 Path path = Paths.get(uploadPath + "/" + organizer.getImageName());
@@ -67,10 +70,10 @@ public class OrganizerPDFExporter {
 
             table.addCell(phrase);
 
-            table.addCell(new Phrase(String.valueOf(organizer.getPrice()), regularFont));
+            table.addCell(new Phrase(String.valueOf(organizer.getPrice()), regularFontBlue));
             table.addCell(new Phrase(String.valueOf(organizer.getWidth()), regularFont));
-            table.addCell(new Phrase(String.valueOf(organizer.getHeight()), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getLength()), regularFont));
+            table.addCell(new Phrase(String.valueOf(organizer.getHeight()), regularFont));
 
             StringBuilder categories = new StringBuilder();
             for (OrganizerCategory category : organizer.getCategories()) {
@@ -81,6 +84,8 @@ public class OrganizerPDFExporter {
 
             table.addCell(new Phrase(String.valueOf(organizer.getMaterial().label), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getSeller().label), regularFont));
+            table.addCell(new Phrase(String.valueOf(userOrganizer.getCount()), regularFont));
+            table.addCell(new Phrase(String.valueOf(userOrganizer.getComment()), regularFont));
         }
     }
 
@@ -110,9 +115,9 @@ public class OrganizerPDFExporter {
 
         document.add(p);*/
 
-        PdfPTable table = new PdfPTable(9);
+        PdfPTable table = new PdfPTable(11);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[] {2f, 3.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 2.0f, 1.5f});
+        table.setWidths(new float[] {2f, 3.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 2.0f, 1.5f, 1.5f, 3.0f});
         table.setSpacingBefore(50f);
 
 

@@ -166,4 +166,7 @@ a.back-arrow {
     min-width: 310px;
 }
 
-
+.price-font {
+    font-weight: bold;
+    color: #f44 !important;
+}

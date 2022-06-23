@@ -81,25 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row filter-label">
-                            <div class="col-md-4">
-                                Высота
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightFrom}"
-                                            type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
-                                    <label for="heightFrom">От</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightTo}"
-                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
-                                    <label for="heightTo">До</label>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row filter-label">
                             <div class="col-md-4">
                                 Глубина
@@ -116,6 +98,25 @@
                                     <input th:value="${filter.lengthTo}"
                                             type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
                                     <label for="lengthTo">До</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Высота
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightFrom}"
+                                           type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
+                                    <label for="heightFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightTo}"
+                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
+                                    <label for="heightTo">До</label>
                                 </div>
                             </div>
                         </div>
@@ -245,18 +246,18 @@
                             Ширина
                         </a>
                     </th>
-                    <th th:class="'sorting ' + ((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
-                        <a th:href="@{/user/organizers(sortingField='height',
-                                                sortDirection=((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
-                                                )}">
-                            Высота
-                        </a>
-                    </th>
                     <th th:class="'sorting ' + ((${filter.sortingField}=='length') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
                         <a th:href="@{/user/organizers(sortingField='length',
                                                 sortDirection=((${filter.sortingField}=='length') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
                                                 )}">
                             Глубина
+                        </a>
+                    </th>
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='height',
+                                                sortDirection=((${filter.sortingField}=='height') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                                                )}">
+                            Высота
                         </a>
                     </th>
                     <th>
@@ -287,7 +288,7 @@
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
-                    <td th:text="${el.price}"/>
+                    <td class="price-font"  th:text="${el.price}"/>
 
                     <td th:text="${el.width}"/>
                     <td th:text="${el.height}"/>

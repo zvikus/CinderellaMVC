@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head th:insert="blocks/user/userHead :: userHead">
 
@@ -17,12 +17,15 @@
 
         <!--        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>-->
         <div class="bd-example mb-3">
-            <form th:action="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf}" method="get">
-                <button class="btn btn-outline-primary regular-button"
-                        type="submit">
-                    Скачать PDF
-                </button>
-            </form>
+<!--            <form th:action="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf.pdf}" method="get">-->
+<!--                <button class="btn btn-outline-primary regular-button"-->
+<!--                        type="submit">-->
+<!--                    Скачать PDF-->
+<!--                </button>-->
+<!--            </form>-->
+            <a th:href="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf.pdf}" target="_blank">
+                Скачать PDF
+            </a>
         </div>
         <table class="table table-striped table-sm table-hover">
             <thead>
@@ -40,10 +43,10 @@
                     Ширина
                 </th>
                 <th>
-                    Высота
+                    Глубина
                 </th>
                 <th>
-                    Глубина
+                    Высота
                 </th>
                 <th>
                     Категория
@@ -54,45 +57,99 @@
                 <th>
                     Продавец
                 </th>
+                <th>
+                    Кол-во
+                </th>
+                <th>
+                    Комментарий
+                </th>
 
                 <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="el : ${organizerList.organizerList}" class="">
+            <tr th:each="el : ${organizerList.userOrganizerList}" class="">
                 <td>
-                    <a th:href="${el.link}"  target="_blank">
-                        <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
+                    <a th:href="${el.organizer.link}"  target="_blank">
+                        <img th:src="@{/image/} + ${el.organizer.imageName}" class="organizer-image">
                     </a>
                 </td>
                 <td>
-                    <a th:href="${el.link}" target="_blank">
-                        <h4 th:text="${el.name}"/>
+                    <a th:href="${el.organizer.link}" target="_blank">
+                        <h4 th:text="${el.organizer.name}"/>
                     </a>
-                    <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
+                    <a class="link-copy" th:attr="data-url=${el.organizer.link}" href="#do_nothing">
                         <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                     </a>
                 </td>
-                <td th:text="${el.price}"/>
+                <td class="price-font" th:text="${el.organizer.price}"/>
 
-                <td th:text="${el.width}"/>
-                <td th:text="${el.height}"/>
-                <td th:text="${el.length}"/>
+                <td th:text="${el.organizer.width}"/>
+                <td th:text="${el.organizer.length}"/>
+                <td th:text="${el.organizer.height}"/>
 
                 <td class="fs-6">
                     <ul>
-                        <li class="list-unstyled" th:each="category : ${el.categories}">
+                        <li class="list-unstyled" th:each="category : ${el.organizer.categories}">
                             <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
                         </li>
                     </ul>
 
                 </td>
 
-                <td th:text="${el.material?.label}" class="fs-5"/>
-                <td th:text="${el.seller.label}" class="fs-5"/>
+                <td th:text="${el.organizer.material?.label}" class="fs-5"/>
+                <td th:text="${el.organizer.seller.label}" class="fs-5"/>
+                <td th:text="${el.count}" class="fs-5"/>
+                <td th:text="${el.comment}" class="fs-5"/>
 
                                     <td>
                                         <a th:href="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove}">Удалить</a><br/>
+                                        <a th:data-target="@{#edit} + ${el.id}" data-toggle="modal" >Редактировать</a><br/>
+                                        <div class="modal fade" tabindex="-1" th:id="@{edit} + ${el.id}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Редактирование</h5>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body ">
+                                                                <div class="form-group">
+                                                                    <div class="col-md-4">
+                                                                        Количество
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="number"
+                                                                                   step="1"
+                                                                                   th:value="${el.count}"
+                                                                                   name="count" class="form-control rounded-4" id="count"/>
+                                                                            <label for="count">Количество органайзеров</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                               <div class="form-group">
+                                                                    <div class="col-md-4">
+                                                                        Комментарий
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="text" name="comment"
+                                                                                   th:value="${el.comment}"
+                                                                                   class="form-control rounded-4" id="comment"/>
+                                                                            <label for="comment">Комментарий</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
+                                                            <button type="submit" class="btn btn-outline-primary regular-button">Сохранить</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
             </tr>
             </tbody>

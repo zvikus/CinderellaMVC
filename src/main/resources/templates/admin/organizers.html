@@ -92,25 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row filter-label">
-                            <div class="col-md-4">
-                                Высота
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightFrom}"
-                                           type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
-                                    <label for="heightFrom">От</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightTo}"
-                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
-                                    <label for="heightTo">До</label>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row filter-label">
                             <div class="col-md-4">
                                 Глубина
@@ -130,7 +112,25 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="row filter-label">
+                            <div class="col-md-4">
+                                Высота
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightFrom}"
+                                           type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
+                                    <label for="heightFrom">От</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input th:value="${filter.heightTo}"
+                                           type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
+                                    <label for="heightTo">До</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-4 filter-label">
                                 Категория
@@ -245,10 +245,10 @@
                         Ширина
                     </th>
                     <th>
-                        Высота
+                        Глубина
                     </th>
                     <th>
-                        Глубина
+                        Высота
                     </th>
                     <th>
                         Категория
@@ -277,11 +277,11 @@
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
-                    <td th:text="${el.price}"/>
+                    <td class="price-font" th:text="${el.price}"/>
 
                     <td th:text="${el.width}"/>
-                    <td th:text="${el.height}"/>
                     <td th:text="${el.length}"/>
+                    <td th:text="${el.height}"/>
 
                     <td class="fs-6">
                         <ul>

@@ -32,8 +32,6 @@ public class Organizer {
 
 
 
-    @ManyToMany(mappedBy = "organizerList")
-    private Set<OrganizerList> organizerList = new HashSet<>();
 
     @ElementCollection(targetClass = OrganizerCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "organizer_category", joinColumns = @JoinColumn(name = "organizer_id"))
@@ -146,13 +144,5 @@ public class Organizer {
 
     public void setArticleNumber(String articleNumber) {
         this.articleNumber = articleNumber;
-    }
-
-    public Set<OrganizerList> getOrganizerList() {
-        return organizerList;
-    }
-
-    public void setOrganizerList(Set<OrganizerList> organizerList) {
-        this.organizerList = organizerList;
     }
 }

@@ -4,8 +4,10 @@ import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.*;
 import by.cinderella.model.user.OrganizerList;
 import by.cinderella.model.user.User;
+import by.cinderella.model.user.UserOrganizer;
 import by.cinderella.repos.OrganizerListRepo;
 import by.cinderella.repos.OrganizerRepo;
+import by.cinderella.repos.UserOrganizerRepo;
 import by.cinderella.repos.UserRepo;
 import by.cinderella.services.OrganizerPDFExporter;
 import by.cinderella.services.OrganizerService;
@@ -46,6 +48,9 @@ public class UserController {
 
     @Autowired
     private OrganizerListRepo organizerListRepo;
+
+    @Autowired
+    private UserOrganizerRepo userOrganizerRepo;
 
     @Autowired
     private OrganizerRepo organizerRepo;
@@ -96,7 +101,7 @@ public class UserController {
         return  "user/userOrganizers";
     }
 
-    @GetMapping("/userOrganizers/{organizerListId}/pdf")
+    @GetMapping("/userOrganizers/{organizerListId}/pdf.pdf")
     public void exportToPDF(HttpServletResponse response,
                             @PathVariable("organizerListId") Long organizerListId)
             throws IOException, DocumentException, URISyntaxException {
@@ -118,31 +123,53 @@ public class UserController {
             userOrganizerList.remove(organizerList.get());
             user.setOrganizerLists(userOrganizerList);
             userRepo.save(user);
-            organizerList.get().setOrganizerList(new HashSet<>());
-            organizerListRepo.save(organizerList.get());
+            for(UserOrganizer userOrganizer: organizerList.get().getUserOrganizerList()) {
+                userOrganizerRepo.delete(userOrganizer);
+            }
             organizerListRepo.delete(organizerList.get());
         }
         return "redirect:/user/userOrganizers";
     }
-    @GetMapping("/userOrganizersList/{organizerListId}/{organizerId}/remove")
+    @GetMapping("/userOrganizersList/{organizerListId}/{userOrganizerId}/remove")
     public String removeOrganizerFromOrganizerList(HttpServletRequest request, Model model,
-                                                   @PathVariable("organizerId") Long organizerId,
-                                                   @PathVariable("organizerListId") Long organizerListId) {
+                                                   @PathVariable("organizerListId") Long organizerListId,
+                                                   @PathVariable("userOrganizerId") Long userOrganizerId) {
         Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
-        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+        Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(userOrganizerId);
 
-        if (organizerList.isPresent()
-                && organizer.isPresent()) {
-            Set<Organizer> organizers = organizerList.get().getOrganizerList();
+        if (userOrganizer.isPresent()
+            && organizerList.isPresent()) {
+            Set<UserOrganizer> organizers = organizerList.get().getUserOrganizerList();
 
-            organizers.remove(organizer.get());
-
-            organizerList.get().setOrganizerList(organizers);
+            organizers.remove(userOrganizer.get());
+            userOrganizer.get().setOrganizer(null);
+            organizerList.get().setUserOrganizerList(organizers);
             organizerList.get().setLastUpdated(new Date());
 
+            userOrganizerRepo.delete(userOrganizer.get());
             organizerListRepo.save(organizerList.get());
+
         }
         return "redirect:/user/userOrganizersList/" + organizerListId + "/show";
+    }
+
+
+    @PostMapping("/userOrganizer/{organizerListId}/edit")
+    public String editUserOrganizer(HttpServletRequest request, Model model,
+                                    @RequestParam("count") Optional<Double> count,
+                                    @RequestParam("comment") Optional<String> comment,
+                                        @PathVariable("organizerListId") Long organizerId) {
+        Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(organizerId);
+        if (userOrganizer.isPresent()) {
+            userOrganizer.get().setCount((int) Math.round(count.get()));
+            userOrganizer.get().setComment(comment.get());
+            userOrganizerRepo.save(userOrganizer.get());
+            return "redirect:/user/userOrganizersList/" + userOrganizer.get().getOrganizerList().getId() + "/show";
+        } else {
+            return "redirect:/user/userOrganizers";
+        }
+
+
     }
 
     @PostMapping("/newOrganizerList")
@@ -173,9 +200,16 @@ public class UserController {
 
         if (organizerList.isPresent()
             && organizer.isPresent()) {
-            if (!organizerList.get().getOrganizerList().contains(organizer.get())) {
-                organizerList.get().getOrganizerList().add(organizer.get());
+            if (!organizerList.get().getUserOrganizerList().contains(organizer.get())) {
+                UserOrganizer userOrganizer = new UserOrganizer();
+                userOrganizer.setOrganizer(organizer.get());
+                userOrganizer.setCount(1);
+                userOrganizer.setComment("");
+                userOrganizer.setOrganizerList(organizerList.get());
+                organizerList.get().getUserOrganizerList().add(userOrganizer);
                 organizerList.get().setLastUpdated(new Date());
+
+                userOrganizerRepo.save(userOrganizer);
                 organizerListRepo.save(organizerList.get());
             } else {
                 return new ResponseEntity<String>(HttpStatus.ALREADY_REPORTED);

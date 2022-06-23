@@ -54,12 +54,6 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="height">
-                        Высота, СМ
-                    </label>
-                    <input th:value="${organizer.height}"  type="number" id="height" name="height" step="any" placeholder="" class="form-control mt-2" required>
-                </div>
-                <div class="col-md-4 mb-3">
                     <label for="width">
                         Ширина, СМ
                     </label>
@@ -70,6 +64,12 @@
                         Глубина, СМ
                     </label>
                     <input th:value="${organizer.length}"  type="number" id="length" name="length" step="any" placeholder="" class="form-control mt-2" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="height">
+                        Высота, СМ
+                    </label>
+                    <input th:value="${organizer.height}"  type="number" id="height" name="height" step="any" placeholder="" class="form-control mt-2" required>
                 </div>
             </div>
 

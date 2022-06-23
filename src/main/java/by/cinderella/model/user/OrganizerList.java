@@ -1,11 +1,8 @@
 package by.cinderella.model.user;
 
-import by.cinderella.model.organizer.Organizer;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,12 +16,15 @@ public class OrganizerList {
     private Date created;
     private Date lastUpdated;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    /*@ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "o_list_organizer",
             joinColumns = { @JoinColumn(name = "ol_id") },
             inverseJoinColumns = { @JoinColumn(name = "organizer_id") })
-    private Set<Organizer> organizerList = new HashSet<>();
+    private Set<Organizer> organizerList = new HashSet<>();*/
+
+    @OneToMany(mappedBy="organizerList", fetch=FetchType.EAGER)
+    private Set<UserOrganizer> userOrganizerList = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY,optional=true)
     @JoinColumn(name="user_id", nullable=false)
@@ -54,12 +54,12 @@ public class OrganizerList {
         this.created = created;
     }
 
-    public Set<Organizer> getOrganizerList() {
-        return organizerList;
+    public Set<UserOrganizer> getUserOrganizerList() {
+        return userOrganizerList;
     }
 
-    public void setOrganizerList(Set<Organizer> organizerList) {
-        this.organizerList = organizerList;
+    public void setUserOrganizerList(Set<UserOrganizer> userOrganizerList) {
+        this.userOrganizerList = userOrganizerList;
     }
 
     public User getUser() {
