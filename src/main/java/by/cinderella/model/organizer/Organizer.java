@@ -1,6 +1,7 @@
 package by.cinderella.model.organizer;
 
 import by.cinderella.model.user.OrganizerList;
+import by.cinderella.model.user.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,6 +28,9 @@ public class Organizer {
 
     private String imageName;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by_id")
+    private User createdBy;
 
     private Date lastUpdated;
 
@@ -41,6 +45,10 @@ public class Organizer {
     private Seller seller;
 
     private Material material;
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
     public Long getId() {
         return id;
@@ -144,5 +152,9 @@ public class Organizer {
 
     public void setArticleNumber(String articleNumber) {
         this.articleNumber = articleNumber;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }

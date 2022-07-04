@@ -1,5 +1,7 @@
 package by.cinderella.model.user;
 
+import by.cinderella.model.organizer.Organizer;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -28,6 +30,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Restriction> restrictions;
+
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
+    private Set<Organizer> createdOrganizers;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<OrganizerList> organizerLists;
@@ -118,5 +123,13 @@ public class User {
 
     public void setOrganizerLists(Set<OrganizerList> organizerLists) {
         this.organizerLists = organizerLists;
+    }
+
+    public Set<Organizer> getCreatedOrganizers() {
+        return createdOrganizers;
+    }
+
+    public void setCreatedOrganizers(Set<Organizer> createdOrganizers) {
+        this.createdOrganizers = createdOrganizers;
     }
 }

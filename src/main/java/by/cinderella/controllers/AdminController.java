@@ -229,6 +229,7 @@ public class AdminController {
         }
 
         organizer.setLastUpdated(new Date());
+        organizer.setCreatedBy(userService.getAuthUser());
         organizerRepo.save(organizer);
 
         return "redirect:/admin/organizers";

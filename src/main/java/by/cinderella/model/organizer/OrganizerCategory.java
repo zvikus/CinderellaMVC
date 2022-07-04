@@ -43,22 +43,22 @@ public enum OrganizerCategory {
     KITCHEN_CONTAINERS("Хранение контейнеров", ParentCategory.KITCHEN),
     KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
     KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
-    KITCHEN_PETS("Домашние животные", ParentCategory.KITCHEN),
-
-
 
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
     DOCUMENTS_HORIZONTAL("Гориз-е хранение", ParentCategory.DOCUMENTS),
 
     MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
-    CABLES_CABLES("Хранение проводов", ParentCategory.CABLES),
+    CABLES_CABLES("Хранение проводов и батареек", ParentCategory.CABLES),
     OTHER_GARAGE("Гараж", ParentCategory.OTHER),
     OTHER_BALCONY("Балкон/Кладовка", ParentCategory.OTHER),
     OTHER_RELOCATION("Переезд", ParentCategory.OTHER),
+    OTHER_NEEDLEWORK("Рукоделие", ParentCategory.OTHER),
+    KITCHEN_PETS("Домашние животные", ParentCategory.OTHER),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
     BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),
     BATHROOM_WASHING("Зона стирки", ParentCategory.BATHROOM),
+    BATHROOM_COSMETICS("Косметика", ParentCategory.BATHROOM),
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
     BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM),
 

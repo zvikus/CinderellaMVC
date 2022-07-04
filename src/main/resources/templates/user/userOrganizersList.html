@@ -99,57 +99,71 @@
 
                 <td th:text="${el.organizer.material?.label}" class="fs-5"/>
                 <td th:text="${el.organizer.seller.label}" class="fs-5"/>
-                <td th:text="${el.count}" class="fs-5"/>
-                <td th:text="${el.comment}" class="fs-5"/>
+                <td class="fs-5">
+                    <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
+                        <input type="number" style="min-width: 50px;"
+                            step="1"
+                            th:value="${el.count}"
+                            name="count" class="form-control rounded-4 auto-submit-form"/>
+                    </form>
+                </td>
+                <td class="fs-5">
+                    <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
+                        <textarea name="comment"
+                               th:text="${el.comment}"
+                               class="form-control rounded-4 auto-submit-form">
+                        </textarea>
+                    </form>
+                </td>
 
                                     <td>
                                         <a th:href="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove}">Удалить</a><br/>
-                                        <a th:data-target="@{#edit} + ${el.id}" data-toggle="modal" >Редактировать</a><br/>
-                                        <div class="modal fade" tabindex="-1" th:id="@{edit} + ${el.id}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Редактирование</h5>
-                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body ">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-4">
-                                                                        Количество
-                                                                    </div>
-                                                                    <div class="col-md-8">
-                                                                        <div class="form-floating mb-3">
-                                                                            <input type="number"
-                                                                                   step="1"
-                                                                                   th:value="${el.count}"
-                                                                                   name="count" class="form-control rounded-4" id="count"/>
-                                                                            <label for="count">Количество органайзеров</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                               <div class="form-group">
-                                                                    <div class="col-md-4">
-                                                                        Комментарий
-                                                                    </div>
-                                                                    <div class="col-md-8">
-                                                                        <div class="form-floating mb-3">
-                                                                            <input type="text" name="comment"
-                                                                                   th:value="${el.comment}"
-                                                                                   class="form-control rounded-4" id="comment"/>
-                                                                            <label for="comment">Комментарий</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
-                                                            <button type="submit" class="btn btn-outline-primary regular-button">Сохранить</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                        <a th:data-target="@{#edit} + ${el.id}" data-toggle="modal" >Редактировать</a><br/>-->
+<!--                                        <div class="modal fade " tabindex="-1" th:id="@{edit} + ${el.id}" aria-hidden="true" role="dialog">-->
+<!--                                            <div class="modal-dialog" role="document">-->
+<!--                                                <div class="modal-content">-->
+<!--                                                    <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >-->
+<!--                                                        <div class="modal-header">-->
+<!--                                                            <h5 class="modal-title">Редактирование</h5>-->
+<!--                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="modal-body ">-->
+<!--                                                                <div class="form-group">-->
+<!--                                                                    <div class="col-md-4">-->
+<!--                                                                        Количество-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="col-md-8">-->
+<!--                                                                        <div class="form-floating mb-3">-->
+<!--                                                                            <input type="number"-->
+<!--                                                                                   step="1"-->
+<!--                                                                                   th:value="${el.count}"-->
+<!--                                                                                   name="count" class="form-control rounded-4" id="count"/>-->
+<!--                                                                            <label for="count">Количество органайзеров</label>-->
+<!--                                                                        </div>-->
+<!--                                                                    </div>-->
+<!--                                                                </div>-->
+<!--                                                               <div class="form-group">-->
+<!--                                                                    <div class="col-md-4">-->
+<!--                                                                        Комментарий-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="col-md-8">-->
+<!--                                                                        <div class="form-floating mb-3">-->
+<!--                                                                            <input type="text" name="comment"-->
+<!--                                                                                   th:value="${el.comment}"-->
+<!--                                                                                   class="form-control rounded-4" id="comment"/>-->
+<!--                                                                            <label for="comment">Комментарий</label>-->
+<!--                                                                        </div>-->
+<!--                                                                    </div>-->
+<!--                                                                </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="modal-footer">-->
+<!--                                                            <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>-->
+<!--                                                            <button type="submit" class="btn btn-outline-primary regular-button">Сохранить</button>-->
+<!--                                                        </div>-->
+<!--                                                    </form>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                     </td>
             </tr>
             </tbody>

@@ -161,8 +161,8 @@ public class UserController {
                                         @PathVariable("organizerListId") Long organizerId) {
         Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(organizerId);
         if (userOrganizer.isPresent()) {
-            userOrganizer.get().setCount((int) Math.round(count.get()));
-            userOrganizer.get().setComment(comment.get());
+            count.ifPresent(aDouble -> userOrganizer.get().setCount((int) Math.round(aDouble)));
+            comment.ifPresent(s -> userOrganizer.get().setComment(s));
             userOrganizerRepo.save(userOrganizer.get());
             return "redirect:/user/userOrganizersList/" + userOrganizer.get().getOrganizerList().getId() + "/show";
         } else {

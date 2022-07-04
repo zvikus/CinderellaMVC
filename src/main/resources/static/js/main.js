@@ -57,9 +57,6 @@ $( document ).ready(function() {
                   $().dropdown('dispose');
                   $().dropdown('close');
 
-                /*$(this).closest(".dropdown").dropdown('dispose');
-                $(".dropdown-toggle").dropdown('dispose')*/
-
                 var form = $(this).parent(),
                     self = this;
                 var alert = $(this).closest(".alert-box").find(".alert");
@@ -78,7 +75,7 @@ $( document ).ready(function() {
 
                                        },
                                        error: function (message) {
-                                            $(self).closest(".dropdown").dropdown('dispose');
+                                           $(self).closest(".dropdown").dropdown('dispose');
                                            alert.find("strong").text("Добавлено ранее!");
                                            alert.fadeTo(2000, 500).slideUp(500, function() {
                                                  alert.slideUp(500);
@@ -86,4 +83,24 @@ $( document ).ready(function() {
                                        }
                                    });
                                });
+
+    $(".auto-submit-form").on("change paste", function(event) {
+        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                          $(document).ajaxSend(function(e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                          });
+
+        var form = $(this).parent(),
+                            self = this,
+                            data = {};
+        data[this.name] = $(this).val();
+
+        $.post(form[0].action, data, function(res){
+
+        });
+    });
 });
