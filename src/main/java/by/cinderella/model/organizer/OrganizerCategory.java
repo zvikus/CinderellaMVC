@@ -43,6 +43,7 @@ public enum OrganizerCategory {
     KITCHEN_CONTAINERS("Хранение контейнеров", ParentCategory.KITCHEN),
     KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
     KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
+    KITCHEN_SERVING("Сервировка", ParentCategory.KITCHEN),
 
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
     DOCUMENTS_HORIZONTAL("Гориз-е хранение", ParentCategory.DOCUMENTS),

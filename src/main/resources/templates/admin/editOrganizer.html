@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="price">
-                        Цена
+                        Цена (<span class="Organizer currency" th:text="${organizer.seller.currency.CUR_ABBREVIATION}"/>)
                     </label>
                     <input th:value="${organizer.price}"  type="number" id="price" step="any" name="price" placeholder="" class="form-control mt-2">
                 </div>

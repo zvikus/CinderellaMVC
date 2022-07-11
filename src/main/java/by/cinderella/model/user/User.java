@@ -1,5 +1,6 @@
 package by.cinderella.model.user;
 
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.Organizer;
 
 import javax.persistence.*;
@@ -22,6 +23,8 @@ public class User {
 
     private Date registrationDate;
     private Date activationDate;
+
+    private Currency currency = Currency.BYN;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -127,6 +130,14 @@ public class User {
 
     public Set<Organizer> getCreatedOrganizers() {
         return createdOrganizers;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public void setCreatedOrganizers(Set<Organizer> createdOrganizers) {

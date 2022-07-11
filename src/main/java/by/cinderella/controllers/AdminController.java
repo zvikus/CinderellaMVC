@@ -2,8 +2,11 @@ package by.cinderella.controllers;
 
 import antlr.StringUtils;
 import by.cinderella.config.Constants;
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
+import by.cinderella.model.user.User;
 import by.cinderella.repos.OrganizerRepo;
+import by.cinderella.repos.UserRepo;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,9 @@ public class AdminController {
 
     @Autowired
     private OrganizerService organizerService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -230,7 +236,8 @@ public class AdminController {
 
         organizer.setLastUpdated(new Date());
         organizer.setCreatedBy(userService.getAuthUser());
-        organizerRepo.save(organizer);
+
+        organizerService.save(organizer);
 
         return "redirect:/admin/organizers";
     }
@@ -310,6 +317,7 @@ public class AdminController {
     public String editOrganizer(Organizer organizer,
                                 @RequestParam("image") MultipartFile image,
                                Model model) throws IOException {
+        Optional<Organizer> originalOrganizer = organizerRepo.findById(organizer.getId());
         if (image != null
                 && !image.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -323,13 +331,13 @@ public class AdminController {
 
             organizer.setImageName(resultFileName);
         } else if (organizer.getId() != null) {
-            Optional<Organizer> originalOrganizer = organizerRepo.findById(organizer.getId());
             organizer.setImageName(originalOrganizer.get().getImageName());
         }
 
+        organizer.setCreatedBy(originalOrganizer.get().getCreatedBy());
         organizer.setLastUpdated(new Date());
 
-        organizerRepo.save(organizer);
+        organizerService.save(organizer);
 
 
 
@@ -340,6 +348,24 @@ public class AdminController {
     public String destroySession(HttpServletRequest request) {
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
 
+        return "redirect:/admin/organizers";
+    }
+
+    @GetMapping("/changeCurrency/{currencyName}")
+    public String changeCurrency(HttpServletRequest request,
+                                 @PathVariable("currencyName") String currencyName){
+        Currency currency = Currency.valueOf(currencyName);
+        if (currency!=null) {
+            if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
+                Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+                filterFromSession.setPriceFrom(null);
+                filterFromSession.setPriceTo(null);
+                request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filterFromSession);
+            }
+            User user = userService.getAuthUser();
+            user.setCurrency(currency);
+            userRepo.save(user);
+        }
         return "redirect:/admin/organizers";
     }
 }

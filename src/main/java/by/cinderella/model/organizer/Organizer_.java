@@ -35,6 +35,7 @@ public abstract class Organizer_ {
     public static final String HEIGHT = "height";
 
     public static final String PRICE = "price";
+    public static final String ABSOLUTE_PRICE = "absolutePrice";
 
     public static final String MATERIAL = "material";
     public static final String CATEGORIES = "categories";

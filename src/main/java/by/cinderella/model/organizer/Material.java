@@ -10,7 +10,8 @@ public enum Material {
     WOOD("Дерево"),
     TEXTILE("Ткань"),
     STICKERS("Наклейки"),
-    CHEMICALS("Бытовая химия");
+    CHEMICALS("Бытовая химия"),
+    LEATHER("Кожа");
 
     public final String label;
 

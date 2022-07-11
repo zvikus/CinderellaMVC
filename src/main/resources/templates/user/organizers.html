@@ -17,16 +17,33 @@
 
 <!--        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>-->
         <div class="bd-example">
-            <p>
-                <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
-                    Фильтр
-                </button>
-                <form th:action="@{/user/destroyFilter}" method="get">
-                        <button class="btn btn-outline-primary regular-button" type="submit" >
-                            Сбросить фильтр
+            <div class="row">
+                <div class="col-md-2">
+                        <button class="btn btn-outline-primary regular-button" type="button" data-toggle="collapse" data-target="#filterBox" aria-expanded="false" aria-controls="filterBox">
+                            Фильтр
                         </button>
-                </form>
-            </p>
+                </div>
+                <div class="col-md-2">
+                        <form th:action="@{/user/destroyFilter}" method="get">
+                                <button class="btn btn-outline-primary regular-button" type="submit" >
+                                    Сбросить фильтр
+                                </button>
+                        </form>
+                </div>
+                <div class="col-md-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-primary regular-button dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Валюта: <span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               th:each="curr : ${T(by.cinderella.model.currency.Currency).values()}"
+                               th:href="@{/user/changeCurrency/} + ${curr.CUR_ABBREVIATION}"
+                               th:text="${curr.LABEL}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="collapse" id="filterBox" style="">
                 <div class="card card-body">
                     <form action="/user/organizers" method="GET">
@@ -37,26 +54,26 @@
                             <div class="col-md-8">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.nameLike}"
-                                            type="text" name="name" class="form-control rounded-4" id="name" placeholder="0">
+                                           type="text" name="name" class="form-control rounded-4" id="name" placeholder="0">
                                     <label for="name">Название</label>
                                 </div>
                             </div>
                         </div>
                         <div class="row filter-label">
                             <div class="col-md-4">
-                                Цена
+                                Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.priceFrom}"
-                                            type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
+                                           type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
                                     <label for="priceFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.priceTo}"
-                                            type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
+                                           type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
                                     <label for="priceTo">До</label>
                                 </div>
                             </div>
@@ -69,14 +86,14 @@
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.widthFrom}"
-                                            type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
+                                           type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
                                     <label for="widthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.widthTo}"
-                                            type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
+                                           type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
                                     <label for="widthTo">До</label>
                                 </div>
                             </div>
@@ -89,14 +106,14 @@
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.lengthFrom}"
-                                            type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
+                                           type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
                                     <label for="lengthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
                                     <input th:value="${filter.lengthTo}"
-                                            type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
+                                           type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
                                     <label for="lengthTo">До</label>
                                 </div>
                             </div>
@@ -212,7 +229,7 @@
 
                         <button class="btn btn-outline-primary regular-button"
                                 type="submit">
-                            Принять
+                            Применить
                         </button>
                     </form>
                 </div>
@@ -232,11 +249,11 @@
                             Название
                         </a>
                     </th>
-                    <th th:class="'sorting ' + ((${filter.sortingField}=='price') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
-                        <a th:href="@{/user/organizers(sortingField='price',
-                                                sortDirection=((${filter.sortingField}=='price') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
+                    <th th:class="'sorting ' + ((${filter.sortingField}=='absolutePrice') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
+                        <a th:href="@{/user/organizers(sortingField='absolutePrice',
+                                                sortDirection=((${filter.sortingField}=='absolutePrice') ? ((${filter.sortDirection.isAscending()}) ? 'DESC' : 'ASC') : 'ASC')
                                                 )}">
-                            Цена
+                            Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
                         </a>
                     </th>
                     <th th:class="'sorting ' + ((${filter.sortingField}=='width') ? ((${filter.sortDirection.isAscending()}) ? 'sorting_asc' : 'sorting_desc') : '')">
@@ -288,7 +305,7 @@
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
-                    <td class="price-font"  th:text="${el.price}"/>
+                    <td class="price-font" th:text="${@currencyRateService.getPrice(el)}"/>
 
                     <td th:text="${el.width}"/>
                     <td th:text="${el.length}"/>

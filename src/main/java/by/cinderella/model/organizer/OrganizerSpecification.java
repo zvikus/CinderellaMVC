@@ -14,7 +14,7 @@ public class OrganizerSpecification {
 
     public static Specification<Organizer> priceBounds(Double from, Double to){
         return (root, query, criteriaBuilder)
-                -> criteriaBuilder.between(root.get(Organizer_.PRICE), from, to);
+                -> criteriaBuilder.between(root.get(Organizer_.ABSOLUTE_PRICE), from, to);
     }
     public static Specification<Organizer> widthBounds(Double from, Double to){
         return (root, query, criteriaBuilder)

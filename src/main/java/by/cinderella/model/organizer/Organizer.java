@@ -1,7 +1,11 @@
 package by.cinderella.model.organizer;
 
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.user.OrganizerList;
 import by.cinderella.model.user.User;
+import by.cinderella.services.CurrencyRateService;
+import by.cinderella.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,7 +32,9 @@ public class Organizer {
 
     private String imageName;
 
-    @ManyToOne
+    private Double absolutePrice;
+
+    @ManyToOne(fetch = FetchType.LAZY,optional=true)
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 
@@ -156,5 +162,13 @@ public class Organizer {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Double getAbsolutePrice() {
+        return absolutePrice;
+    }
+
+    public void setAbsolutePrice(Double absolutePrice) {
+        this.absolutePrice = absolutePrice;
     }
 }

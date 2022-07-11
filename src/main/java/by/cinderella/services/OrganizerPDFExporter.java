@@ -10,6 +10,9 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,6 +23,10 @@ import java.util.stream.Stream;
 
 public class OrganizerPDFExporter {
 
+    UserService userService;
+
+    CurrencyRateService currencyRateService;
+
     private OrganizerList organizerList;
     private BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
     private String uploadPath;
@@ -27,15 +34,21 @@ public class OrganizerPDFExporter {
 
 
     public OrganizerPDFExporter(String uploadPath,
-                                OrganizerList organizerList) throws DocumentException, IOException {
+                                OrganizerList organizerList,
+                                CurrencyRateService currencyRateService,
+                                UserService userService) throws DocumentException, IOException {
         this.uploadPath = uploadPath;
         this.organizerList = organizerList;
+        this.currencyRateService = currencyRateService;
+        this.userService = userService;
     }
 
     private void addTableHeader(PdfPTable table) {
         Font font = new Font(baseFont, 10, Font.BOLD);
         font.setColor(BaseColor.WHITE);
-        Stream.of("", "Ссылка", "Цена", "Ширина", "Глубина", "Высота", "Категория", "Материал", "Продавец", "Кол-во", "Комментарий")
+        String priceHeader = "Цена(" + userService.getUserCurrency().CUR_ABBREVIATION + ")";
+        Stream.of("", "Ссылка", priceHeader,
+                        "Ширина", "Глубина", "Высота", "Категория", "Материал", "Продавец", "Кол-во", "Комментарий")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -48,7 +61,7 @@ public class OrganizerPDFExporter {
 
     private void writeTableData(PdfPTable table) throws URISyntaxException, BadElementException, IOException{
         Font regularFont = new Font(baseFont, 10, Font.NORMAL, BaseColor.BLACK);
-        Font regularFontBlue = new Font(baseFont, 10, Font.BOLD, BaseColor.RED);
+        Font regularFontRed = new Font(baseFont, 10, Font.BOLD, BaseColor.RED);
         Font linkFont = new Font(baseFont, 12, Font.NORMAL, fontColor);
         for (UserOrganizer userOrganizer : this.organizerList.getUserOrganizerList()) {
             Organizer organizer = userOrganizer.getOrganizer();
@@ -70,7 +83,8 @@ public class OrganizerPDFExporter {
 
             table.addCell(phrase);
 
-            table.addCell(new Phrase(String.valueOf(organizer.getPrice()), regularFontBlue));
+            table.addCell(new Phrase(
+                    currencyRateService.getPrice(organizer), regularFontRed));
             table.addCell(new Phrase(String.valueOf(organizer.getWidth()), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getLength()), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getHeight()), regularFont));
@@ -85,7 +99,11 @@ public class OrganizerPDFExporter {
             table.addCell(new Phrase(String.valueOf(organizer.getMaterial().label), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getSeller().label), regularFont));
             table.addCell(new Phrase(String.valueOf(userOrganizer.getCount()), regularFont));
-            table.addCell(new Phrase(String.valueOf(userOrganizer.getComment()), regularFont));
+            if (userOrganizer.getComment() != null) {
+                table.addCell(new Phrase(String.valueOf(userOrganizer.getComment()), regularFont));
+            } else {
+                table.addCell(new Phrase(String.valueOf("-"), regularFont));
+            }
         }
     }
 
@@ -132,5 +150,13 @@ public class OrganizerPDFExporter {
 
         document.close();
 
+    }
+
+    public void setOrganizerList(OrganizerList organizerList) {
+        this.organizerList = organizerList;
+    }
+
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
     }
 }

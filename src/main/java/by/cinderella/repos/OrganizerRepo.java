@@ -1,6 +1,7 @@
 package by.cinderella.repos;
 
 import by.cinderella.model.organizer.Organizer;
+import by.cinderella.model.organizer.Seller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,4 +20,8 @@ public interface OrganizerRepo extends JpaRepository<Organizer, Long>,
     public Page<Organizer> findAll(Specification<Organizer> spec, Pageable pageable);
 
     public List<Organizer> findByLink(String link);
+
+    public List<Organizer> findBySeller(Seller seller);
+
+    List<Organizer> findAll();
 }

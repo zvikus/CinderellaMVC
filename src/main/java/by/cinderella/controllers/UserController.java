@@ -1,6 +1,7 @@
 package by.cinderella.controllers;
 
 import by.cinderella.config.Constants;
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
 import by.cinderella.model.user.OrganizerList;
 import by.cinderella.model.user.User;
@@ -9,6 +10,7 @@ import by.cinderella.repos.OrganizerListRepo;
 import by.cinderella.repos.OrganizerRepo;
 import by.cinderella.repos.UserOrganizerRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.CurrencyRateService;
 import by.cinderella.services.OrganizerPDFExporter;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
@@ -61,6 +63,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    CurrencyRateService currencyRateService;
+
     @ModelAttribute("organizerCategories")
     public Set<OrganizerCategory> organizerCategories() {
         Set<OrganizerCategory> result  = new TreeSet<>();
@@ -107,7 +112,9 @@ public class UserController {
             throws IOException, DocumentException, URISyntaxException {
         Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
         if (organizerList.isPresent()) {
-            OrganizerPDFExporter exporter = new OrganizerPDFExporter(uploadPath, organizerList.get());
+            OrganizerPDFExporter exporter = new OrganizerPDFExporter(uploadPath, organizerList.get(),
+                                                            currencyRateService,
+                                                            userService);
 
             exporter.export(response);
         }
@@ -347,6 +354,24 @@ public class UserController {
     public String destroySession(HttpServletRequest request) {
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, null);
 
+        return "redirect:/user/organizers";
+    }
+
+    @GetMapping("/changeCurrency/{currencyName}")
+    public String changeCurrency(HttpServletRequest request,
+                                 @PathVariable("currencyName") String currencyName){
+        Currency currency = Currency.valueOf(currencyName);
+        if (currency!=null) {
+            if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
+                Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+                filterFromSession.setPriceFrom(null);
+                filterFromSession.setPriceTo(null);
+                request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filterFromSession);
+            }
+            User user = userService.getAuthUser();
+            user.setCurrency(currency);
+            userRepo.save(user);
+        }
         return "redirect:/user/organizers";
     }
 }

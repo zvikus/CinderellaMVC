@@ -36,6 +36,19 @@
                         </button>
                     </form>
                 </div>
+                <div class="col-md-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-primary regular-button dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Валюта: <span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               th:each="curr : ${T(by.cinderella.model.currency.Currency).values()}"
+                               th:href="@{/admin/changeCurrency/} + ${curr.CUR_ABBREVIATION}"
+                               th:text="${curr.LABEL}"/>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="collapse" id="filterBox" style="">
@@ -55,7 +68,7 @@
                         </div>
                         <div class="row filter-label">
                             <div class="col-md-4">
-                                Цена
+                                Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
@@ -222,7 +235,7 @@
 
                         <button class="btn btn-outline-primary regular-button"
                                 type="submit">
-                            Принять
+                            Применить
                         </button>
                     </form>
                 </div>
@@ -239,7 +252,7 @@
                         Название
                     </th>
                     <th>
-                        Цена
+                        Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
                     </th>
                     <th>
                         Ширина
@@ -277,7 +290,7 @@
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
-                    <td class="price-font" th:text="${el.price}"/>
+                    <td class="price-font" th:text="${@currencyRateService.getPrice(el)}"/>
 
                     <td th:text="${el.width}"/>
                     <td th:text="${el.length}"/>

@@ -37,7 +37,7 @@
                     Название
                 </th>
                 <th>
-                    Цена
+                    Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
                 </th>
                 <th>
                     Ширина
@@ -82,7 +82,7 @@
                         <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                     </a>
                 </td>
-                <td class="price-font" th:text="${el.organizer.price}"/>
+                <td class="price-font" th:text="${@currencyRateService.getPrice(el.organizer)}"/>
 
                 <td th:text="${el.organizer.width}"/>
                 <td th:text="${el.organizer.length}"/>

@@ -1,5 +1,6 @@
 package by.cinderella.services;
 
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Role;
 import by.cinderella.model.user.User;
@@ -122,5 +123,9 @@ public class UserService implements UserDetailsService {
         String username = auth.getName();
 
         return userRepo.findByUsername(username);
+    }
+
+    public Currency getUserCurrency() {
+        return getAuthUser().getCurrency();
     }
 }

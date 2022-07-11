@@ -1,5 +1,6 @@
 package by.cinderella.services;
 
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
 import by.cinderella.repos.OrganizerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,6 +17,9 @@ import java.util.TreeSet;
 public class OrganizerService {
     @Autowired
     private OrganizerRepo organizerRepo;
+
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute("organizerCategories")
     public Set<OrganizerCategory> organizerCategories() {
@@ -40,6 +45,8 @@ public class OrganizerService {
         return result;
     }
 
+
+
     public Page<Organizer> findPaginated(Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
@@ -59,6 +66,8 @@ public class OrganizerService {
 
         Filter filter = this.initFilter(userFilter);
 
+        Currency currency = userService.getUserCurrency();
+
         Page<Organizer> organizerPage =
                 //organizerRepo.findAllByPriceBetween(priceFrom, priceTo,
                 organizerRepo.findAll(
@@ -75,6 +84,7 @@ public class OrganizerService {
                         ,
 
                         PageRequest.of(currentPage, pageSize, Sort.by(filter.getSortDirection(), filter.getSortingField()).and(Sort.by("name"))));
+
 
         return organizerPage;
     }
@@ -123,12 +133,16 @@ public class OrganizerService {
         }
 
         if (userFilter.getPriceFrom() != null) {
-            filter.setPriceFrom(userFilter.getPriceFrom());
+            filter.setPriceFrom(
+                    CurrencyRateService.getAbsolutePrice(userFilter.getPriceFrom(), userService.getUserCurrency())
+            );
         } else {
             filter.setPriceFrom((double) 0);
         }
         if (userFilter.getPriceTo() != null) {
-            filter.setPriceTo(userFilter.getPriceTo());
+            filter.setPriceTo(
+                    CurrencyRateService.getAbsolutePrice(userFilter.getPriceTo(), userService.getUserCurrency())
+            );
         } else {
             filter.setPriceTo((double) Integer.MAX_VALUE);
         }
@@ -154,5 +168,14 @@ public class OrganizerService {
         filter.setSortDirection(userFilter.getSortDirection());
 
         return filter;
+    }
+
+    public List<Organizer> getWildberriesOrganizers() {
+        return organizerRepo.findBySeller(Seller.WB);
+    }
+
+    public void save(Organizer organizer) {
+        organizer.setAbsolutePrice(CurrencyRateService.getAbsolutePrice(organizer));
+        organizerRepo.save(organizer);
     }
 }
