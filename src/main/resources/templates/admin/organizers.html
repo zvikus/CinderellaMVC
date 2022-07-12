@@ -276,7 +276,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="el : ${organizerPage.content}" class="">
+                <tr th:each="el : ${organizerPage.content}" class="" th:id="@{organizer} + ${el.id}">
                     <td>
                         <a th:href="${el.link}"  target="_blank">
                             <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">

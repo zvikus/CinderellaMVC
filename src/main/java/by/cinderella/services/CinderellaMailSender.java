@@ -43,8 +43,8 @@ public class CinderellaMailSender {
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.addRecipient(Message.RecipientType.TO,new InternetAddress(emailTo));
-            mimeMessage.setSubject(subject);
-            mimeMessage.setText(message);
+            mimeMessage.setSubject(subject, "UTF-8");
+            mimeMessage.setText(message, "text/html; charset=UTF-8");
             //send message
             Transport.send(mimeMessage);
         } catch (MessagingException e) {throw new RuntimeException(e);}

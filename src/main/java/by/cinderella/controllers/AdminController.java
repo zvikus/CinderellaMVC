@@ -15,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -144,7 +142,7 @@ public class AdminController {
                     categories.orElse(filterFromSession.getCategories()),
                     sellers.orElse(filterFromSession.getSeller()),
                     materials.orElse(filterFromSession.getMaterial()),
-                    "lastUpdated",
+                    "id",
                     Sort.Direction.DESC
             );
         } else {
@@ -165,7 +163,7 @@ public class AdminController {
                     categories.orElse(null),
                     sellers.orElse(null),
                     materials.orElse(null),
-                    "lastUpdated",
+                    "id",
                     Sort.Direction.DESC
             );
         }
@@ -341,7 +339,7 @@ public class AdminController {
 
 
 
-        return "redirect:/admin/organizers";
+        return "redirect:/admin/organizers#organizer" + organizer.getId();
     }
 
     @GetMapping("/destroyFilter")
@@ -367,5 +365,34 @@ public class AdminController {
             userRepo.save(user);
         }
         return "redirect:/admin/organizers";
+    }
+
+    @GetMapping("/userOrganizers")
+    public String userOrganizers(HttpServletRequest request, Model model,
+                                @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("size") Optional<Integer> size) {
+        if (!userService.checkUserRestriction((long) searchServiceId)) {
+            return "redirect:/user";
+        }
+
+        int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE)).orElse(1));
+        int pageSize = size.orElse(50);
+        request.getSession().setAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE, currentPage);
+
+
+        Page<Organizer> organizerPage = organizerService.findUserPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("title", "Администрирование - Мои органайзеры");
+        model.addAttribute("organizerPage", organizerPage);
+
+        int totalPages = organizerPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return  "admin/userOrganizers";
     }
 }

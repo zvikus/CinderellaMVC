@@ -89,6 +89,16 @@ public class OrganizerService {
         return organizerPage;
     }
 
+    public Page<Organizer> findUserPaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        Page<Organizer> organizerPage =
+                organizerRepo.findByCreatedBy(
+                        userService.getAuthUser(),
+                        PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, "lastUpdated").and(Sort.by("name"))));
+
+        return organizerPage;
+    }
 
     private Filter initFilter(Filter userFilter) {
         Filter filter = new Filter();

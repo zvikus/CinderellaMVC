@@ -59,20 +59,20 @@ public class OrganizerScheduler {
                         organizerService.save(organizer);
                     }
                 } catch (Exception ex) {
-                    System.out.println("Wildberries update failed!");
+                    System.out.println("Wildberries update failed! Organizer ID: " + organizer.getId() + " Article number: " + organizer.getArticleNumber());
                 }
             }
         }
     }
 
-    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
-    @Async
-    //todo: replace
-    public void priceScheduler() throws IOException, InterruptedException {
-        List<Organizer> organizers = organizerRepo.findAll();
-
-        for(Organizer organizer : organizers) {
-            organizerService.save(organizer);
-        }
-    }
+//    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
+//    @Async
+//    //todo: replace
+//    public void priceScheduler() throws IOException, InterruptedException {
+//        List<Organizer> organizers = organizerRepo.findAll();
+//
+//        for(Organizer organizer : organizers) {
+//            organizerService.save(organizer);
+//        }
+//    }
 }

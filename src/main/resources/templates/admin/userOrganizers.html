@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/admin/adminHead :: adminHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/header :: header">
+
+    </header>
+
+    <main>
+        <h1>МОИ ВНЕСЕННЫЕ ОРГАНАЙЗЕРЫ</h1>
+        <div class="bd-example">
+            <div class="row">
+                <div class="col-md-2">
+                    <form method="get" th:action="@{/admin/addOrganizer}">
+                        <button class="btn btn-outline-primary regular-button" type="submit" >
+                            Добавить органайзер
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-sm table-hover">
+            <thead>
+            <tr>
+                <th>
+                    &nbsp;
+                </th>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
+                </th>
+                <th>
+                    Ширина
+                </th>
+                <th>
+                    Глубина
+                </th>
+                <th>
+                    Высота
+                </th>
+                <th>
+                    Категория
+                </th>
+                <th>
+                    Материал
+                </th>
+                <th>
+                    Продавец
+                </th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="el : ${organizerPage.content}" class="">
+                <td>
+                    <a th:href="${el.link}"  target="_blank">
+                        <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
+                    </a>
+                </td>
+                <td>
+                    <a th:href="${el.link}" target="_blank">
+                        <h4 th:text="${el.name}"/>
+                    </a>
+                    <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
+                        <img th:src="@{/img/icons/copy.png}" width="30" height="30">
+                    </a>
+                </td>
+                <td class="price-font" th:text="${@currencyRateService.getPrice(el)}"/>
+
+                <td th:text="${el.width}"/>
+                <td th:text="${el.length}"/>
+                <td th:text="${el.height}"/>
+
+                <td class="fs-6">
+                    <ul>
+                        <li class="list-unstyled" th:each="category : ${el.categories}">
+                            <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+                        </li>
+                    </ul>
+
+                </td>
+
+                <td th:text="${el.material?.label}" class="fs-5"/>
+                <td th:text="${el.seller.label}" class="fs-5"/>
+
+
+                <td>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}">Удалить</a><br/>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/copy}">Копировать</a><br/>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}">Редактировать</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li th:class="${organizerPage.number == 0} ? 'page-item disabled' : 'page-item'" class="page-item ">
+                    <a class="page-link" th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${organizerPage.number})}"
+                       tabindex="-1">Предыдущая</a>
+                </li>
+                <li th:if="${organizerPage.totalPages > 0}"
+                    th:class="${pageNumber==organizerPage.number + 1} ? 'page-item active' : 'page-item'"
+                    th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${pageNumber})}"
+                       class="page-link"
+                       th:text=${pageNumber}
+                    ></a>
+                </li>
+                <li th:class="${organizerPage.totalPages == organizerPage.number + 1} ? 'page-item disabled' : 'page-item'" >
+                    <a class="page-link"
+                       th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${organizerPage.number + 2})}"
+                       tabindex="-1">Следующая</a>
+                </li>
+            </ul>
+        </nav>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>
