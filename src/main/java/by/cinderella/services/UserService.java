@@ -96,7 +96,6 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean checkUserRestriction(Long serviceId) {
-
         User user = this.getAuthUser();
         if (user == null) {
             return false;
@@ -108,14 +107,52 @@ public class UserService implements UserDetailsService {
         List<Restriction> restrictions = restrictionRepo.findAllByUserAndService(user, Optional.of(service.get()));
 
         for (Restriction restriction : restrictions) {
+            if (!restriction.getService().isSubscription()) {
+                return true;
+            }
             if (restriction.getExpirationDate().after(new Date())) {
                 return  true;
             }
         }
-
-
-
         return false;
+    }
+
+    public Date getServiceExpirationDate(Long serviceId) {
+        return getServiceExpirationDate(serviceId, getAuthUser());
+    }
+
+    public Date getServiceExpirationDate(Long serviceId, Long userId) {
+        return getServiceExpirationDate(serviceId, userRepo.getById(userId));
+    }
+
+    public Date getServiceExpirationDate(Long serviceId, User user) {
+        if (user == null) {
+            return null;
+        }
+        Optional<by.cinderella.model.user.Service> service = serviceRepo.findById(serviceId);
+        if (!service.isPresent()) {
+            return null;
+        }
+
+        if (!service.get().isSubscription()) {
+            return null;
+        }
+        List<Restriction> restrictions = restrictionRepo.findAllByUserAndService(user, Optional.of(service.get()));
+
+        if (restrictions.isEmpty()) {
+            return null;
+        }
+        Date expirationDate = null;
+        for (Restriction restriction : restrictions) {
+            if (expirationDate == null) {
+                expirationDate = restriction.getExpirationDate();
+            }
+            if (restriction.getExpirationDate().after(expirationDate)) {
+                expirationDate = restriction.getExpirationDate();
+            }
+        }
+        return expirationDate;
+
     }
 
     public User getAuthUser() {

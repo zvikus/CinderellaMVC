@@ -1,30 +1,52 @@
 <header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-        <nav class="navbar navbar-light navbar-expand-lg">
-            <a th:href="@{/}" class="navbar-brand fs-4">
-                <img th:src="@{/img/cinderella_icon.png}" style="float: left; width: 50px;"/>
-                <span class="fs-4 ">ОРГАНИЗАЦИЯ ПРОСТРАНСТВА</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse ml-auto" id="navbarText">
+    <nav class="navbar navbar-light navbar-expand-lg">
+        <a th:href="@{/}" class="navbar-brand fs-4">
+            <img th:src="@{/img/cinderella_icon.png}" style="float: left; width: 50px;"/>
+            <span class="fs-4 ">ОРГАНИЗАЦИЯ ПРОСТРАНСТВА</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse ml-auto" id="navbarText">
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item pt-2">
-                    <a class="nav-link" th:href="@{/services/order}">Порядок в доме</a>
+                <li class="nav-item dropdown  pt-2" >
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Услуги
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/services/order}">Порядок в доме</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/services/design}">Проекты мебели</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/onlineServices}">Онлайн-продукты</a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item pt-2">
-                    <a class="nav-link" th:href="@{/services/design}">Проекты мебели</a>
+                <li class="nav-item dropdown  pt-2" >
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Обо мне
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/about}">Информация</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/contacts}">Контакты</a>
+                        </li>
+                    </ul>
                 </li>
+
                 <li class="nav-item pt-2">
-                    <a class="nav-link" th:href="@{/about}">Обо мне</a>
+
+                    <a class="nav-link" th:href="@{/user/organizers}">База органайзеров</a>
                 </li>
-                <li class="nav-item pt-2">
-                    <a class="nav-link" th:href="@{/contacts}">Контакты</a>
-                </li>
-                <li class="nav-item dropdown  pt-2" sec:authorize="hasAnyAuthority('USER', 'ADMIN', 'SADMIN')">
+                <li class="nav-item dropdown  pt-2" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" id="userNavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Личный кабинет
+                        Администрирование
                     </a>
                     <ul class="dropdown-menu">
                         <li>
@@ -40,27 +62,35 @@
                         <li>
                             <a class="dropdown-item" th:href="@{/admin/organizers}" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">Администр. Органайзеров</a>
                         </li>
-                        <div class="dropdown-divider" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')"></div>
+                    </ul>
+
+                </li>
+                <li class="nav-item dropdown  pt-2" sec:authorize="hasAnyAuthority('USER', 'ADMIN', 'SADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" id="organizersDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Личный кабинет
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/onlineServices}">Услуги</a>
+                        </li>
                         <li>
                             <a class="dropdown-item" th:href="@{/user/userOrganizers}">Мои подборки органайзеров</a>
                         </li>
+                        <div class="dropdown-divider"></div>
                         <li>
-                            <a class="dropdown-item" th:href="@{/user/organizers}">База органайзеров</a>
+                            <form th:action="@{/logout}" method="post" id="logout" class="pt-2">
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('logout').submit();">Выйти</a>
+                            </form>
                         </li>
                     </ul>
 
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post" id="logout" class="pt-2">
-                        <a class="nav-link" href="#" onclick="document.getElementById('logout').submit();">Выйти</a>
-                    </form>
-                </li>
-                <li class="nav-item pt-2 hidden" sec:authorize="!isAuthenticated()">
+                <li class="nav-item pt-2" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-dark" th:href="@{/login}">Войти</a>
                 </li>
             </ul>
-            </div>
-        </nav>
+        </div>
+    </nav>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="check" viewBox="0 0 16 16">

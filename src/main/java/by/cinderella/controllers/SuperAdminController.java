@@ -7,6 +7,7 @@ import by.cinderella.model.user.User;
 import by.cinderella.repos.RestrictionRepo;
 import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,8 @@ public class SuperAdminController {
     ServiceRepo serviceRepo;
     @Autowired
     RestrictionRepo restrictionRepo;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/users")
     public String getUsers(HttpServletRequest request, Model model) {
@@ -53,6 +56,7 @@ public class SuperAdminController {
         Optional<User> user = userRepo.findById(userId);
 
         model.addAttribute("user", user.get());
+        model.addAttribute("services", serviceRepo.findAll());
         model.addAttribute("title", "Администрирование - Редактировать " + user.get().getUsername());
         model.addAttribute("roles", new HashSet<>());
 
@@ -129,10 +133,10 @@ public class SuperAdminController {
     }
 
     @PostMapping("/addRestriction")
-    public String addRestriction(@RequestParam("username") Optional<Long> userId,
+    public String addRestriction(@RequestParam("userId") Optional<Long> userId,
                                  @RequestParam("service") Optional<Long> serviceId,
                              @RequestParam("term") Optional<Integer> term,
-                              Model model) throws IOException {
+                              Model model) {
 
         Optional<Service> service = serviceRepo.findById(serviceId.get());
         Optional<User> user = userRepo.findById(userId.get());
@@ -142,12 +146,17 @@ public class SuperAdminController {
 
         restriction.setActivationDate(new Date());
 
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, term.get());
-        restriction.setExpirationDate(cal.getTime());
-        service.ifPresent(value -> restriction.setService(service.get()));
-
+        if (service.isPresent() && service.get().isSubscription()) {
+            Date serviceExpirationDate = userService.getServiceExpirationDate(serviceId.get(), user.get());
+            if (serviceExpirationDate == null) {
+                serviceExpirationDate = new Date();
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(serviceExpirationDate);
+            cal.add(Calendar.MONTH, term.get());
+            restriction.setExpirationDate(cal.getTime());
+            service.ifPresent(value -> restriction.setService(service.get()));
+        }
 
         user.ifPresent(value -> {
             restriction.setUser(user.get());
@@ -157,7 +166,7 @@ public class SuperAdminController {
         userRepo.save(user.get());
         restrictionRepo.save(restriction);
 
-        return "redirect:/admin/users";
+        return "redirect:/admin/user/" + userId.get() + "/edit";
     }
 
     @GetMapping("/restriction/{restrictionId}/{userId}/remove")

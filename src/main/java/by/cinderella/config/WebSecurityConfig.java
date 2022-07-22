@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -28,10 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String [] publicUrls = new String [] {
+                "/yoomoneyPayment",
+                "/login",
+                "/logout"
+        };
         http
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                     .anyRequest().authenticated()
+                .and()
+                    .csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+                    .ignoringAntMatchers(publicUrls)
                 .and()
                     .rememberMe().key("uniqueAndSecret")
 

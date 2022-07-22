@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/user/userHead :: userHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/header :: header">
+
+    </header>
+
+    <main>
+        <h1 th:text="${service.name}"></h1>
+        <div class="container">
+            <div th:utext="${service.product}" class="product-container" onmousedown='return false;' onselectstart='return false;'>Content</div>
+        </div>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

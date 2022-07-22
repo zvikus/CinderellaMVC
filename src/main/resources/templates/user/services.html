@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="blocks/user/userHead :: userHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/header :: header">
+
+    </header>
+
+    <main>
+        <h1>ОНЛАЙН-ПРОДУКТЫ</h1>
+        <div class="container">
+            <div class="row">
+                <div th:class="@{services-card mb-3 col-sm-} + @{12/${services.size()}}" th:each="service : ${services}">
+                    <div class="card bg-light">
+                        <h5 class="card-header" th:text="${service.name}"></h5>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${service.shortDescription}" style="height: 9rem;">
+
+                            </p>
+                            <p class="text-center">
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}"
+                                    th:if="${!@userService.checkUserRestriction(service.id)}">Подробнее</a>
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/details}"
+                                    th:if="${@userService.checkUserRestriction(service.id)}">Перейти</a>
+                            </p>
+
+                        </div>
+                        <div class="card-footer text-muted"
+                             th:if="${@userService.getServiceExpirationDate(service.id) != null}" >
+                            <span>Подписка до </span><span th:text="${#calendars.format(@userService.getServiceExpirationDate(service.id), 'dd MMMM yyyy')}"></span>
+                            <span>
+                                <a class="" th:href="@{/user/userService/} + ${service.id} + @{/buy}"
+                                   th:if="${@userService.checkUserRestriction(service.id) && service.cost == null}">
+                                    <h4 class="right">Продлить</h4>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head th:insert="blocks/user/userHead :: userHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/header :: header">
+
+    </header>
+
+    <main>
+        <h1><span th:text="${service.name}"></span></h1>
+        <div class="container">
+            <p>
+            <div class="col-md-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary regular-button dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Валюта: <span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           th:each="curr : ${T(by.cinderella.model.currency.Currency).values()}"
+                           th:href="@{/user/changeCurrency/} + ${curr.CUR_ABBREVIATION} + @{/} + ${service.id}"
+                           th:text="${curr.LABEL}"/>
+                    </div>
+                </div>
+            </div>
+            </p>
+            <p class="text-centered text-muted" th:if="${@userService.getServiceExpirationDate(service.id) != null}">
+                <span>Подписка истекает </span><span th:text="${#calendars.format(@userService.getServiceExpirationDate(service.id), 'dd MMMM yyyy')}"></span>
+            </p>
+            <p>
+                <div th:if="${service.isSubscription()}">
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="card text-center">
+                                <h5 class="card-header">
+                                    1 месяц
+                                </h5>
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${userServiceCost1}"></h5>
+                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <form method="POST"
+                                          action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
+                                        <input type="hidden" name="receiver" value="410015700532481"/>
+                                        <input type="hidden" name="label" th:value="${service.id} + @{,} +${@userService.getAuthUser().id} + @{,1}"/>
+                                        <input type="hidden" name="quickpay-form" value="donate"/>
+                                        <input type="hidden" name="sum" th:value="${serviceCost1Rub}" data-type="number"/>
+                                        <button class="btn btn-outline-primary regular-button" type="submit">ОПЛАТИТЬ</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="card text-center">
+                                <h5 class="card-header">
+                                    3 месяца
+                                </h5>
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${userServiceCost3}"></h5>
+                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <form method="POST"
+                                          action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
+                                        <input type="hidden" name="receiver" value="410015700532481"/>
+                                        <input type="hidden" name="label" th:value="${service.id} + @{,} +${@userService.getAuthUser().id}+ @{,3}"/>
+                                        <input type="hidden" name="quickpay-form" value="donate"/>
+                                        <input type="hidden" name="sum" th:value="${serviceCost3Rub}" data-type="number"/>
+                                        <button class="btn btn-outline-primary regular-button" type="submit">ОПЛАТИТЬ</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="card text-center">
+                                <h5 class="card-header">
+                                    6 месяцев
+                                </h5>
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${userServiceCost6}"></h5>
+                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <form method="POST"
+                                          action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
+                                        <input type="hidden" name="receiver" value="410015700532481"/>
+                                        <input type="hidden" name="label" th:value="${service.id} + @{,} +${@userService.getAuthUser().id}+ @{,6}"/>
+                                        <input type="hidden" name="quickpay-form" value="donate"/>
+                                        <input type="hidden" name="sum" th:value="${serviceCost6Rub}" data-type="number"/>
+                                        <button class="btn btn-outline-primary regular-button" type="submit">ОПЛАТИТЬ</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="card text-center">
+                                <h5 class="card-header">
+                                    1 год
+                                </h5>
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${userServiceCost12}"></h5>
+                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <form method="POST"
+                                          action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
+                                        <input type="hidden" name="receiver" value="410015700532481"/>
+                                        <input type="hidden" name="label" th:value="${service.id} + @{,} +${@userService.getAuthUser().id}+ @{,12}"/>
+                                        <input type="hidden" name="quickpay-form" value="donate"/>
+                                        <input type="hidden" name="sum" th:value="${serviceCost12Rub}" data-type="number"/>
+                                        <button class="btn btn-outline-primary regular-button" type="submit">ОПЛАТИТЬ</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${!service.isSubscription()}">
+                    <div class="row">
+                        <div class="card text-center m-auto" style="width: 36rem;">
+                            <h5 class="card-header">
+                                Купить
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${service.name}"></h5>
+                                <p class="card-text" th:text="${service.description}"></p>
+                                <h1 class="card-title pricing-card-title"
+                                    th:text="${userServiceCost}"></h1>
+                                <form method="POST"
+                                      action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
+                                    <input type="hidden" name="receiver" value="410015700532481"/>
+                                    <input type="hidden" name="label" th:value="${service.id} + @{,} +${@userService.getAuthUser().id}"/>
+                                    <input type="hidden" name="quickpay-form" value="donate"/>
+                                    <input type="hidden" name="sum" th:value="${serviceCostRub}"
+                                           data-type="number"/>
+                                    <button class="btn btn-outline-primary regular-button" type="submit">ОПЛАТИТЬ</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p>
+        </div>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

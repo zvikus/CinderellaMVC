@@ -335,6 +335,12 @@
                                         method="post" th:id="@{addToList} + ${el.id} + @{/} + ${organizerList.id}" >
                                     <a class="dropdown-item submit-form-link"  th:text="${organizerList.name}"/>
                                 </form>
+                                <div class="dropdown-item">
+                                    <form th:action="@{/user/createListAndAdd/} + ${el.id}" method="post">
+                                        <input class="" name="newListName" type="text" maxlength="24" placeholder="Новый список"/>
+                                        <button class="btn btn-outline-primary regular-button" type="submit">OK</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <div class="alert alert-primary" role="alert" id="success-alert">

@@ -3,13 +3,8 @@ package by.cinderella.controllers;
 import by.cinderella.config.Constants;
 import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
-import by.cinderella.model.user.OrganizerList;
-import by.cinderella.model.user.User;
-import by.cinderella.model.user.UserOrganizer;
-import by.cinderella.repos.OrganizerListRepo;
-import by.cinderella.repos.OrganizerRepo;
-import by.cinderella.repos.UserOrganizerRepo;
-import by.cinderella.repos.UserRepo;
+import by.cinderella.model.user.*;
+import by.cinderella.repos.*;
 import by.cinderella.services.CurrencyRateService;
 import by.cinderella.services.OrganizerPDFExporter;
 import by.cinderella.services.OrganizerService;
@@ -64,6 +59,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    ServiceRepo serviceRepo;
+
+    @Autowired
     CurrencyRateService currencyRateService;
 
     @ModelAttribute("organizerCategories")
@@ -98,7 +96,7 @@ public class UserController {
     @GetMapping("/userOrganizers")
     public String getUserOrganizers(HttpServletRequest request, Model model) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user";
+            return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
         model.addAttribute("organizerList", userService.getAuthUser().getOrganizerLists());
@@ -183,7 +181,7 @@ public class UserController {
     public String addUserOrganizerList(OrganizerList organizerList,
             HttpServletRequest request, Model model) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user";
+            return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
         User user = userService.getAuthUser();
@@ -208,16 +206,7 @@ public class UserController {
         if (organizerList.isPresent()
             && organizer.isPresent()) {
             if (!organizerList.get().getUserOrganizerList().contains(organizer.get())) {
-                UserOrganizer userOrganizer = new UserOrganizer();
-                userOrganizer.setOrganizer(organizer.get());
-                userOrganizer.setCount(1);
-                userOrganizer.setComment("");
-                userOrganizer.setOrganizerList(organizerList.get());
-                organizerList.get().getUserOrganizerList().add(userOrganizer);
-                organizerList.get().setLastUpdated(new Date());
-
-                userOrganizerRepo.save(userOrganizer);
-                organizerListRepo.save(organizerList.get());
+                _addOrganizerToList(organizer.get(), organizerList.get());
             } else {
                 return new ResponseEntity<String>(HttpStatus.ALREADY_REPORTED);
             }
@@ -225,6 +214,42 @@ public class UserController {
 
         return new ResponseEntity<String>(HttpStatus.OK);
     }
+
+    @PostMapping("/createListAndAdd/{organizerId}")
+    public String addOrganizerToUserList(HttpServletRequest request, Model model,
+                                                         @PathVariable("organizerId") Long organizerId,
+                                                         @RequestParam("newListName") String newListName) {
+        OrganizerList organizerList = new OrganizerList();
+        organizerList.setUser(userService.getAuthUser());
+        organizerList.setCreated(new Date());
+        organizerList.setName(newListName);
+
+        organizerListRepo.save(organizerList);
+        Optional<Organizer> organizer = organizerRepo.findById(organizerId);
+
+        if (organizer.isPresent()) {
+            if (!organizerList.getUserOrganizerList().contains(organizer.get())) {
+                _addOrganizerToList(organizer.get(), organizerList);
+            }
+        }
+
+        return "redirect:/user/organizers";
+    }
+
+    private void _addOrganizerToList(Organizer organizer, OrganizerList organizerList) {
+        UserOrganizer userOrganizer = new UserOrganizer();
+        userOrganizer.setOrganizer(organizer);
+        userOrganizer.setCount(1);
+        userOrganizer.setComment("");
+        userOrganizer.setOrganizerList(organizerList);
+        organizerList.getUserOrganizerList().add(userOrganizer);
+        organizerList.setLastUpdated(new Date());
+
+        userOrganizerRepo.save(userOrganizer);
+        organizerListRepo.save(organizerList);
+    }
+
+
 
     @GetMapping("/userOrganizersList/{organizerListId}/show")
     public String getUserOrganizersList(HttpServletRequest request, Model model,
@@ -265,7 +290,7 @@ public class UserController {
                                 ) {
 
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user";
+            return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
@@ -374,4 +399,91 @@ public class UserController {
         }
         return "redirect:/user/organizers";
     }
+
+    @GetMapping("/changeCurrency/{currencyName}/{serviceId}")
+    public String changeCurrency(HttpServletRequest request,
+                                 @PathVariable("currencyName") String currencyName,
+                                 @PathVariable("serviceId") String serviceId){
+        Currency currency = Currency.valueOf(currencyName);
+        if (currency!=null) {
+            if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
+                Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+                filterFromSession.setPriceFrom(null);
+                filterFromSession.setPriceTo(null);
+                request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filterFromSession);
+            }
+            User user = userService.getAuthUser();
+            user.setCurrency(currency);
+            userRepo.save(user);
+        }
+        return "redirect:/user/userService/" + serviceId + "/buy";
+    }
+
+    @GetMapping("/userService/{serviceId}/buy")
+    public String userServiceBuy(HttpServletRequest request, Model model,
+                                 @PathVariable("serviceId") Long serviceId) {
+        Currency userCurrency = userService.getAuthUser().getCurrency();
+        Service service = serviceRepo.findById(serviceId).get();
+        model.addAttribute("service", service);
+
+        model.addAttribute("userServiceCost",
+                                                CurrencyRateService.convert(service.getCost(),
+                                                        Currency.BYN,
+                                                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCostRub",
+                                                CurrencyRateService.convert(service.getCost(),
+                                                        Currency.BYN,
+                                                        Currency.RUB));
+        model.addAttribute("userServiceCost1",
+                CurrencyRateService.convert(service.getCost1(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost1Rub",
+                CurrencyRateService.convert(service.getCost1(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost3",
+                CurrencyRateService.convert(service.getCost3(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost3Rub",
+                CurrencyRateService.convert(service.getCost3(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost6",
+                CurrencyRateService.convert(service.getCost6(),
+                        Currency.BYN,
+                        userCurrency) + " " +  userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost6Rub",
+                CurrencyRateService.convert(service.getCost6(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost12",
+                CurrencyRateService.convert(service.getCost12(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost12Rub",
+                CurrencyRateService.convert(service.getCost12(),
+                        Currency.BYN,
+                        Currency.RUB));
+
+        return "user/userServiceBuy";
+    }
+
+    @GetMapping("/userService/{serviceId}/details")
+    public String userServiceDetails(HttpServletRequest request, Model model,
+                                     @PathVariable("serviceId") Long serviceId) {
+        if (!userService.checkUserRestriction(serviceId)) {
+            return "redirect:/userService/" + serviceId + "/buy";
+        }
+
+        if (serviceId.equals((long)searchServiceId)) {
+            return "redirect:/user/organizers";
+        }
+
+        model.addAttribute("service", serviceRepo.findById(serviceId).get());
+        return "user/userServiceDetails";
+    }
+
+
 }

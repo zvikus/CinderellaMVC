@@ -1,6 +1,5 @@
 package by.cinderella.controllers;
 
-import antlr.StringUtils;
 import by.cinderella.config.Constants;
 import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
@@ -114,7 +113,7 @@ public class AdminController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user";
+            return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
@@ -372,7 +371,7 @@ public class AdminController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user";
+            return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE)).orElse(1));

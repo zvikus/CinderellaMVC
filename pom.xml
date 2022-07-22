@@ -41,7 +41,7 @@
                     true
                 </spring.jpa.show-sql>
                 <organizer.search.service.id>
-                    35
+                    74
                 </organizer.search.service.id>
             </properties>
         </profile>

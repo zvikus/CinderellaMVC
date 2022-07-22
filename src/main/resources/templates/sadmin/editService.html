@@ -21,18 +21,82 @@
                     th:name="id"
                     th:value="${service.id}" />
             <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="published">
+                        Опубликовать
+                    </label>
+                    <input id="published" type="checkbox" name="published" th:checked="${service.published}">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-9 mb-3">
                     <label for="name">
                         Название сервиса
                     </label>
                     <input th:value="${service.name}"  type="text" id="name" name="name" placeholder="Название" class="form-control mt-2" required>
                 </div>
+                <div class="col-md-3 mb-3">
+                    <label for="cost">
+                        Цена(<span th:text="${T(by.cinderella.model.currency.Currency).BYN.CUR_ABBREVIATION}"></span>)
+                    </label>
+                    <input th:value="${service.cost}"  type="number" id="cost" name="cost" placeholder="Цена" class="form-control mt-2">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="cost">
-                    Цена
-                </label>
-                <input th:value="${service.cost}"  type="number" id="cost" name="cost" placeholder="Цена" class="form-control mt-2" required>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="cost1">
+                        Цена 1 месяц(<span th:text="${T(by.cinderella.model.currency.Currency).BYN.CUR_ABBREVIATION}"></span>)
+                    </label>
+                    <input th:value="${service.cost1}"  type="number" id="cost1" name="cost1" placeholder="Цена" class="form-control mt-2">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="cost3">
+                        Цена 3 месяца(<span th:text="${T(by.cinderella.model.currency.Currency).BYN.CUR_ABBREVIATION}"></span>)
+                    </label>
+                    <input th:value="${service.cost3}"  type="number" id="cost3" name="cost3" placeholder="Цена" class="form-control mt-2">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="cost6">
+                        Цена 6 месяцев(<span th:text="${T(by.cinderella.model.currency.Currency).BYN.CUR_ABBREVIATION}"></span>)
+                    </label>
+                    <input th:value="${service.cost6}"  type="number" id="cost6" name="cost6" placeholder="Цена" class="form-control mt-2">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="cost12">
+                        Цена 1 год(<span th:text="${T(by.cinderella.model.currency.Currency).BYN.CUR_ABBREVIATION}"></span>)
+                    </label>
+                    <input th:value="${service.cost12}"  type="number" id="cost12" name="cost12" placeholder="Цена" class="form-control mt-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3">
+                    <label for="shortDescription">
+                        Краткое описание (выводится в карточках)
+                    </label>
+                    <textarea th:text="${service.shortDescription}"
+                              id="shortDescription"
+                              name="shortDescription"
+                              class="form-control mt-2" maxlength="254" required>
+                    </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3">
+                    <label for="description">
+                        Описание
+                    </label>
+                    <textarea th:text="${service.description}"  id="description" name="description" class="form-control mt-2" required>
+                    </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3">
+                    <label for="product">
+                        Онлайн-продукт
+                    </label>
+                    <textarea type="text" rows="20" id="product" placeholder="Content" class="form-control" name="product"
+                              th:field="*{service.product}" autocomplete="off"></textarea>
+                </div>
             </div>
             <input
                     type="hidden"
@@ -45,9 +109,21 @@
 
     </main>
 
+
     <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
 
     </footer>
+
+    <script th:src="@{/js/summernote-bs4.min.js}"></script>
+
+    <script>
+        $('#product').summernote({
+            height: 1000
+        });
+        $('#description').summernote({
+            height: 200
+        });
+    </script>
 </div>
 
 

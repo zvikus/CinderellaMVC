@@ -11,6 +11,7 @@
 
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
 
     <meta property="og:title" content="Организация пространства, проектирование">
 
@@ -31,7 +32,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/dataTable.css}">
 
-
+    <link th:rel="stylesheet" th:href="@{/css/summernote-bs4.min.css}"/>
 
 
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">

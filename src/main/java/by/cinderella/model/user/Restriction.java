@@ -20,6 +20,8 @@ public class Restriction {
 
     private Date expirationDate;
 
+    private String operationId;
+
     @ManyToOne(fetch = FetchType.LAZY,optional=true)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
@@ -62,5 +64,13 @@ public class Restriction {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
     }
 }

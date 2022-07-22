@@ -109,7 +109,7 @@
                 </td>
                 <td class="fs-5">
                     <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
-                        <textarea name="comment"
+                        <textarea name="comment" maxlength="254"
                                th:text="${el.comment}"
                                class="form-control rounded-4 auto-submit-form">
                         </textarea>
