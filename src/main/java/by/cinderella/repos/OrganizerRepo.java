@@ -22,7 +22,9 @@ public interface OrganizerRepo extends JpaRepository<Organizer, Long>,
 
     public Page<Organizer> findByCreatedBy(User user, Pageable pageable);
 
-    public List<Organizer> findByLink(String link);
+    public List<Organizer> findByLinkContains(String link);
+
+    public List<Organizer> findByArticleNumber(String articleNumber);
 
     public List<Organizer> findBySeller(Seller seller);
 

@@ -1,11 +1,13 @@
 package by.cinderella.controllers;
 
+import by.cinderella.model.currency.Currency;
 import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Service;
 import by.cinderella.model.user.User;
 import by.cinderella.repos.RestrictionRepo;
 import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.CurrencyRateService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,9 @@ public class MainController {
 
         return  "index";
     }
+
+    @Value("${organizer.search.service.id}")
+    private Long searchServiceId;
 
     @GetMapping("/about")
     public String aboutPage(HttpServletRequest request, Model model) {
@@ -66,6 +71,38 @@ public class MainController {
         return "user/services";
     }
 
+    @GetMapping("/organizersServiceDetails")
+    public String organizersServiceDetails(HttpServletRequest request, Model model) {
+        Currency userCurrency = Currency.BYN;
+        Service service = serviceRepo.findById(searchServiceId).get();
+        model.addAttribute("service", service);
+
+        model.addAttribute("userServiceCost",
+                CurrencyRateService.convert(service.getCost(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+
+        model.addAttribute("userServiceCost1",
+                CurrencyRateService.convert(service.getCost1(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+
+        model.addAttribute("userServiceCost3",
+                CurrencyRateService.convert(service.getCost3(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+
+        model.addAttribute("userServiceCost6",
+                CurrencyRateService.convert(service.getCost6(),
+                        Currency.BYN,
+                        userCurrency) + " " +  userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("userServiceCost12",
+                CurrencyRateService.convert(service.getCost12(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        return "user/organizersServiceDetails";
+    }
+
     @PostMapping("/yoomoneyPayment")
     public ResponseEntity yoomoneyPayment(@RequestParam("operation_id") String operationId,
                                           @RequestParam("label") String details,
@@ -82,6 +119,8 @@ public class MainController {
         if (user.isPresent() && service.isPresent()) {
             Restriction restriction = new Restriction();
             restriction.setActivationDate(new Date());
+
+            restriction.setOperationId(operationId);
 
             if (service.get().isSubscription()) {
                 Integer term = new Integer(params[2]);

@@ -203,10 +203,24 @@ public class AdminController {
                                 @RequestParam("image") MultipartFile image,
                                Model model) throws IOException {
 
-        List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
+        List<Organizer> organizerFromDB = organizerRepo.findByLinkContains(organizer.getLink());
 
         if (!organizerFromDB.isEmpty()) {
             String message = String.format("Органайзер с такой ссылкой уже существует!\n" +
+                            "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
+                    applicationUrl,
+                    organizerFromDB.get(0).getId()
+            );
+            model.addAttribute("message", message);
+            model.addAttribute("organizer", organizer);
+            model.addAttribute("categories", new HashSet<>());
+            return "admin/addOrganizer";
+        }
+
+        organizerFromDB = organizerRepo.findByArticleNumber(organizer.getArticleNumber());
+
+        if (!organizerFromDB.isEmpty()) {
+            String message = String.format("Органайзер с таким артиклем уже существует!\n" +
                             "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
                     applicationUrl,
                     organizerFromDB.get(0).getId()
@@ -243,7 +257,7 @@ public class AdminController {
     public String checkOrganizer(Organizer organizer,
                                Model model) throws IOException {
 
-        List<Organizer> organizerFromDB = organizerRepo.findByLink(organizer.getLink());
+        List<Organizer> organizerFromDB = organizerRepo.findByLinkContains(organizer.getLink());
 
         if (!organizerFromDB.isEmpty()) {
             String message = String.format("Органайзер с такой ссылкой уже существует!\n" +
@@ -253,6 +267,20 @@ public class AdminController {
             );
             model.addAttribute("message", message);
             model.addAttribute("organizer", new Organizer());
+            model.addAttribute("categories", new HashSet<>());
+            return "admin/addOrganizer";
+        }
+
+        organizerFromDB = organizerRepo.findByArticleNumber(organizer.getLink());
+
+        if (!organizerFromDB.isEmpty()) {
+            String message = String.format("Органайзер с таким артиклем уже существует!\n" +
+                            "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
+                    applicationUrl,
+                    organizerFromDB.get(0).getId()
+            );
+            model.addAttribute("message", message);
+            model.addAttribute("organizer", organizer);
             model.addAttribute("categories", new HashSet<>());
             return "admin/addOrganizer";
         } else {

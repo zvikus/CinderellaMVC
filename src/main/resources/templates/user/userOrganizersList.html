@@ -23,7 +23,7 @@
 <!--                    Скачать PDF-->
 <!--                </button>-->
 <!--            </form>-->
-            <a th:href="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf.pdf}" target="_blank">
+            <a  class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizers/downloadPdf/} + ${organizerList.id} + @{/} + ${organizerList.name}+ @{.pdf}" target="_blank" download>
                 Скачать PDF
             </a>
         </div>
@@ -77,6 +77,7 @@
                 <td>
                     <a th:href="${el.organizer.link}" target="_blank">
                         <h4 th:text="${el.organizer.name}"/>
+                        <span  class="badge badge-info" th:text="${el.organizer.seller?.promo}"></span>
                     </a>
                     <a class="link-copy" th:attr="data-url=${el.organizer.link}" href="#do_nothing">
                         <img th:src="@{/img/icons/copy.png}" width="30" height="30">

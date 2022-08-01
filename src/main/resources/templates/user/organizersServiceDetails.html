@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head th:insert="blocks/user/userHead :: userHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+    <header th:insert="blocks/header :: header">
+
+    </header>
+
+    <main>
+        <h1><span th:text="${service.name}"></span></h1>
+        <div class="container">
+            <div th:utext="${service.description}" class="product-container" onmousedown='return false;' onselectstart='return false;'>Content</div>
+
+
+            <p>
+            <div th:if="${service.isSubscription()}">
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="card text-center">
+                            <h5 class="card-header">
+                                1 месяц
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${userServiceCost1}"></h5>
+                                <p class="card-text" style="height: 6rem;">Для тех, кто хочет попробовать.</p>
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="card text-center">
+                            <h5 class="card-header">
+                                3 месяца
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${userServiceCost3}"></h5>
+                                <p class="card-text" style="height: 6rem;">Для тех, кто основательно подходит к делу.</p>
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="card text-center">
+                            <h5 class="card-header">
+                                6 месяцев
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${userServiceCost6}"></h5>
+                                <p class="card-text " style="height: 6rem;" >Для тех, кто затеял ремонт.</p>
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="card text-center">
+                            <h5 class="card-header">
+                                1 год
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${userServiceCost12}"></h5>
+                                <p class="card-text" style="height: 6rem;">Самое выгодное предложение.</p>
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${!service.isSubscription()}">
+                <div class="row">
+                    <div class="card text-center m-auto" style="width: 36rem;">
+                        <h5 class="card-header">
+                            Купить
+                        </h5>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${service.name}"></h5>
+                            <p class="card-text" th:text="${service.shortDescription}"></p>
+                            <h1 class="card-title pricing-card-title"
+                                th:text="${userServiceCost}"></h1>
+                            <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </p>
+        </div>
+
+    </main>
+
+    <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+    </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

@@ -95,7 +95,8 @@ public class UserController {
 
     @GetMapping("/userOrganizers")
     public String getUserOrganizers(HttpServletRequest request, Model model) {
-        if (!userService.checkUserRestriction((long) searchServiceId)) {
+        if (userService.getAuthUser().getOrganizerLists().isEmpty() &&
+                !userService.checkUserRestriction((long) searchServiceId)) {
             return "redirect:/user/userService/" + searchServiceId + "/buy";
         }
 
@@ -104,7 +105,7 @@ public class UserController {
         return  "user/userOrganizers";
     }
 
-    @GetMapping("/userOrganizers/{organizerListId}/pdf.pdf")
+    @GetMapping("/userOrganizers/downloadPdf/{organizerListId}/{fileName}.pdf")
     public void exportToPDF(HttpServletResponse response,
                             @PathVariable("organizerListId") Long organizerListId)
             throws IOException, DocumentException, URISyntaxException {
@@ -265,6 +266,7 @@ public class UserController {
 
     @GetMapping("/organizers")
     public String organizerPage(HttpServletRequest request, Model model,
+                                @RequestParam("isFilterPressed") Optional<Boolean> isFilterPressed,
                                 @RequestParam("name") Optional<String> name,
 
                                 @RequestParam("priceFrom") Optional<Double> priceFrom,
@@ -281,7 +283,6 @@ public class UserController {
                                 @RequestParam("categories") Optional<Set<OrganizerCategory>> categories,
                                 @RequestParam("sellers") Optional<Set<Seller>> sellers,
                                 @RequestParam("materials") Optional<Set<Material>> materials,
-
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size,
 
@@ -303,30 +304,29 @@ public class UserController {
         if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
             Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
 
+            if (isFilterPressed.isPresent()) {
+                filter = new Filter(
+                        name.orElse(""),
+                        lengthFrom.orElse(null),
+                        widthFrom.orElse(null),
+                        heightFrom.orElse(null),
+                        lengthTo.orElse(null),
+                        widthTo.orElse(null),
+                        heightTo.orElse(null),
+                        priceFrom.orElse(null),
+                        priceTo.orElse(null),
+                        categories.orElse(null),
+                        sellers.orElse(null),
+                        materials.orElse(null),
+                        null,
+                        null
+                );
+            } else {
+                filter = filterFromSession;
+            }
             Sort.Direction sortDirection = sortDirectionString.map(Sort.Direction::fromString).orElseGet(filterFromSession::getSortDirection);
-
-            filter = new Filter(
-                    name.orElse(filterFromSession.getNameLike()),
-
-                    lengthFrom.orElse(filterFromSession.getLengthFrom()),
-                    widthFrom.orElse(filterFromSession.getWidthFrom()),
-                    heightFrom.orElse(filterFromSession.getHeightFrom()),
-
-                    lengthTo.orElse(filterFromSession.getLengthTo()),
-                    widthTo.orElse(filterFromSession.getWidthTo()),
-                    heightTo.orElse(filterFromSession.getHeightTo()),
-
-                    priceFrom.orElse(filterFromSession.getPriceFrom()),
-                    priceTo.orElse(filterFromSession.getPriceTo()),
-
-                    categories.orElse(filterFromSession.getCategories()),
-                    sellers.orElse(filterFromSession.getSeller()),
-                    materials.orElse(filterFromSession.getMaterial()),
-
-                    sortingField.orElse(filterFromSession.getSortingField()),
-                    sortDirection
-
-            );
+            filter.setSortDirection(sortDirection);
+            filter.setSortingField(sortingField.orElse(filterFromSession.getSortingField()));
         } else {
             filter = new Filter(
                     name.orElse(null),
@@ -351,6 +351,79 @@ public class UserController {
                     Sort.Direction.DESC
             );
         }
+
+        List<String> activeUserFilters = new ArrayList<>();
+        StringBuilder userFilter;
+        if (filter.getNameLike() != null && !filter.getNameLike().equals("")) {
+            activeUserFilters.add("Название \"" + filter.getNameLike() + "\"");
+        }
+        if (filter.getWidthFrom() != null || filter.getWidthTo() != null) {
+            userFilter = new StringBuilder("Ширина ");
+            if (filter.getWidthFrom() != null) {
+                userFilter.append("от " + filter.getWidthFrom() + "cм ");
+            }
+            if (filter.getWidthTo() != null) {
+                userFilter.append("до " + filter.getWidthTo() + "cм");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+        if (filter.getLengthFrom() != null || filter.getLengthTo() != null) {
+            userFilter = new StringBuilder("Глубина ");
+            if (filter.getLengthFrom() != null) {
+                userFilter.append("от " + filter.getLengthFrom() + "cм ");
+            }
+            if (filter.getLengthTo() != null) {
+                userFilter.append("до " + filter.getLengthTo() + "cм");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+        if (filter.getHeightFrom() != null || filter.getHeightTo() != null) {
+            userFilter = new StringBuilder("Высота ");
+            if (filter.getHeightFrom() != null) {
+                userFilter.append("от " + filter.getHeightFrom() + "cм ");
+            }
+            if (filter.getHeightTo() != null) {
+                userFilter.append("до " + filter.getHeightTo() + "cм");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+        if (filter.getPriceFrom() != null || filter.getPriceTo() != null) {
+            userFilter = new StringBuilder("Цена ");
+            if (filter.getPriceFrom() != null) {
+                userFilter.append("от " + filter.getPriceFrom() + userService.getUserCurrency().CUR_ABBREVIATION);
+            }
+            if (filter.getPriceTo() != null) {
+                userFilter.append("до " + filter.getPriceTo()  + userService.getUserCurrency().CUR_ABBREVIATION);
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+
+        if (filter.getCategories() != null && !filter.getCategories().isEmpty()) {
+            userFilter = new StringBuilder("Выбранные категории: ");
+            for(OrganizerCategory category:filter.getCategories()) {
+                userFilter.append(" \"" + category.parentCategory.label + ": " + category.label + "\"");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+
+        if (filter.getSeller() != null && !filter.getSeller().isEmpty()) {
+            userFilter = new StringBuilder("Выбранные продавцы: ");
+            for(Seller seller:filter.getSeller()) {
+                userFilter.append(" \"" + seller.label + "\"");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+
+        if (filter.getMaterial() != null && !filter.getMaterial().isEmpty()) {
+            userFilter = new StringBuilder("Выбранные материалы: ");
+            for(Material material:filter.getMaterial()) {
+                userFilter.append(" \"" + material.label + "\"");
+            }
+            activeUserFilters.add(userFilter.toString());
+        }
+
+        model.addAttribute("activeUserFilters", activeUserFilters);
+
 
         request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filter);
 

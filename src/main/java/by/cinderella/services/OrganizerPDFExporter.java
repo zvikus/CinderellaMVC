@@ -99,11 +99,19 @@ public class OrganizerPDFExporter {
             table.addCell(new Phrase(String.valueOf(organizer.getMaterial().label), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getSeller().label), regularFont));
             table.addCell(new Phrase(String.valueOf(userOrganizer.getCount()), regularFont));
-            if (userOrganizer.getComment() != null) {
-                table.addCell(new Phrase(String.valueOf(userOrganizer.getComment()), regularFont));
-            } else {
-                table.addCell(new Phrase(String.valueOf("-"), regularFont));
+
+            String resultComment = "";
+            if (organizer.getSeller().promo != null) {
+                resultComment += organizer.getSeller().promo;
             }
+            if (userOrganizer.getComment() != null) {
+                resultComment += userOrganizer.getComment();
+            }
+            if (resultComment.equals("")) {
+                resultComment = "-";
+            }
+
+            table.addCell(new Phrase(resultComment, regularFont));
         }
     }
 
@@ -116,7 +124,7 @@ public class OrganizerPDFExporter {
 
         document.open();
         Font font = new Font(baseFont, 14, Font.NORMAL, fontColor);
-        Paragraph paragraph = new Paragraph("Список органайзеров", font);
+        Paragraph paragraph = new Paragraph(this.organizerList.getName(), font);
         document.add(paragraph);
 
 

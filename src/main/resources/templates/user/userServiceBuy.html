@@ -15,6 +15,8 @@
     <main>
         <h1><span th:text="${service.name}"></span></h1>
         <div class="container">
+            <div th:utext="${service.description}" class="product-container" onmousedown='return false;' onselectstart='return false;'>Content</div>
+
             <p>
             <div class="col-md-2">
                 <div class="btn-group">
@@ -33,6 +35,8 @@
             <p class="text-centered text-muted" th:if="${@userService.getServiceExpirationDate(service.id) != null}">
                 <span>Подписка истекает </span><span th:text="${#calendars.format(@userService.getServiceExpirationDate(service.id), 'dd MMMM yyyy')}"></span>
             </p>
+            <p class=""><h3><span class="text-danger">ВНИМАНИЕ!</span> Автоматическая оплата проходит только с карты МИР или яндекс кошелька.
+            <br/>Для оплаты переводом на карту Беларусьбанка, <a class="text-info" th:href="@{/contacts}">свяжитесь с нами</a> </h3></p>
             <p>
                 <div th:if="${service.isSubscription()}">
 
@@ -44,7 +48,7 @@
                                 </h5>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost1}"></h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p class="card-text" style="height: 6rem;">Для тех, кто хочет попробовать.</p>
                                     <form method="POST"
                                           action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
                                         <input type="hidden" name="receiver" value="410015700532481"/>
@@ -63,7 +67,7 @@
                                 </h5>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost3}"></h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p class="card-text" style="height: 6rem;">Для тех, кто основательно подходит к делу.</p>
                                     <form method="POST"
                                           action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
                                         <input type="hidden" name="receiver" value="410015700532481"/>
@@ -82,7 +86,7 @@
                                 </h5>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost6}"></h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p class="card-text " style="height: 6rem;" >Для тех, кто затеял ремонт.</p>
                                     <form method="POST"
                                           action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
                                         <input type="hidden" name="receiver" value="410015700532481"/>
@@ -101,7 +105,7 @@
                                 </h5>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost12}"></h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p class="card-text" style="height: 6rem;">Самое выгодное предложение.</p>
                                     <form method="POST"
                                           action="https://yoomoney.ru/quickpay/confirm.xml" accept-charset="UTF‑8">
                                         <input type="hidden" name="receiver" value="410015700532481"/>
@@ -123,7 +127,7 @@
                             </h5>
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${service.name}"></h5>
-                                <p class="card-text" th:text="${service.description}"></p>
+                                <p class="card-text" th:text="${service.shortDescription}"></p>
                                 <h1 class="card-title pricing-card-title"
                                     th:text="${userServiceCost}"></h1>
                                 <form method="POST"
@@ -139,6 +143,9 @@
                         </div>
                     </div>
                 </div>
+            </p>
+            <p class="text-center card-footer">
+                Если у Вас возникли проблемы с оплатой, <a class="text-muted" th:href="@{/contacts}">напишите нам</a>
             </p>
         </div>
 

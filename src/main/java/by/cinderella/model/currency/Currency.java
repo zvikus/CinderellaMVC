@@ -3,12 +3,12 @@ package by.cinderella.model.currency;
 import java.io.Serializable;
 
 public enum Currency implements Serializable {
-    USD("USD", "Доллар США", 1, "#.0#"),
+    USD("USD", "Доллар США", 1, "0.0#"),
     RUB("RUB", "Российский рубль", 100, "#"),
     UAH("UAH", "Гривна", 100, "#"),
     KZT("KZT", "Тенге", 1000,"#"),
 
-    BYN("BYN", "Белорусский рубль", 1, new Rate(1.0), "#.0#")
+    BYN("BYN", "Белорусский рубль", 1, new Rate(1.0), "0.0#")
     ;
 
     public final String CUR_ABBREVIATION;

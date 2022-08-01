@@ -47,6 +47,8 @@
             <div class="collapse" id="filterBox" style="">
                 <div class="card card-body">
                     <form action="/user/organizers" method="GET">
+                        <input type="hidden" name="isFilterPressed" value="true">
+
                         <div class="row filter-label">
                             <div class="col-md-4">
                                 Название
@@ -235,6 +237,13 @@
                 </div>
             </div>
         </div>
+        <div class="container mt-4 mb-2" th:if="${!activeUserFilters.isEmpty()}">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Примененные фильтры</li>
+                <li class="list-group-item list-group-item-info" th:each="userFilter:${activeUserFilters}" th:text="${userFilter}"></li>
+                <li class="list-group-item list-group-item-light">Найдено <span th:text="${organizerPage.getTotalElements()}"></span></li>
+            </ul>
+        </div>
 
         <table class="table table-striped table-sm table-hover dataTable">
             <thead>
@@ -300,6 +309,7 @@
                     <td>
                         <a th:href="${el.link}" target="_blank">
                             <h4 th:text="${el.name}"/>
+                            <span  class="badge badge-info" th:text="${el.seller?.promo}"></span>
                         </a>
                         <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
