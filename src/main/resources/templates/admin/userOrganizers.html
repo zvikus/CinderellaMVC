@@ -93,9 +93,9 @@
 
 
                 <td>
-                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}">Удалить</a><br/>
-                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/copy}">Копировать</a><br/>
-                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}">Редактировать</a>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}" class="btn btn-outline-primary regular-button mb-2">Редактировать</a>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/copy}" class="btn btn-outline-primary regular-button mb-2">Копировать</a><br/>
+                    <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}" class="btn btn-outline-primary btn-outline-danger">Удалить</a><br/>
                 </td>
             </tr>
             </tbody>

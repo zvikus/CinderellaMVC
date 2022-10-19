@@ -178,3 +178,63 @@ a.back-arrow {
     -o-user-select: none;
     user-select: none;
 }
+
+.custom-card:before {
+    position: absolute;
+    background-image: url(/img/Cinderella_logo.png);
+    background-size: 70px;
+    width: 70px;
+    height: 52px;
+    content: "";
+    right: 0px;
+    top: 5px;
+}
+
+.custom-card .card-body:before {
+    content: "\A";
+    border-style: solid;
+    border-width: 31px 224px 40px 0;
+    border-color: #6370a4 transparent transparent transparent;
+    position: absolute;
+    left: 15px;
+    top: 16px;
+}
+
+.custom-card .card-body:after {
+    content: " ";
+        border-style: solid;
+        border-color: #6370a4;
+        position: absolute;
+        left: 0;
+        bottom: 4px;
+        width: 100%;
+        transform: rotate(-2deg);
+        border-width: 0px 224px 34px 0;
+}
+
+.custom-card {
+    padding: 50px 7px 25px;
+}
+
+.custom-card.marble {
+    background: url('/img/background/marble1.jpg');
+    background-size: 100%;
+}
+
+.custom-card .blue-bg {
+    width: auto;
+    margin: 20px 0px;
+    padding: 20px;
+    background-color: #6370a4;
+    color: #fff;
+}
+
+.custom-card .abs-image-box {
+    position: absolute;
+    float: right;
+    margin: 15px;
+}
+
+.custom-card .abs-image-box img {
+    width: 100%;
+}

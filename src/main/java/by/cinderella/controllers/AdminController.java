@@ -291,6 +291,7 @@ public class AdminController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('SADMIN')")
     @GetMapping("/organizer/{organizerId}/remove")
     public String removeOrganizer(@PathVariable(value = "organizerId") Long organizerId,
                                 Model model) {
@@ -330,9 +331,11 @@ public class AdminController {
 
         Optional<Organizer> organizer = organizerRepo.findById(organizerId);
 
-        organizer.get().setId(null);
-        model.addAttribute("organizer", organizer.get());
-        model.addAttribute("title", "Администрирование - Редактировать " + organizer.get().getName());
+        Organizer organizerCopy = new Organizer(organizer.get());
+
+        organizerCopy.setCreatedBy(userService.getAuthUser());
+        model.addAttribute("organizer", organizerCopy);
+        model.addAttribute("title", "Администрирование - Копировать " + organizerCopy.getName());
         model.addAttribute("categories", new HashSet<>());
 
         return  "admin/editOrganizer";
@@ -342,7 +345,10 @@ public class AdminController {
     public String editOrganizer(Organizer organizer,
                                 @RequestParam("image") MultipartFile image,
                                Model model) throws IOException {
-        Optional<Organizer> originalOrganizer = organizerRepo.findById(organizer.getId());
+        Optional<Organizer> originalOrganizer = null;
+        if (organizer.getId() != null)
+            originalOrganizer = organizerRepo.findById(organizer.getId());
+
         if (image != null
                 && !image.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -355,13 +361,20 @@ public class AdminController {
             image.transferTo(new File(uploadPath + "/" + resultFileName));
 
             organizer.setImageName(resultFileName);
-        } else if (organizer.getId() != null) {
+        } else if (organizer.getId() != null
+                        && originalOrganizer.isPresent()) {
             organizer.setImageName(originalOrganizer.get().getImageName());
         }
 
-        organizer.setCreatedBy(originalOrganizer.get().getCreatedBy());
+
         organizer.setLastUpdated(new Date());
 
+        if (originalOrganizer != null
+                && originalOrganizer.isPresent()) {
+            organizer.setCreatedBy(originalOrganizer.get().getCreatedBy());
+        } else {
+            organizer.setCreatedBy(userService.getAuthUser());
+        }
         organizerService.save(organizer);
 
 

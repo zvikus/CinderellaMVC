@@ -356,6 +356,36 @@
                         <div class="alert alert-primary" role="alert" id="success-alert">
                             <strong>Добавлено! </strong>
                         </div>
+                        <button type="button" class="btn btn-info  mt-2 fs-6" data-toggle="modal" th:data-target="@{#feedback} + ${el.id}">
+                            <small>Сообщить о неточности</small>
+                        </button>
+                        <div class="modal fade" tabindex="-1" th:id="@{feedback} + ${el.id}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form th:action="@{/user/feedback}" method="POST">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Опишите суть проблемы</h5>
+                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="organizerId" th:value="${el.id}">
+                                            <textarea name="message" maxlength="508" required
+                                                      class="form-control rounded-4 auto-submit-form">
+                                            </textarea>
+                                            <input
+                                                    type="hidden"
+                                                    th:name="${_csrf.parameterName}"
+                                                    th:value="${_csrf.token}" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
+                                            <button type="submit" class="btn btn-outline-primary regular-button">Отправить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             </tbody>

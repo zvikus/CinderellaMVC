@@ -5,10 +5,7 @@ import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
 import by.cinderella.model.user.*;
 import by.cinderella.repos.*;
-import by.cinderella.services.CurrencyRateService;
-import by.cinderella.services.OrganizerPDFExporter;
-import by.cinderella.services.OrganizerService;
-import by.cinderella.services.UserService;
+import by.cinderella.services.*;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +47,9 @@ public class UserController {
     private UserOrganizerRepo userOrganizerRepo;
 
     @Autowired
+    private CinderellaMailSender mailSender;
+
+    @Autowired
     private OrganizerRepo organizerRepo;
 
     @Autowired
@@ -60,6 +60,15 @@ public class UserController {
 
     @Autowired
     ServiceRepo serviceRepo;
+
+    @Autowired
+    FeedbackRepo feedbackRepo;
+
+    @Value("${application.url}")
+    private String applicationUrl;
+
+    @Value("${application.notification.email}")
+    private String notificationEmail;
 
     @Autowired
     CurrencyRateService currencyRateService;
@@ -130,12 +139,17 @@ public class UserController {
             user.setOrganizerLists(userOrganizerList);
             userRepo.save(user);
             for(UserOrganizer userOrganizer: organizerList.get().getUserOrganizerList()) {
+                userOrganizer.setOrganizerList(null);
                 userOrganizerRepo.delete(userOrganizer);
+
             }
+            organizerList.get().setUserOrganizerList(null);
+            organizerList.get().setUser(null);
             organizerListRepo.delete(organizerList.get());
         }
         return "redirect:/user/userOrganizers";
     }
+
     @GetMapping("/userOrganizersList/{organizerListId}/{userOrganizerId}/remove")
     public String removeOrganizerFromOrganizerList(HttpServletRequest request, Model model,
                                                    @PathVariable("organizerListId") Long organizerListId,
@@ -558,5 +572,40 @@ public class UserController {
         return "user/userServiceDetails";
     }
 
+    @PostMapping("/feedback")
+    public String feedback(HttpServletRequest request, Model model,
+                            @RequestParam("message") Optional<String> message,
+                            @RequestParam("organizerId") Optional<String> organizerId) {
+        Feedback feedback = new Feedback();
+        feedback.setCreated(new Date());
+        feedback.setCreatedBy(userService.getAuthUser());
+        feedback.setOrganizerId(organizerId.get());
+        feedback.setMessage(message.get());
+
+        feedbackRepo.save(feedback);
+
+        StringBuilder emailMessage = new StringBuilder(
+                "Приветствую! \n" +
+                        "Пользователь " + userService.getAuthUser().getUsername() + " оставил сообщение об ошибке:\n"
+        );
+
+        emailMessage.append(message.get());
+        emailMessage.
+                append("\n").
+                append("Ссылка на органайзер: \n").
+                append(applicationUrl).
+                append("/admin/organizer/").
+                append(organizerId.get()).
+                append("/edit").
+                append("\n\n");
+
+        emailMessage.append( "Хорошего дня!");
+
+        mailSender.send(notificationEmail,
+                "Пользовательское сообщение об ошибке",
+                emailMessage.toString());
+
+        return "redirect:/user/organizers";
+    }
 
 }

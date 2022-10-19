@@ -32,6 +32,8 @@ public class Organizer {
 
     private String imageName;
 
+    private boolean isSplitter;
+
     private Double absolutePrice;
 
     @ManyToOne(fetch = FetchType.LAZY,optional=true)
@@ -51,6 +53,31 @@ public class Organizer {
     private Seller seller;
 
     private Material material;
+
+    public Organizer(Organizer organizer) {
+        this.name = organizer.getName();
+
+        this.length = organizer.getLength();
+        this.width = organizer.getWidth();
+        this.height = organizer.getHeight();
+
+        this.price = organizer.getPrice();
+
+        this.imageName = organizer.getImageName();
+
+        this.absolutePrice = organizer.getAbsolutePrice();
+        this.categories = organizer.getCategories();
+
+        this.seller = organizer.getSeller();
+
+        this.material = organizer.getMaterial();
+
+
+    }
+
+    public Organizer() {
+
+    }
 
     public User getCreatedBy() {
         return createdBy;

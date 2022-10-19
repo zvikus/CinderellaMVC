@@ -3,12 +3,15 @@ package by.cinderella.schedulers;
 import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.repos.OrganizerRepo;
+import by.cinderella.services.CinderellaMailSender;
 import by.cinderella.services.OrganizerService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -23,6 +27,15 @@ import java.util.List;
 public class OrganizerScheduler {
     @Autowired
     private OrganizerService organizerService;
+
+    @Value("${application.url}")
+    private String applicationUrl;
+
+    @Value("${application.notification.email}")
+    private String notificationEmail;
+
+    @Autowired
+    private CinderellaMailSender mailSender;
 
     @Autowired
     private OrganizerRepo organizerRepo;
@@ -35,9 +48,11 @@ public class OrganizerScheduler {
         }
 
         List<Organizer> organizers = organizerService.getWildberriesOrganizers();
+        List<Organizer> failedOrganizers = new ArrayList<>();
 
         for(Organizer organizer : organizers) {
-            if (organizer.getArticleNumber() != null) {
+            if (organizer.getArticleNumber() != null
+                    && !organizer.getArticleNumber().isEmpty()) {
                 String urlString = new String("https://wbx-content-v2.wbstatic.net/price-history/" + organizer.getArticleNumber() + ".json");
                 URL url = new URL(urlString.replaceAll("\\s+",""));
                 InputStream is = url.openStream();
@@ -60,19 +75,33 @@ public class OrganizerScheduler {
                     }
                 } catch (Exception ex) {
                     System.out.println("Wildberries update failed! Organizer ID: " + organizer.getId() + " Article number: " + organizer.getArticleNumber());
+                    if (organizer.getPrice() == null) {
+                        failedOrganizers.add(organizer);
+                    }
                 }
             }
         }
-    }
 
-//    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
-//    @Async
-//    //todo: replace
-//    public void priceScheduler() throws IOException, InterruptedException {
-//        List<Organizer> organizers = organizerRepo.findAll();
-//
-//        for(Organizer organizer : organizers) {
-//            organizerService.save(organizer);
-//        }
-//    }
+        if (!failedOrganizers.isEmpty()) {
+            StringBuilder message = new StringBuilder(
+                    "Приветствую! \n" +
+                            "Не удалось проставить цены для следующих органайзеров: \n"
+            );
+
+            for (Organizer o:failedOrganizers) {
+                message.
+                        append(applicationUrl).
+                        append("/admin/organizer/").
+                        append(o.getId()).
+                        append("/edit").
+                        append("\n");
+            }
+
+            message.append( "Хорошего дня!");
+
+            mailSender.send(notificationEmail,
+                    "Сообщение об ошибке в обновлении цен",
+                    message.toString());
+        }
+    }
 }

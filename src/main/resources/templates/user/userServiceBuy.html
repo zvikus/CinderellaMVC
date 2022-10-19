@@ -35,8 +35,6 @@
             <p class="text-centered text-muted" th:if="${@userService.getServiceExpirationDate(service.id) != null}">
                 <span>Подписка истекает </span><span th:text="${#calendars.format(@userService.getServiceExpirationDate(service.id), 'dd MMMM yyyy')}"></span>
             </p>
-            <p class=""><h3><span class="text-danger">ВНИМАНИЕ!</span> Автоматическая оплата проходит только с карты МИР или яндекс кошелька.
-            <br/>Для оплаты переводом на карту Беларусьбанка, <a class="text-info" th:href="@{/contacts}">свяжитесь с нами</a> </h3></p>
             <p>
                 <div th:if="${service.isSubscription()}">
 

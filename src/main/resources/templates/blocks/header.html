@@ -55,7 +55,9 @@
                         <li>
                             <a class="dropdown-item" th:href="@{/admin/services}" sec:authorize="hasAuthority('SADMIN')">Услуги</a>
                         </li>
-
+                        <li>
+                            <a class="dropdown-item" th:href="@{/admin/feedback}" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">Сообщения пользователей</a>
+                        </li>
                         <li>
                             <a class="dropdown-item" th:href="@{/admin/userOrganizers}" sec:authorize="hasAnyAuthority('ADMIN', 'SADMIN')">Мои внесённые органайзеры</a>
                         </li>

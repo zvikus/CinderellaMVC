@@ -26,6 +26,7 @@ public enum OrganizerCategory {
     CABINET_OFF_SEASON_STORAGE("Несезонное хранение", ParentCategory.CABINET),
     CABINET_UNDERWEAR_SOCKS("Носки/нижнее белье", ParentCategory.CABINET),
     CABINET_MAINTENANCE("Хозяйственный отдел", ParentCategory.CABINET),
+    CABINET_USED_CLOTHES("Ношеная одежда", ParentCategory.CABINET),
 
     KITCHEN_WASHING_AREA("Зона мойки", ParentCategory.KITCHEN),
     KITCHEN_COOKING_AREA("Зона готовки", ParentCategory.KITCHEN),
@@ -63,6 +64,9 @@ public enum OrganizerCategory {
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
     BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM),
 
+    HALLWAY_RESERVES("Хранение", ParentCategory.HALLWAY),
+    AUTO_RESERVES("Хранение", ParentCategory.AUTO),
+
     CHILDREN_CREATION("Зона творчества", ParentCategory.CHILDREN),
     CHILDREN_BOARD_GAMES("Настольные игры", ParentCategory.CHILDREN),
     CHILDREN_EDUCATION("Зона учебы", ParentCategory.CHILDREN),
@@ -87,6 +91,8 @@ public enum OrganizerCategory {
         DOCUMENTS("Документы"),
         CABLES("Провода"),
         CHILDREN("Детская"),
+        HALLWAY("Прихожая"),
+        AUTO("Автомобиль"),
 
         OTHER("Другое"),
 
