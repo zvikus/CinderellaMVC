@@ -15,8 +15,13 @@
     <main>
         <h1>ДОБАВИТЬ ОРГАНАЙЗЕР</h1>
 
+        <div th:if="${errorMessage}" >
+            <div th:utext="${errorMessage}" class="text-danger">
+
+            </div>
+        </div>
         <div th:if="${message}" >
-            <div th:utext="${message}" class="text-danger">
+            <div th:utext="${message}" class="text-success">
 
             </div>
         </div>

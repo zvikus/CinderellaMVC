@@ -13,9 +13,22 @@
     </header>
 
     <main>
-        <a th:href="@{/services/order}" class="left back-arrow">&larr;</a><h1>ОНЛАЙН ОРГАНИЗАЦИЯ</h1>
+        <a th:href="@{/services/order}" class="left back-arrow btn btn-outline-primary regular-button">&larr;</a><h1>ОНЛАЙН ОРГАНИЗАЦИЯ</h1>
+        <h2 style="text-decoration: underline;">1. Online организация по скайпу - 20руб/10$ в час.</h2>
 
-        <h2 style="text-decoration: underline;">1. ИНДИВИДУАЛЬНЫЙ ПЛАН ОРГАНИЗАЦИИ ОДНОЙ ЗОНЫ - 75р/40$</h2><br/>
+        <img th:src="@{/img/services/online/02.jpg}" class="reg-image right" style="max-width: 350px;"/>
+        <p class="fs-3 lead">
+            Услуга актуальна для тех, кто нуждается в организации дома, но личное присутствие организатора пространства невозможно в связи с удаленностью или другими причинами.
+            <br/><br/>
+            Как проходит работа:
+            <br/>
+            1. Клиент присылает фото/видео зоны, заполняет анкету с вопросами, мы договариваемся о дате и времени работы.
+            <br/>
+            2. Клиент оплачивает 2-4 часа работы (по договоренности).
+            <br/>
+            3. В назначенное время устанавливаем видеосвязь и клиент под моим непосредственным руководством организует выбранную зону в доме.
+        </p>
+        <h2 class="mt-5" style="text-decoration: underline;">2. ИНДИВИДУАЛЬНЫЙ ПЛАН ОРГАНИЗАЦИИ ОДНОЙ ЗОНЫ - 100р/40$</h2><br/>
 
         <img th:src="@{/img/services/online/01.jpg}" class="reg-image right" style="max-width: 350px;"/>
         <h2 style="text-decoration: underline;">Как проходит работа:</h2>
@@ -39,20 +52,14 @@
             <br/>
         </p>
 
-        <h2 style="text-decoration: underline;">2. Online организация по скайпу - 20руб/10$ в час.</h2>
-
-        <img th:src="@{/img/services/online/02.jpg}" class="reg-image right" style="max-width: 350px;"/>
-        <p class="fs-3 lead">
-            Услуга актуальна для тех, кто нуждается в организации дома, но личное присутствие организатора пространства невозможно в связи с удаленностью или другими причинами.
-            <br/><br/>
-            Как проходит работа:
-            <br/>
-            1. Клиент присылает фото/видео зоны, заполняет анкету с вопросами, мы договариваемся о дате и времени работы.
-            <br/>
-            2. Клиент оплачивает 2-4 часа работы (по договоренности).
-            <br/>
-            3. В назначенное время устанавливаем видеосвязь и клиент под моим непосредственным руководством организует выбранный участок работы.
+        <p>
+            <a class="btn btn-outline-primary regular-button" href="viber://add?number=375297658103">
+                Заказать
+            </a>
         </p>
+
+
+
     </main>
 
     <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">

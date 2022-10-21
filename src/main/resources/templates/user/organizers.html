@@ -347,7 +347,7 @@
                                 </form>
                                 <div class="dropdown-item">
                                     <form th:action="@{/user/createListAndAdd/} + ${el.id}" method="post">
-                                        <input class="" name="newListName" type="text" maxlength="24" placeholder="Новый список"/>
+                                        <input class="" name="newListName" type="text" maxlength="24" placeholder="Новый список" required/>
                                         <button class="btn btn-outline-primary regular-button" type="submit">OK</button>
                                     </form>
                                 </div>

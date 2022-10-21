@@ -56,6 +56,12 @@ public class ServicesController {
 
         return  "main/services/design/cabinet";
     }
+    @GetMapping("/design/audit")
+    public String auditPage(HttpServletRequest request, Model model) {
+        model.addAttribute("title", "Аудит");
+
+        return  "main/services/design/audit";
+    }
 
     @GetMapping("/design/kitchen")
     public String kitchenPage(HttpServletRequest request, Model model) {

@@ -15,8 +15,6 @@
     <main>
         <h1><span th:text="${service.name}"></span></h1>
         <div class="container">
-            <div th:utext="${service.description}" class="product-container" onmousedown='return false;' onselectstart='return false;'>Content</div>
-
             <p>
             <div class="col-md-2">
                 <div class="btn-group">
@@ -146,6 +144,8 @@
                 Если у Вас возникли проблемы с оплатой, <a class="text-muted" th:href="@{/contacts}">напишите нам</a>
             </p>
         </div>
+
+        <div th:utext="${service.description}" class="product-container" onmousedown='return false;' onselectstart='return false;'>Content</div>
 
     </main>
 

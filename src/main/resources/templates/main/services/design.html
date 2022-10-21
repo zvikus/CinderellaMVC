@@ -13,21 +13,21 @@
     </header>
 
     <main>
-        <a th:href="@{/}" class="left back-arrow">&larr;</a><h1>ПРОЕКТИРОВАНИЕ УДОБНОЙ МЕБЕЛИ</h1>
+        <a th:href="@{/}" class="left back-arrow btn btn-outline-primary regular-button">&larr;</a><h1>ПРОЕКТИРОВАНИЕ УДОБНОЙ МЕБЕЛИ</h1>
 
         <p class="lead">Я даю своим клиентам не только проект УДОБНОЙ мебели, но и приложение с раскладкой вещей в будущем шкафу или на кухне.<br/>
             И после установки мебели Вам остаётся просто разложить все свои вещи по указанным местам, подобранным индивидуально под нужды семьи.</p>
 
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal fs-5 smaller">План расстановки мебели</h4>
+                        <h4 class="my-0 fw-bold">Визуализация</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$50-$100</h1>
+                        <h1 class="card-title pricing-card-title">$40</h1>
                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><small class="text-muted fw-light">(3500₽-7000₽)</small></li>
+                            <li><small class="text-muted fw-light">(3000₽)</small></li>
                         </ul>
 
                         <a th:href="@{/services/design/arrangement}" >
@@ -43,12 +43,12 @@
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Проекты шкафов</h4>
+                        <h4 class="my-0 fw-bold">Проект шкафа</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$40-$80</h1>
+                        <h1 class="card-title pricing-card-title">$80-$120</h1>
                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><small class="text-muted fw-light">(3000₽-6000₽)</small></li>
+                            <li><small class="text-muted fw-light">(5000₽-7500₽)</small></li>
                         </ul>
                         <a th:href="@{/services/design/cabinet}" >
                             <div class="img-container">
@@ -63,12 +63,12 @@
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Проекты кухни</h4>
+                        <h4 class="my-0 fw-bold">Проект кухни</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$100-$300</h1>
+                        <h1 class="card-title pricing-card-title">$160</h1>
                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><small class="text-muted fw-light">(7000₽-21000₽)</small></li>
+                            <li><small class="text-muted fw-light">(10000₽)</small></li>
                         </ul>
                         <a th:href="@{/services/design/kitchen}" >
                             <div class="img-container">
@@ -77,6 +77,27 @@
                             </div>
                         </a>
                         <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="location.href = '/services/design/kitchen'">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-bold">Аудит проекта</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$30-$40</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li><small class="text-muted fw-light">(2000₽-2500₽)</small></li>
+                        </ul>
+                        <a th:href="@{/services/design/kitchen}" >
+                            <div class="img-container">
+                                <img th:src="@{/img/services/audit.jpg}" class="reg-image"  style="
+                                                max-width: 100%; max-height: 139px;
+"/>
+                            </div>
+                        </a>
+                        <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="location.href = '/services/design/audit'">Подробнее</button>
                     </div>
                 </div>
             </div>

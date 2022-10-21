@@ -211,7 +211,7 @@ public class AdminController {
                     applicationUrl,
                     organizerFromDB.get(0).getId()
             );
-            model.addAttribute("message", message);
+            model.addAttribute("errorMessage", message);
             model.addAttribute("organizer", organizer);
             model.addAttribute("categories", new HashSet<>());
             return "admin/addOrganizer";
@@ -265,7 +265,7 @@ public class AdminController {
                     applicationUrl,
                     organizerFromDB.get(0).getId()
             );
-            model.addAttribute("message", message);
+            model.addAttribute("errorMessage", message);
             model.addAttribute("organizer", new Organizer());
             model.addAttribute("categories", new HashSet<>());
             return "admin/addOrganizer";
@@ -279,7 +279,7 @@ public class AdminController {
                     applicationUrl,
                     organizerFromDB.get(0).getId()
             );
-            model.addAttribute("message", message);
+            model.addAttribute("errorMessage", message);
             model.addAttribute("organizer", organizer);
             model.addAttribute("categories", new HashSet<>());
             return "admin/addOrganizer";

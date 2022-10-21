@@ -9,6 +9,7 @@ import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -157,9 +158,12 @@ public class UserService implements UserDetailsService {
 
     public User getAuthUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        return userRepo.findByUsername(username);
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = auth.getName();
+            User user = userRepo.findByUsername(currentUserName);
+            return user;
+        }
+        return null;
     }
 
     public Currency getUserCurrency() {

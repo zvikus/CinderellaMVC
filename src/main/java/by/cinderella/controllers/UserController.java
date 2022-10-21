@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -129,23 +130,25 @@ public class UserController {
     }
 
     @GetMapping("/userOrganizers/{organizerListId}/remove")
-    public String removeOrganizerList(HttpServletRequest request, Model model,
+    public String removeOrganizerList(Authentication authentication,
+                                      HttpServletRequest request, Model model,
                                       @PathVariable("organizerListId") Long organizerListId) {
         Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
         if (organizerList.isPresent()) {
-            User user = userService.getAuthUser();
-            Set<OrganizerList> userOrganizerList = user.getOrganizerLists();
-            userOrganizerList.remove(organizerList.get());
-            user.setOrganizerLists(userOrganizerList);
-            userRepo.save(user);
             for(UserOrganizer userOrganizer: organizerList.get().getUserOrganizerList()) {
                 userOrganizer.setOrganizerList(null);
+                userOrganizer.setOrganizer(null);
                 userOrganizerRepo.delete(userOrganizer);
-
             }
-            organizerList.get().setUserOrganizerList(null);
-            organizerList.get().setUser(null);
+
+            organizerList.get().setUserOrganizerList(new HashSet<>());
+            organizerList.get().setUser(new User());
             organizerListRepo.delete(organizerList.get());
+            User user = userService.getAuthUser();
+            user.getOrganizerLists().size();
+            user.getOrganizerLists().remove(organizerList.get());
+            userRepo.save(user);
+
         }
         return "redirect:/user/userOrganizers";
     }

@@ -26,7 +26,8 @@ public class OrganizerList {
     @OneToMany(mappedBy="organizerList", fetch=FetchType.EAGER)
     private Set<UserOrganizer> userOrganizerList = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY,optional=true)
+    @ManyToOne(fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL,optional=true)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 

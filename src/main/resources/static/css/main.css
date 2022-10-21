@@ -123,9 +123,9 @@ footer {
 
 .btn-outline-primary.regular-button,
 .card .btn-outline-primary {
-    color: #6370a4;
-    border-color: #6370a4;
-    font-weight: bold;
+    color: #fff;
+        background-color: #6370a4;
+        font-weight: bold;
 }
 
 .btn-outline-primary.regular-button:hover {
@@ -136,14 +136,17 @@ footer {
 .btn-outline-primary.regular-button:active,
 .card .btn-outline-primary:hover,
 .card .btn-outline-primary:active {
-    color: #fff;
-    background-color: #6370a4;
+    font-weight: bold;
+    color: #6370a4;
+    background-color: #fff;
+    border-color: #6370a4;
 }
 
 a.back-arrow {
     text-decoration: none;
     font-size: 58px;
-    line-height: 40px;
+    line-height: 34px;
+    padding-top: 2px;
 }
 
 .organizer-image {
