@@ -16,23 +16,7 @@
         <a th:href="@{/}" class="left back-arrow btn btn-outline-primary regular-button">&larr;</a><h1>ПОРЯДОК В ДОМЕ</h1>
 
         <div class="row row-cols-2 row-cols-md-2 mb-3 text-center">
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-bold">Выездная организация</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">25 BYN<small class="text-muted fw-light">/час</small></h1>
-                        <a th:href="@{/services/order/exitService}" >
-                            <div class="img-container">
-                                <img th:src="@{/img/services/orderExitService.jpg}" class="reg-image"  style="
-                                                max-width: 100%;"/>
-                            </div>
-                        </a>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="location.href = '/services/order/exitService'">Подробнее</button>
-                    </div>
-                </div>
-            </div>
+
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
@@ -50,7 +34,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
@@ -68,6 +51,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
@@ -86,7 +70,23 @@
                     </div>
                 </div>
             </div>
-
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-bold">Выездная организация</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">25 BYN<small class="text-muted fw-light">/час</small></h1>
+                        <a th:href="@{/services/order/exitService}" >
+                            <div class="img-container">
+                                <img th:src="@{/img/services/orderExitService.jpg}" class="reg-image"  style="
+                                                max-width: 100%;"/>
+                            </div>
+                        </a>
+                        <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="location.href = '/services/order/exitService'">Подробнее</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

@@ -1,12 +1,15 @@
 package by.cinderella.controllers;
 
+import by.cinderella.config.Constants;
 import by.cinderella.model.currency.Currency;
+import by.cinderella.model.organizer.Filter;
 import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Service;
 import by.cinderella.model.user.User;
 import by.cinderella.repos.RestrictionRepo;
 import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.CinderellaMailSender;
 import by.cinderella.services.CurrencyRateService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -32,6 +33,9 @@ public class MainController {
 
         return  "index";
     }
+
+    @Autowired
+    private CinderellaMailSender mailSender;
 
     @Value("${organizer.search.service.id}")
     private Long searchServiceId;
@@ -74,8 +78,12 @@ public class MainController {
     @GetMapping("/organizersServiceDetails")
     public String organizersServiceDetails(HttpServletRequest request, Model model) {
         Currency userCurrency = Currency.BYN;
+        if (request.getSession().getAttribute("currency") != null) {
+            userCurrency = (Currency) request.getSession().getAttribute("currency");
+        }
         Service service = serviceRepo.findById(searchServiceId).get();
         model.addAttribute("service", service);
+        model.addAttribute("userCurrency", userCurrency);
 
         model.addAttribute("userServiceCost",
                 CurrencyRateService.convert(service.getCost(),
@@ -102,6 +110,25 @@ public class MainController {
                         userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
         return "user/organizersServiceDetails";
     }
+
+
+    @GetMapping("/changeCurrency/{currencyName}/{serviceId}")
+    public String changeCurrency(HttpServletRequest request, Model model,
+                                 @PathVariable("currencyName") String currencyName,
+                                 @PathVariable("serviceId") String serviceId){
+        Currency currency = Currency.valueOf(currencyName);
+        if (currency!=null) {
+            if (request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER) != null) {
+                Filter filterFromSession = (Filter) request.getSession().getAttribute(Constants.SESSION_ORGANIZER_FILTER);
+                filterFromSession.setPriceFrom(null);
+                filterFromSession.setPriceTo(null);
+                request.getSession().setAttribute(Constants.SESSION_ORGANIZER_FILTER, filterFromSession);
+            }
+            request.getSession().setAttribute("currency", currency);
+        }
+        return "redirect:/organizersServiceDetails";
+    }
+
 
     @PostMapping("/yoomoneyPayment")
     public ResponseEntity yoomoneyPayment(@RequestParam("operation_id") String operationId,
@@ -139,9 +166,28 @@ public class MainController {
             user.get().getRestrictions().add(restriction);
             userRepo.save(user.get());
             restrictionRepo.save(restriction);
+
+            //TODO: refactor: move to service
+            StringBuilder message = new StringBuilder(
+                    "Здравствуйте, " + user.get().getUsername() + "!\n" +
+                            "Услуга \"" + service.get().getName() + "\" успешно добавлена!\n"
+            );
+
+            if (service.get().isSubscription()) {
+                message.append("Подписка истекает " + new SimpleDateFormat("dd-MM-YYYY").format(restriction.getExpirationDate()) + "\n");
+            }
+
+            message.append( "Спасибо! Всего Вам доброго!");
+
+            mailSender.send(user.get().getEmail(),
+                    "Сообщение о добавлении услуги",
+                    message.toString());
         } else {
             return ResponseEntity.badRequest().build();
         }
+
+
+
         return ResponseEntity.ok().build();
     }
 }

@@ -1,5 +1,6 @@
 package by.cinderella.controllers;
 
+import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Role;
 import by.cinderella.model.user.Service;
@@ -7,15 +8,19 @@ import by.cinderella.model.user.User;
 import by.cinderella.repos.RestrictionRepo;
 import by.cinderella.repos.ServiceRepo;
 import by.cinderella.repos.UserRepo;
+import by.cinderella.services.CinderellaMailSender;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Calendars;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -39,6 +44,8 @@ public class SuperAdminController {
     RestrictionRepo restrictionRepo;
     @Autowired
     UserService userService;
+    @Autowired
+    private CinderellaMailSender mailSender;
 
     @GetMapping("/users")
     public String getUsers(HttpServletRequest request, Model model) {
@@ -146,16 +153,18 @@ public class SuperAdminController {
 
         restriction.setActivationDate(new Date());
 
-        if (service.isPresent() && service.get().isSubscription()) {
-            Date serviceExpirationDate = userService.getServiceExpirationDate(serviceId.get(), user.get());
-            if (serviceExpirationDate == null) {
-                serviceExpirationDate = new Date();
+        if (service.isPresent()) {
+            if (service.get().isSubscription()) {
+                Date serviceExpirationDate = userService.getServiceExpirationDate(serviceId.get(), user.get());
+                if (serviceExpirationDate == null) {
+                    serviceExpirationDate = new Date();
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(serviceExpirationDate);
+                cal.add(Calendar.MONTH, term.get());
+                restriction.setExpirationDate(cal.getTime());
             }
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(serviceExpirationDate);
-            cal.add(Calendar.MONTH, term.get());
-            restriction.setExpirationDate(cal.getTime());
-            service.ifPresent(value -> restriction.setService(service.get()));
+            restriction.setService(service.get());
         }
 
         user.ifPresent(value -> {
@@ -165,6 +174,22 @@ public class SuperAdminController {
 
         userRepo.save(user.get());
         restrictionRepo.save(restriction);
+
+
+        StringBuilder message = new StringBuilder(
+                "Здравствуйте, " + user.get().getUsername() + "!\n" +
+                        "Услуга \"" + service.get().getName() + "\" успешно добавлена!\n"
+        );
+
+        if (service.get().isSubscription()) {
+            message.append("Подписка истекает " + new SimpleDateFormat("dd-MM-YYYY").format(restriction.getExpirationDate()) + "\n");
+        }
+
+        message.append( "Спасибо! Всего Вам доброго!");
+
+        mailSender.send(user.get().getEmail(),
+                "Сообщение о добавлении услуги",
+                message.toString());
 
         return "redirect:/admin/user/" + userId.get() + "/edit";
     }
