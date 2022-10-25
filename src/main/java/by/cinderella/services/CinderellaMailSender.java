@@ -36,7 +36,7 @@ public class CinderellaMailSender {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("cinderella.minsk.service@gmail.com","lhiepbmdvdqrgwxi");
+                        return new PasswordAuthentication("cinderella.minsk.service@gmail.com","qtpkheqovfmjkiat");
                     }
                 });
         //compose message

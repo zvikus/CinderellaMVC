@@ -64,7 +64,13 @@
                             <h2 class="my-0 fw-bold">База органайзеров</h2>
                         </div>
                         <div class="card-body">
-                            <a th:href="@{/services/design}" >
+                            <a th:href="@{/organizersServiceDetails}" sec:authorize="!isAuthenticated()" >
+                                <div class="img-container">
+                                    <img th:src="@{/img/organizerDBService.png}" class="reg-image"  style="
+                                                max-width: 77%;"/>
+                                </div>
+                            </a>
+                            <a th:href="@{/user/organizers}" sec:authorize="isAuthenticated()" >
                                 <div class="img-container">
                                     <img th:src="@{/img/organizerDBService.png}" class="reg-image"  style="
                                                 max-width: 77%;"/>
@@ -81,7 +87,7 @@
                             <h2 class="my-0 fw-bold">Онлайн продукты</h2>
                         </div>
                         <div class="card-body">
-                            <a th:href="@{/services/design}" >
+                            <a th:href="@{/onlineServices}" >
                                 <div class="img-container">
                                     <img th:src="@{/img/onlineServices.jpg}" class="reg-image"  style="
                                                 max-width: 92%;"/>
