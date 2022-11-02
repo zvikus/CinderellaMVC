@@ -56,6 +56,7 @@ public enum OrganizerCategory {
     OTHER_RELOCATION("Переезд", ParentCategory.OTHER),
     OTHER_NEEDLEWORK("Рукоделие", ParentCategory.OTHER),
     KITCHEN_PETS("Домашние животные", ParentCategory.OTHER),
+    OTHER_BRIEFCASE("Чемоданчик ОП", ParentCategory.OTHER),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
     BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),

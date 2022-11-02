@@ -217,10 +217,13 @@ public class AdminController {
             return "admin/addOrganizer";
         }
 
-        organizerFromDB = organizerRepo.findByArticleNumber(organizer.getArticleNumber());
+        if (organizer.getArticleNumber() != null
+                    && !organizer.getArticleNumber().isEmpty()) {
+            organizerFromDB = organizerRepo.findByArticleNumber(organizer.getArticleNumber());
+        }
 
         if (!organizerFromDB.isEmpty()) {
-            String message = String.format("Органайзер с таким артиклем уже существует!\n" +
+            String message = String.format("Органайзер с таким артикулом уже существует!\n" +
                             "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
                     applicationUrl,
                     organizerFromDB.get(0).getId()
@@ -274,7 +277,7 @@ public class AdminController {
         organizerFromDB = organizerRepo.findByArticleNumber(organizer.getLink());
 
         if (!organizerFromDB.isEmpty()) {
-            String message = String.format("Органайзер с таким артиклем уже существует!\n" +
+            String message = String.format("Органайзер с таким артикулом уже существует!\n" +
                             "<a href=\"%s/admin/organizer/%s/edit\">Ссылка на органайзер.</a>",
                     applicationUrl,
                     organizerFromDB.get(0).getId()

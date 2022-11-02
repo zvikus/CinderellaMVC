@@ -5,7 +5,7 @@ import by.cinderella.model.currency.Currency;
 public enum Seller {
     WB("Wildberries", Currency.RUB, null),
     IKEA("IKEA", Currency.BYN, null),
-    OZON("Ozon", Currency.BYN, null),
+    OZON("Ozon", Currency.RUB, null),
     ALIEXPRESS("AliExpress", Currency.USD, null),
     ABRA_BY("abra.by", Currency.BYN, null),
     THREE_PRICE("Три цены", Currency.BYN, null),

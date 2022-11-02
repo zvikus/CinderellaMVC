@@ -153,7 +153,7 @@ public class MainController {
                 Integer term = new Integer(params[2]);
 
                 Date serviceExpirationDate = userService.getServiceExpirationDate(serviceId, userId);
-                if (serviceExpirationDate == null) {
+                if (serviceExpirationDate == null || serviceExpirationDate.before(new Date())) {
                     serviceExpirationDate = new Date();
                 }
                 Calendar cal = Calendar.getInstance();

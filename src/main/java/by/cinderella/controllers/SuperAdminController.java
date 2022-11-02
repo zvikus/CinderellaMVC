@@ -156,7 +156,7 @@ public class SuperAdminController {
         if (service.isPresent()) {
             if (service.get().isSubscription()) {
                 Date serviceExpirationDate = userService.getServiceExpirationDate(serviceId.get(), user.get());
-                if (serviceExpirationDate == null) {
+                if (serviceExpirationDate == null || serviceExpirationDate.before(new Date())) {
                     serviceExpirationDate = new Date();
                 }
                 Calendar cal = Calendar.getInstance();
