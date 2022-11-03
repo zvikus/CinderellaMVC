@@ -81,6 +81,9 @@
 
 
                 <td>
+                    <a class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizersGroupedList/} + ${el.id} +  @{/show}" sec:authorize="hasAuthority('ADMIN')">
+                        Группировка
+                    </a><br/>
                     <button type="button" class="btn btn-outline-primary regular-button " data-toggle="modal" th:data-target="@{#remove} + ${el.id}">
                         Удалить
                     </button>
@@ -96,6 +99,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
+
+
                                     <form th:action="@{/user/userOrganizers/} + ${el.id} + @{/remove}">
                                         <button type="submit" class="btn btn-outline-primary regular-button">Удалить</button>
                                     </form>

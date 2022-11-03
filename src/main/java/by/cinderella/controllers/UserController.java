@@ -28,6 +28,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Component
 @RequestMapping("/user")
 @PreAuthorize("hasAnyAuthority('USER, ADMIN, SADMIN')")
@@ -124,6 +126,20 @@ public class UserController {
             OrganizerPDFExporter exporter = new OrganizerPDFExporter(uploadPath, organizerList.get(),
                                                             currencyRateService,
                                                             userService);
+
+            exporter.export(response);
+        }
+    }
+
+    @GetMapping("/userOrganizers/downloadGroupPdf/{organizerListId}/{fileName}.pdf")
+    public void exportGroupToPDF(HttpServletResponse response,
+                            @PathVariable("organizerListId") Long organizerListId)
+            throws IOException, DocumentException, URISyntaxException {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
+        if (organizerList.isPresent()) {
+            OrganizerGroupPdfExporter exporter = new OrganizerGroupPdfExporter(uploadPath, organizerList.get(),
+                    currencyRateService,
+                    userService);
 
             exporter.export(response);
         }
@@ -233,6 +249,19 @@ public class UserController {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+
+    @PostMapping("/addToGroup/{organizerId}/{group}")
+    public ResponseEntity<String> addOrganizerToUserListGroup(HttpServletRequest request, Model model,
+                                                         @PathVariable("organizerId") Long organizerId,
+                                                         @PathVariable("group") String group) {
+        Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(organizerId);
+        userOrganizer.get().setOrganizerGroup(group);
+
+        userOrganizerRepo.save(userOrganizer.get());
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+
     @PostMapping("/createListAndAdd/{organizerId}")
     public String addOrganizerToUserList(HttpServletRequest request, Model model,
                                                          @PathVariable("organizerId") Long organizerId,
@@ -252,6 +281,20 @@ public class UserController {
         }
 
         return "redirect:/user/organizers";
+    }
+
+    @PostMapping("/createGroupAndAdd/{organizerId}")
+    public String createGroupAndAdd(HttpServletRequest request, Model model,
+                                         @PathVariable("organizerId") Long organizerId,
+                                        @RequestParam("organizerListId") String organizerListId,
+                                         @RequestParam("newGroupName") String newGroupName) {
+
+        Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(organizerId);
+        userOrganizer.get().setOrganizerGroup(newGroupName);
+
+        userOrganizerRepo.save(userOrganizer.get());
+
+        return "redirect:/user/userOrganizersGroupedList/" + organizerListId + "/show";
     }
 
     private void _addOrganizerToList(Organizer organizer, OrganizerList organizerList) {
@@ -279,7 +322,36 @@ public class UserController {
         return "user/userOrganizersList";
     }
 
+    @GetMapping("/userOrganizersGroupedList/{organizerListId}/show")
+    public String getUserOrganizersGroupedList(HttpServletRequest request, Model model,
+                                        @PathVariable("organizerListId") Long organizerListId) {
+        Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
 
+        model.addAttribute("organizerList", organizerList.get());
+
+        /*Map<String, List<UserOrganizer>> organizerListsGroup = organizerList.get().getUserOrganizerList().stream()
+                .collect(groupingBy(UserOrganizer::getOrganizerGroup));*/
+
+        Map<String, List<UserOrganizer>> organizerListsGroup =
+                organizerList.get().getUserOrganizerList().stream()
+                        .collect(groupingBy(m -> m.getOrganizerGroup() == null ?
+                                "Без категории" : m.getOrganizerGroup()));
+
+        for (Map.Entry<String, List<UserOrganizer>> entry : organizerListsGroup.entrySet()) {
+            List<UserOrganizer> sortedList;
+            sortedList = entry.getValue().stream().
+                    sorted((a,b) -> a.getOrganizer().getAbsolutePrice().compareTo(b.getOrganizer().getAbsolutePrice())).collect(Collectors.toList());
+            entry.setValue(sortedList);
+        }
+
+        model.addAttribute("organizerGroupedMap", organizerListsGroup);
+        model.addAttribute("organizerListsGroups", organizerList.get().getUserOrganizerList().stream().
+                map(UserOrganizer::getOrganizerGroup).
+                distinct().toArray()
+                    );
+
+        return "user/userOrganizersGroupedLists";
+    }
 
     @GetMapping("/organizers")
     public String organizerPage(HttpServletRequest request, Model model,

@@ -14,6 +14,8 @@ public class UserOrganizer {
     private int count;
     private String comment;
 
+    private String organizerGroup;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "organizer_id", referencedColumnName = "id")
     private Organizer organizer;
@@ -61,5 +63,13 @@ public class UserOrganizer {
 
     public void setOrganizerList(OrganizerList organizerList) {
         this.organizerList = organizerList;
+    }
+
+    public String getOrganizerGroup() {
+        return organizerGroup;
+    }
+
+    public void setOrganizerGroup(String organizerGroup) {
+        this.organizerGroup = organizerGroup;
     }
 }

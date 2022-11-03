@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head th:insert="blocks/user/userHead :: userHead">
+
+</head>
+
+<body>
+
+<div class="container py-3">
+  <header th:insert="blocks/header :: header">
+
+  </header>
+
+  <main>
+    <h1 th:text="${organizerList.name}"></h1>
+
+    <!--        <a class="me-3 py-2 text-dark text-decoration-none" th:href="@{/admin/addOrganizer}">Добавить</a>-->
+    <div class="bd-example mb-3">
+      <!--            <form th:action="@{/user/userOrganizers/} + ${organizerList.id} + @{/pdf.pdf}" method="get">-->
+      <!--                <button class="btn btn-outline-primary regular-button"-->
+      <!--                        type="submit">-->
+      <!--                    Скачать PDF-->
+      <!--                </button>-->
+      <!--            </form>-->
+      <a  class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizers/downloadGroupPdf/} + ${organizerList.id} + @{/} + ${organizerList.name}+ @{.pdf}" target="_blank" download>
+        Скачать PDF
+      </a>
+    </div>
+    <table class="table table-striped table-sm table-hover">
+      <thead>
+      <tr>
+        <th>
+          &nbsp;
+        </th>
+        <th>
+          Название
+        </th>
+        <th>
+          Цена(<span th:text="${@userService.getAuthUser().currency.CUR_ABBREVIATION}"/>)
+        </th>
+        <th>
+          Ширина
+        </th>
+        <th>
+          Глубина
+        </th>
+        <th>
+          Высота
+        </th>
+        <th>
+          Комментарий
+        </th>
+        <th>
+          Категория
+        </th>
+        <th>
+          Материал
+        </th>
+        <th>
+          Продавец
+        </th>
+        <th>
+          Группа
+        </th>
+
+
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="el : ${organizerList.userOrganizerList}" class="">
+        <td>
+          <a th:href="${el.organizer.link}"  target="_blank">
+            <img th:src="@{/image/} + ${el.organizer.imageName}" class="organizer-image">
+          </a>
+        </td>
+        <td>
+          <a th:href="${el.organizer.link}" target="_blank">
+            <h4 th:text="${el.organizer.name}"/>
+            <span  class="badge badge-info" th:text="${el.organizer.seller?.promo}"></span>
+          </a>
+          <a class="link-copy" th:attr="data-url=${el.organizer.link}" href="#do_nothing">
+            <img th:src="@{/img/icons/copy.png}" width="30" height="30">
+          </a>
+        </td>
+        <td class="price-font" th:text="${@currencyRateService.getPrice(el.organizer)}"/>
+
+        <td th:text="${el.organizer.width}"/>
+        <td th:text="${el.organizer.length}"/>
+        <td th:text="${el.organizer.height}"/>
+        <td class="fs-5">
+          <form th:action="@{/user/userOrganizer/} + ${el.id} + @{/edit}" method="post" th:id="@{editForm} + ${el.id}" >
+                        <textarea name="comment" maxlength="254"
+                                  th:text="${el.comment}"
+                                  class="form-control rounded-4 auto-submit-form">
+                        </textarea>
+          </form>
+        </td>
+
+        <td class="fs-6">
+          <ul>
+            <li class="list-unstyled" th:each="category : ${el.organizer.categories}">
+              <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+            </li>
+          </ul>
+
+        </td>
+
+        <td th:text="${el.organizer.material?.label}" class="fs-5"/>
+        <td th:text="${el.organizer.seller.label}" class="fs-5"/>
+        <td th:id="@{group} + ${el.id} " th:text="${el.organizerGroup}"/>
+
+
+        <td class="alert-box">
+          <div class="btn-group dropleft">
+            <button class="btn btn-outline-primary regular-button dropdown-toggle"
+                    type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Добавить в группу
+            </button>
+            <div class="dropdown-menu" >
+              <form class="dropdown-item addToUserListForm" th:each="organizerGroup : ${organizerListsGroups}"
+                    th:action="@{/user/addToGroup/} + ${el.id} + @{/} + ${organizerGroup}"
+                    method="post" th:id="@{addToList} + ${el.id} + @{/} + ${organizerGroup}" >
+                <input type="hidden" name="organizerId" th:value="${el.id}"/>
+                <input type="hidden" name="organizerGroup" th:value="${organizerGroup}"/>
+                <a class="dropdown-item add-to-group-link" th:text="${organizerGroup}"/>
+              </form>
+              <div class="dropdown-item">
+                <form th:action="@{/user/createGroupAndAdd/} + ${el.id}" method="post">
+                  <input type="hidden" name="organizerListId" th:value="${organizerList.id}"/>
+                  <input class="" name="newGroupName" type="text" maxlength="24" placeholder="Новая группа" required/>
+                  <button class="btn btn-outline-primary regular-button" type="submit">OK</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-primary" role="alert" id="success-alert" style="display: none;">
+            <strong>Добавлено! </strong>
+          </div>
+
+          <a class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove}">Удалить</a><br/>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </main>
+
+  <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
+
+  </footer>
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>
