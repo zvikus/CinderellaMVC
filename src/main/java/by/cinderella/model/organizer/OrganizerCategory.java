@@ -19,7 +19,7 @@ public enum OrganizerCategory {
     CABINET_TIE("Галстуки", ParentCategory.CABINET),
     CABINET_TROUSERS("Брюки", ParentCategory.CABINET),
     CABINET_SCARF("Шарфы", ParentCategory.CABINET),
-    CABINET_MEZZANINE("Антресоли", ParentCategory.CABINET),
+//    CABINET_MEZZANINE("Антресоли", ParentCategory.CABINET),
     CABINET_HEADDRESS("Головные уборы", ParentCategory.CABINET),
     CABINET_SLIDING_SHELVES("Выдвижные полки", ParentCategory.CABINET),
     CABINET_WARDROBE("Гардеробная", ParentCategory.CABINET),
@@ -49,14 +49,17 @@ public enum OrganizerCategory {
     DOCUMENTS_VERTICAL("Вертикальное хранение", ParentCategory.DOCUMENTS),
     DOCUMENTS_HORIZONTAL("Гориз-е хранение", ParentCategory.DOCUMENTS),
 
-    MEDICINE_MEDICINE("Аптечка", ParentCategory.MEDICINE),
-    CABLES_CABLES("Хранение проводов и батареек", ParentCategory.CABLES),
+    MEDICINE_MEDICINE("Аптечка", ParentCategory.OTHER),
+    CABLES_CABLES("Хранение проводов и батареек", ParentCategory.OTHER),
     OTHER_GARAGE("Гараж", ParentCategory.OTHER),
     OTHER_BALCONY("Балкон/Кладовка", ParentCategory.OTHER),
     OTHER_RELOCATION("Переезд", ParentCategory.OTHER),
     OTHER_NEEDLEWORK("Рукоделие", ParentCategory.OTHER),
     KITCHEN_PETS("Домашние животные", ParentCategory.OTHER),
     OTHER_BRIEFCASE("Чемоданчик ОП", ParentCategory.OTHER),
+    OTHER_TRAVEL("Для путешествий", ParentCategory.OTHER),
+    HALLWAY_RESERVES("Прихожая", ParentCategory.OTHER),
+    AUTO_RESERVES("Автомобиль", ParentCategory.OTHER),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
     BATHROOM_SHOWER("Зона душа", ParentCategory.BATHROOM),
@@ -64,9 +67,6 @@ public enum OrganizerCategory {
     BATHROOM_COSMETICS("Косметика", ParentCategory.BATHROOM),
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
     BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM),
-
-    HALLWAY_RESERVES("Хранение", ParentCategory.HALLWAY),
-    AUTO_RESERVES("Хранение", ParentCategory.AUTO),
 
     CHILDREN_CREATION("Зона творчества", ParentCategory.CHILDREN),
     CHILDREN_BOARD_GAMES("Настольные игры", ParentCategory.CHILDREN),
@@ -77,7 +77,7 @@ public enum OrganizerCategory {
 
 
     public final ParentCategory parentCategory;
-    public final String label;
+    private final String label;
 
     private OrganizerCategory(String label, ParentCategory parentCategory) {
         this.label = label;
@@ -103,6 +103,15 @@ public enum OrganizerCategory {
 
         ParentCategory(String label) {
             this.label = label;
+        }
+    }
+
+    public String getLabel() {
+        if (!this.parentCategory.equals(ParentCategory.OTHER)
+                && !this.parentCategory.equals(ParentCategory.MEDICINE)) {
+            return this.parentCategory.label + ": " + this.label;
+        } else {
+            return this.label;
         }
     }
 }

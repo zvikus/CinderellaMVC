@@ -160,7 +160,7 @@
                                             />
                                             <label class="custom-control-label"
                                                    th:for="${feat}"
-                                                   th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"
+                                                   th:text="${feat.label}"
                                             />
                                         </li>
                                     </ul>
@@ -324,7 +324,7 @@
                     <td class="fs-6">
                         <ul>
                             <li class="list-unstyled" th:each="category : ${el.categories}">
-                                <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+                                <span th:text="${category.label}"/>
                             </li>
                         </ul>
 

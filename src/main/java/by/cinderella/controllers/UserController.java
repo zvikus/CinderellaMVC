@@ -490,7 +490,7 @@ public class UserController {
         if (filter.getCategories() != null && !filter.getCategories().isEmpty()) {
             userFilter = new StringBuilder("Выбранные категории: ");
             for(OrganizerCategory category:filter.getCategories()) {
-                userFilter.append(" \"" + category.parentCategory.label + ": " + category.label + "\"");
+                userFilter.append(" \"" + category.getLabel() + "\"");
             }
             activeUserFilters.add(userFilter.toString());
         }

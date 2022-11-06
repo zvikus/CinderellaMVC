@@ -88,7 +88,7 @@ public class OrganizerPDFExporter {
 
             StringBuilder categories = new StringBuilder();
             for (OrganizerCategory category : organizer.getCategories()) {
-                categories.append(category.parentCategory.label).append(": ").append(category.label).append("\n");
+                categories.append(category.getLabel()).append("\n");
             };
 
             table.addCell(new Phrase(categories.toString(), regularFont));

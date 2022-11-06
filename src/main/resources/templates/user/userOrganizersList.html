@@ -92,7 +92,7 @@
                 <td class="fs-6">
                     <ul>
                         <li class="list-unstyled" th:each="category : ${el.organizer.categories}">
-                            <span th:text="${category.parentCategory.label + ': ' + category.label}"/>
+                            <span th:text="${category.label}"/>
                         </li>
                     </ul>
 
