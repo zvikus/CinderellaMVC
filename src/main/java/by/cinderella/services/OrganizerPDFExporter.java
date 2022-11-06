@@ -24,10 +24,10 @@ public class OrganizerPDFExporter {
 
     CurrencyRateService currencyRateService;
 
-    private OrganizerList organizerList;
-    private BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
-    private String uploadPath;
-    private BaseColor fontColor = new BaseColor(99, 122, 164);
+    protected OrganizerList organizerList;
+    protected BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
+    protected String uploadPath;
+    protected BaseColor fontColor = new BaseColor(99, 122, 164);
 
 
     public OrganizerPDFExporter(String uploadPath,

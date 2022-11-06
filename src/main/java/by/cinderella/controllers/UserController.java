@@ -335,7 +335,7 @@ public class UserController {
         Map<String, List<UserOrganizer>> organizerListsGroup =
                 organizerList.get().getUserOrganizerList().stream()
                         .collect(groupingBy(m -> m.getOrganizerGroup() == null ?
-                                "Без категории" : m.getOrganizerGroup()));
+                                "Без группы" : m.getOrganizerGroup()));
 
         for (Map.Entry<String, List<UserOrganizer>> entry : organizerListsGroup.entrySet()) {
             List<UserOrganizer> sortedList;
