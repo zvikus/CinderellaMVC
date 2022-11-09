@@ -33,7 +33,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Component
 @RequestMapping("/user")
 @PreAuthorize("hasAnyAuthority('USER, ADMIN, SADMIN')")
-public class UserController {
+public class UserController extends BaseController {
     @Value("${organizer.search.service.id}")
     private Integer searchServiceId;
 
@@ -54,9 +54,6 @@ public class UserController {
 
     @Autowired
     private OrganizerRepo organizerRepo;
-
-    @Autowired
-    private OrganizerService organizerService;
 
     @Autowired
     private UserService userService;

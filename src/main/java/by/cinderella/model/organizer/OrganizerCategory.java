@@ -52,13 +52,13 @@ public enum OrganizerCategory {
     MEDICINE_MEDICINE("Аптечка", ParentCategory.OTHER),
     CABLES_CABLES("Хранение проводов и батареек", ParentCategory.OTHER),
     OTHER_GARAGE("Гараж", ParentCategory.OTHER),
-    OTHER_BALCONY("Балкон/Кладовка", ParentCategory.OTHER),
+    OTHER_BALCONY("Балкон/Кладовка", ParentCategory.BALCONY),
     OTHER_RELOCATION("Переезд", ParentCategory.OTHER),
     OTHER_NEEDLEWORK("Рукоделие", ParentCategory.OTHER),
     KITCHEN_PETS("Домашние животные", ParentCategory.OTHER),
     OTHER_BRIEFCASE("Чемоданчик ОП", ParentCategory.OTHER),
     OTHER_TRAVEL("Для путешествий", ParentCategory.OTHER),
-    HALLWAY_RESERVES("Прихожая", ParentCategory.OTHER),
+    HALLWAY_RESERVES("Хранение", ParentCategory.HALLWAY),
     AUTO_RESERVES("Автомобиль", ParentCategory.OTHER),
 
     BATHROOM_WASHBATHIN("Зона умывальника", ParentCategory.BATHROOM),
@@ -94,6 +94,7 @@ public enum OrganizerCategory {
         CHILDREN("Детская"),
         HALLWAY("Прихожая"),
         AUTO("Автомобиль"),
+        BALCONY("Балкон"),
 
         OTHER("Другое"),
 
@@ -113,5 +114,9 @@ public enum OrganizerCategory {
         } else {
             return this.label;
         }
+    }
+
+    public String getShortLabel() {
+        return this.label;
     }
 }

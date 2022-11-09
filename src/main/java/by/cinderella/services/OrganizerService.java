@@ -2,6 +2,7 @@ package by.cinderella.services;
 
 import by.cinderella.model.currency.Currency;
 import by.cinderella.model.organizer.*;
+import by.cinderella.model.user.User;
 import by.cinderella.repos.OrganizerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -89,12 +90,12 @@ public class OrganizerService {
         return organizerPage;
     }
 
-    public Page<Organizer> findUserPaginated(Pageable pageable) {
+    public Page<Organizer> findUserPaginated(Pageable pageable, User user) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         Page<Organizer> organizerPage =
                 organizerRepo.findByCreatedBy(
-                        userService.getAuthUser(),
+                        user,
                         PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, "lastUpdated").and(Sort.by("name"))));
 
         return organizerPage;

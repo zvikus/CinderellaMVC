@@ -84,8 +84,10 @@
                     </td>
 
                     <td>
-                        <a onclick="" th:href="@{/admin/user/} + ${el.id} + @{/remove}">Удалить</a><br/>
-                        <a th:href="@{/admin/user/} + ${el.id} + @{/edit}">Редактировать</a>
+
+                        <a class="btn btn-info mb-2" th:href="@{/admin/user/} + ${el.id} + @{/edit}">Редактировать</a>
+                        <a class="btn btn-info mb-2" th:href="@{/admin/user/} + ${el.id} + @{/organizers}">Внесенные органайзеры</a>
+                        <a class="btn btn-danger mb-2" onclick="" th:href="@{/admin/user/} + ${el.id} + @{/remove}">Удалить</a><br/>
                     </td>
                 </tr>
                 </tbody>

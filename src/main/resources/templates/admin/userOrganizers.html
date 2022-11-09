@@ -13,7 +13,7 @@
     </header>
 
     <main>
-        <h1>МОИ ВНЕСЕННЫЕ ОРГАНАЙЗЕРЫ</h1>
+        <h1 th:text="${header}">МОИ ВНЕСЕННЫЕ ОРГАНАЙЗЕРЫ</h1>
         <div class="bd-example">
             <div class="row">
                 <div class="col-md-2">
@@ -55,6 +55,9 @@
                 <th>
                     Продавец
                 </th>
+                <th>
+                    Дата редактирования
+                </th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -90,7 +93,7 @@
 
                 <td th:text="${el.material?.label}" class="fs-5"/>
                 <td th:text="${el.seller.label}" class="fs-5"/>
-
+                <td th:text="${#calendars.format(el.lastUpdated, 'dd/MMM/yyyy HH:mm')}" class="fs-5"/>
 
                 <td>
                     <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}" class="btn btn-outline-primary regular-button mb-2">Редактировать</a>
@@ -103,22 +106,22 @@
 
 
         <nav aria-label="...">
-            <ul class="pagination">
+            <ul class="pagination" th:with="currentUrl=(${#httpServletRequest.requestURI})">
                 <li th:class="${organizerPage.number == 0} ? 'page-item disabled' : 'page-item'" class="page-item ">
-                    <a class="page-link" th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${organizerPage.number})}"
+                    <a class="page-link" th:href="@{${currentUrl}(size=${organizerPage.size}, page=${organizerPage.number})}"
                        tabindex="-1">Предыдущая</a>
                 </li>
                 <li th:if="${organizerPage.totalPages > 0}"
                     th:class="${pageNumber==organizerPage.number + 1} ? 'page-item active' : 'page-item'"
                     th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${pageNumber})}"
+                    <a th:href="@{${currentUrl}(size=${organizerPage.size}, page=${pageNumber})}"
                        class="page-link"
                        th:text=${pageNumber}
                     ></a>
                 </li>
                 <li th:class="${organizerPage.totalPages == organizerPage.number + 1} ? 'page-item disabled' : 'page-item'" >
                     <a class="page-link"
-                       th:href="@{/admin/userOrganizers(size=${organizerPage.size}, page=${organizerPage.number + 2})}"
+                       th:href="@{${currentUrl}(size=${organizerPage.size}, page=${organizerPage.number + 2})}"
                        tabindex="-1">Следующая</a>
                 </li>
             </ul>

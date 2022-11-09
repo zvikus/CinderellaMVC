@@ -1,5 +1,6 @@
 package by.cinderella.controllers;
 
+import by.cinderella.config.Constants;
 import by.cinderella.model.organizer.Organizer;
 import by.cinderella.model.user.Restriction;
 import by.cinderella.model.user.Role;
@@ -11,6 +12,8 @@ import by.cinderella.repos.UserRepo;
 import by.cinderella.services.CinderellaMailSender;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +25,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('SADMIN')")
-public class SuperAdminController {
+public class SuperAdminController extends BaseController {
 
     @ModelAttribute("userRoles")
     public Set<Role> userRoles() {
@@ -35,15 +40,6 @@ public class SuperAdminController {
         Collections.addAll(result, Role.values());
         return result;
     }
-
-    @Autowired
-    UserRepo userRepo;
-    @Autowired
-    ServiceRepo serviceRepo;
-    @Autowired
-    RestrictionRepo restrictionRepo;
-    @Autowired
-    UserService userService;
     @Autowired
     private CinderellaMailSender mailSender;
 
@@ -194,7 +190,7 @@ public class SuperAdminController {
         return "redirect:/admin/user/" + userId.get() + "/edit";
     }
 
-    @GetMapping("/restriction/{restrictionId}/{userId}/remove")
+    /*@GetMapping("/restriction/{restrictionId}/{userId}/remove")
     public String removeRestriction(@PathVariable(value = "restrictionId") Long restrictionId,
                                     @PathVariable(value = "userId") Long userId,
                                   Model model) {
@@ -207,5 +203,38 @@ public class SuperAdminController {
         restrictionRepo.delete(restriction.get());
 
         return "redirect:/admin/user/" + userId + "/edit";
+    }*/
+
+    @GetMapping("/user/{userId}/organizers")
+    public String userOrganizers(HttpServletRequest request, Model model,
+                                 @PathVariable(value = "userId") Long userId,
+                                 @RequestParam("page") Optional<Integer> page,
+                                 @RequestParam("size") Optional<Integer> size) {
+
+        int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE)).orElse(1));
+        int pageSize = size.orElse(50);
+        request.getSession().setAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE, currentPage);
+
+        Optional<User> user = userRepo.findById(userId);
+
+
+        Page<Organizer> organizerPage = organizerService.findUserPaginated(
+                PageRequest.of(currentPage - 1, pageSize),
+                user.get());
+
+        model.addAttribute("title", "Администрирование - Органайзеры пользователя");
+        model.addAttribute("header", "Органайзеры пользователя " + user.get().getUsername() + " (" + organizerPage.getTotalElements() + ")");
+
+        model.addAttribute("organizerPage", organizerPage);
+
+        int totalPages = organizerPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return  "admin/userOrganizers";
     }
 }

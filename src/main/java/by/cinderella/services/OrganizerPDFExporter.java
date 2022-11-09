@@ -6,10 +6,7 @@ import by.cinderella.model.user.OrganizerList;
 import by.cinderella.model.user.UserOrganizer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -100,11 +97,12 @@ public class OrganizerPDFExporter {
             String resultComment = "";
             if (organizer.getSeller().promo != null) {
                 resultComment += organizer.getSeller().promo;
-            }
-            if (userOrganizer.getComment() != null) {
+                if (userOrganizer.getComment() != null) {
+                    resultComment += "\n" + userOrganizer.getComment();
+                }
+            } else if (userOrganizer.getComment() != null && !userOrganizer.getComment().equals("")) {
                 resultComment += userOrganizer.getComment();
-            }
-            if (resultComment.equals("")) {
+            } else {
                 resultComment = "-";
             }
 
@@ -117,26 +115,13 @@ public class OrganizerPDFExporter {
     public void export(HttpServletResponse response) throws DocumentException, IOException, DocumentException, URISyntaxException {
         Document document = new Document(PageSize.A4.rotate());
         //document.setPageSize(PageSize.A4.rotate());
-        PdfWriter.getInstance(document, response.getOutputStream());
+        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+        //writer.setPageEvent(new Header());
 
         document.open();
         Font font = new Font(baseFont, 14, Font.NORMAL, fontColor);
         Paragraph paragraph = new Paragraph(this.organizerList.getName(), font);
         document.add(paragraph);
-
-
-        /*Chunk chunk = new Chunk("ОРГАНИЗАЦИЯ ПРОСТРАНСТВА", font);
-        chunk.setAnchor("https://cinderella.by");
-        document.add(chunk);*/
-
-        /*Chunk cinderellaLabel = new Chunk();
-        Path path = Paths.get(uploadPath + "/" + organizer.getImageName());
-        Image img = Image.getInstance(path.toAbsolutePath().toString());*/
-
-        /*Paragraph p = new Paragraph("Список органайзеров", font);
-        p.setAlignment(Paragraph.ALIGN_CENTER);
-
-        document.add(p);*/
 
         PdfPTable table = new PdfPTable(11);
         table.setWidthPercentage(100f);
@@ -154,7 +139,6 @@ public class OrganizerPDFExporter {
         document.add(table);
 
         document.close();
-
     }
 
     public void setOrganizerList(OrganizerList organizerList) {
@@ -163,5 +147,40 @@ public class OrganizerPDFExporter {
 
     public void setUploadPath(String uploadPath) {
         this.uploadPath = uploadPath;
+    }
+
+    public class Header extends PdfPageEventHelper {
+
+        private Phrase phrase = new Phrase();
+        private BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
+        protected BaseColor fontColor = new BaseColor(99, 122, 164);
+
+        public Header() throws DocumentException, IOException {
+            super();
+            Font font = new Font(baseFont, 10, Font.BOLD);
+
+            try {
+                //Path path = Paths.get("classpath:/static/img/Cinderella_logo.png");
+                Image img = Image.getInstance("classpath:/static/img/Cinderella_logo.png");
+                Chunk chunk = new Chunk(img, 60, 60);
+                chunk.setAnchor("https://cinderella.by");
+                phrase.add(chunk);
+            } catch (Exception exception) {
+                //ignore
+            }
+
+
+        }
+
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+
+
+
+            PdfContentByte cb = writer.getDirectContent();
+            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, this.phrase,
+                    document.getPageSize().getWidth() - 180, document.top() -50, -180);
+
+        }
     }
 }

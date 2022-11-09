@@ -104,22 +104,33 @@
             <div class="mb-3">
 
                 <ul class="list-unstyled categories-list">
-                    <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
-                        <input type="checkbox" name="categories" class="custom-control-input"
-                               th:id="${feat}"
-                               th:value="${feat}"
-                               th:field="*{organizer.categories}"
-                        />
-                        <label class="custom-control-label"
-                               th:for="${feat}"
-                               th:text="${feat.label}"
-                        />
+                    <li class="w-100" th:each="categoryKey : ${categoryKeys}">
+                        <p>
+                            <button class="btn btn-info ml-5"
+                                    type="button" data-toggle="collapse"
+                                    th:data-target="'#categoryBox' + ${categoryKey}"
+                                    aria-expanded="false"
+                                    aria-controls="categoryBox"
+                                    th:text="${categoryKey.label}"
+                            >
+                            </button>
+                        </p>
+                        <div class="collapse" th:id="'categoryBox' + ${categoryKey}" style="">
+                            <ul class="list-unstyled categories-list ml-5">
+                                <li th:each="feat : ${organizerGroupCategories.get(categoryKey)}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                    <input type="checkbox" name="categories" class="custom-control-input"
+                                           th:id="${feat}"
+                                           th:value="${feat}"
+                                           th:field="*{organizer.categories}"
+                                    />
+                                    <label class="custom-control-label"
+                                           th:for="${feat}"
+                                           th:text="${feat.shortLabel}"
+                                    />
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <!--                        -->
-                    <!--                            <input type="checkbox" th:field="*{selectedCategories}" th:value="${feat}" />-->
-                    <!--                            <label-->
-                    <!--                                    th:text="${feat.parentCategory.label} + ': ' + ${feat.label}"></label>-->
-                    <!--                        </li>-->
                 </ul>
             </div>
 

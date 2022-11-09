@@ -67,14 +67,14 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.priceFrom}"
+                                    <input th:value="${filter.priceFrom}" step="0.01"
                                            type="number" name="priceFrom" class="form-control rounded-4" id="priceFrom" placeholder="0">
                                     <label for="priceFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.priceTo}"
+                                    <input th:value="${filter.priceTo}" step="0.01"
                                            type="number" name="priceTo" class="form-control rounded-4" id="priceTo" placeholder="100">
                                     <label for="priceTo">До</label>
                                 </div>
@@ -87,14 +87,14 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.widthFrom}"
+                                    <input th:value="${filter.widthFrom}" step="0.01"
                                            type="number" name="widthFrom" class="form-control rounded-4" id="widthFrom" placeholder="0">
                                     <label for="widthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.widthTo}"
+                                    <input th:value="${filter.widthTo}" step="0.01" step="0.01"
                                            type="number" name="widthTo" class="form-control rounded-4" id="widthTo" placeholder="100">
                                     <label for="widthTo">До</label>
                                 </div>
@@ -107,14 +107,14 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.lengthFrom}"
+                                    <input th:value="${filter.lengthFrom}" step="0.01"
                                            type="number" name="lengthFrom" class="form-control rounded-4" id="lengthFrom" placeholder="0">
                                     <label for="lengthFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.lengthTo}"
+                                    <input th:value="${filter.lengthTo}" step="0.01"
                                            type="number" name="lengthTo" class="form-control rounded-4" id="lengthTo" placeholder="100">
                                     <label for="lengthTo">До</label>
                                 </div>
@@ -126,14 +126,14 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightFrom}"
+                                    <input th:value="${filter.heightFrom}" step="0.01"
                                            type="number" name="heightFrom" class="form-control rounded-4" id="heightFrom" placeholder="0">
                                     <label for="heightFrom">От</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-3">
-                                    <input th:value="${filter.heightTo}"
+                                    <input th:value="${filter.heightTo}" step="0.01"
                                            type="number" name="heightTo" class="form-control rounded-4" id="heightTo" placeholder="100">
                                     <label for="heightTo">До</label>
                                 </div>
@@ -151,19 +151,33 @@
                                     </button>
                                 </p>
                                 <div class="collapse" id="categoryBox" style="">
-                                    <ul class="list-unstyled categories-list">
-                                        <li th:each="feat : ${organizerCategories}" class="custom-control custom-checkbox categories-list-item mb-2">
-                                            <input type="checkbox" name="categories" class="custom-control-input"
-                                                   th:id="${feat}"
-                                                   th:field="*{filter.categories}"
-                                                   th:value="${feat}"
-                                            />
-                                            <label class="custom-control-label"
-                                                   th:for="${feat}"
-                                                   th:text="${feat.label}"
-                                            />
-                                        </li>
-                                    </ul>
+                                    <div th:each="categoryKey : ${categoryKeys}">
+                                        <p>
+                                            <button class="btn btn-info ml-5"
+                                                    type="button" data-toggle="collapse"
+                                                    th:data-target="'#categoryBox' + ${categoryKey}"
+                                                    aria-expanded="false"
+                                                    aria-controls="categoryBox"
+                                                    th:text="${categoryKey.label}"
+                                                    >
+                                            </button>
+                                        </p>
+                                        <div class="collapse" th:id="'categoryBox' + ${categoryKey}" style="">
+                                            <ul class="list-unstyled categories-list ml-5">
+                                                <li th:each="feat : ${organizerGroupCategories.get(categoryKey)}" class="custom-control custom-checkbox categories-list-item mb-2">
+                                                    <input type="checkbox" name="categories" class="custom-control-input"
+                                                           th:id="${feat}"
+                                                           th:field="*{filter.categories}"
+                                                           th:value="${feat}"
+                                                    />
+                                                    <label class="custom-control-label"
+                                                           th:for="${feat}"
+                                                           th:text="${feat.shortLabel}"
+                                                    />
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

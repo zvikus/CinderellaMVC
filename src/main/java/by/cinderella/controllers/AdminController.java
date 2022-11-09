@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAnyAuthority('ADMIN, SADMIN')")
-public class AdminController {
+public class AdminController extends BaseController {
 
     @Value("${application.url}")
     private String applicationUrl;
@@ -39,9 +39,6 @@ public class AdminController {
 
     @Autowired
     private OrganizerRepo organizerRepo;
-
-    @Autowired
-    private OrganizerService organizerService;
 
     @Autowired
     private UserRepo userRepo;
@@ -423,9 +420,12 @@ public class AdminController {
         request.getSession().setAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE, currentPage);
 
 
-        Page<Organizer> organizerPage = organizerService.findUserPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Organizer> organizerPage = organizerService.findUserPaginated(
+                PageRequest.of(currentPage - 1, pageSize),
+                userService.getAuthUser());
 
         model.addAttribute("title", "Администрирование - Мои органайзеры");
+        model.addAttribute("header", "МОИ ВНЕСЕННЫЕ ОРГАНАЙЗЕРЫ " + " (" + organizerPage.getTotalElements() + ")");
         model.addAttribute("organizerPage", organizerPage);
 
         int totalPages = organizerPage.getTotalPages();

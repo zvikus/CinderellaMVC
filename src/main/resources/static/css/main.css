@@ -80,6 +80,10 @@ a {
     color: #6370a4;
 }
 
+a.btn {
+    color: #fff;
+}
+
 .container {
   /*max-width: 960px;*/
 }
