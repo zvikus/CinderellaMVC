@@ -42,7 +42,7 @@ public enum OrganizerCategory {
     KITCHEN_TRASH_BOX("Утилизация мусора", ParentCategory.KITCHEN),
     KITCHEN_RESERVES("Хранение запасов", ParentCategory.KITCHEN),
     KITCHEN_CONTAINERS("Хранение контейнеров", ParentCategory.KITCHEN),
-    KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
+//    KITCHEN_MEZZANINE("Антресоли", ParentCategory.KITCHEN),
     KITCHEN_TOOLS("Бытовая техника", ParentCategory.KITCHEN),
     KITCHEN_SERVING("Сервировка", ParentCategory.KITCHEN),
 
