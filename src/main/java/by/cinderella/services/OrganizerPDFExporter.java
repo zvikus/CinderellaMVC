@@ -23,8 +23,10 @@ public class OrganizerPDFExporter {
 
     protected OrganizerList organizerList;
     protected BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
+
     protected String uploadPath;
     protected BaseColor fontColor = new BaseColor(99, 122, 164);
+    protected Font linkFont = new Font(baseFont, 12, Font.NORMAL, fontColor);
 
 
     public OrganizerPDFExporter(String uploadPath,
@@ -56,7 +58,7 @@ public class OrganizerPDFExporter {
     private void writeTableData(PdfPTable table) throws URISyntaxException, BadElementException, IOException{
         Font regularFont = new Font(baseFont, 10, Font.NORMAL, BaseColor.BLACK);
         Font regularFontRed = new Font(baseFont, 10, Font.BOLD, BaseColor.RED);
-        Font linkFont = new Font(baseFont, 12, Font.NORMAL, fontColor);
+
         for (UserOrganizer userOrganizer : this.organizerList.getUserOrganizerList()) {
             Organizer organizer = userOrganizer.getOrganizer();
 
@@ -116,7 +118,9 @@ public class OrganizerPDFExporter {
         Document document = new Document(PageSize.A4.rotate());
         //document.setPageSize(PageSize.A4.rotate());
         PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
-        //writer.setPageEvent(new Header());
+        if (!userService.getAuthUser().isProAccount()) {
+            writer.setPageEvent(new Header());
+        }
 
         document.open();
         Font font = new Font(baseFont, 14, Font.NORMAL, fontColor);
@@ -151,7 +155,9 @@ public class OrganizerPDFExporter {
 
     public class Header extends PdfPageEventHelper {
 
-        private Phrase phrase = new Phrase();
+        private Phrase logoPhrase = new Phrase();
+        private Phrase linkPhrase = new Phrase();
+        private Phrase instagramPhrase = new Phrase();
         private BaseFont baseFont = BaseFont.createFont("/static/fonts/Neuron.ttf", "cp1251", BaseFont.EMBEDDED, true);
         protected BaseColor fontColor = new BaseColor(99, 122, 164);
 
@@ -160,11 +166,20 @@ public class OrganizerPDFExporter {
             Font font = new Font(baseFont, 10, Font.BOLD);
 
             try {
-                //Path path = Paths.get("classpath:/static/img/Cinderella_logo.png");
-                Image img = Image.getInstance("classpath:/static/img/Cinderella_logo.png");
-                Chunk chunk = new Chunk(img, 60, 60);
-                chunk.setAnchor("https://cinderella.by");
-                phrase.add(chunk);
+                Image img = Image.getInstance("classpath:/static/img/cinderella_icon.png");
+                Chunk chunk = new Chunk(img, 25, 25);
+                logoPhrase.add(chunk);
+
+
+                Chunk linkChunk = new Chunk("cinderella.by", new Font(baseFont, 12, Font.UNDERLINE, fontColor));
+                linkChunk.setAnchor("https://cinderella.by");
+                linkPhrase.add(linkChunk);
+
+                Chunk instagramChunk = new Chunk("Больше информации о порядке в доме @cinderella.minsk", new Font(baseFont, 9, Font.UNDERLINE, fontColor));
+                instagramChunk.setAnchor("https://instagram.com/cinderella.minsk?igshid=YmMyMTA2M2Y=");
+                instagramPhrase.add(instagramChunk);
+
+
             } catch (Exception exception) {
                 //ignore
             }
@@ -173,14 +188,16 @@ public class OrganizerPDFExporter {
         }
 
         @Override
+        public void onStartPage(PdfWriter writer, Document document) {
+//            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Top Left"), 30, 550, 0);
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, this.linkPhrase, 770, 575, 0);
+        }
+
+        @Override
         public void onEndPage(PdfWriter writer, Document document) {
-
-
-
-            PdfContentByte cb = writer.getDirectContent();
-            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, this.phrase,
-                    document.getPageSize().getWidth() - 180, document.top() -50, -180);
-
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, this.logoPhrase, 50, 40, 180);
+            //ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("page " + document.getPageNumber()), 800, 20, 0);
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, this.instagramPhrase, 710, 20, 0);
         }
     }
 }

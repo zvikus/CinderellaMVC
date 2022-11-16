@@ -166,10 +166,11 @@ public class UserController extends BaseController {
         return "redirect:/user/userOrganizers";
     }
 
-    @GetMapping("/userOrganizersList/{organizerListId}/{userOrganizerId}/remove")
+    @GetMapping("/userOrganizersList/{organizerListId}/{userOrganizerId}/remove/{isGroup}")
     public String removeOrganizerFromOrganizerList(HttpServletRequest request, Model model,
                                                    @PathVariable("organizerListId") Long organizerListId,
-                                                   @PathVariable("userOrganizerId") Long userOrganizerId) {
+                                                   @PathVariable("userOrganizerId") Long userOrganizerId,
+                                                   @PathVariable("isGroup") Optional<Boolean> isGroup) {
         Optional<OrganizerList> organizerList = organizerListRepo.findById(organizerListId);
         Optional<UserOrganizer> userOrganizer = userOrganizerRepo.findById(userOrganizerId);
 
@@ -186,7 +187,12 @@ public class UserController extends BaseController {
             organizerListRepo.save(organizerList.get());
 
         }
-        return "redirect:/user/userOrganizersList/" + organizerListId + "/show";
+        if (isGroup.get()) {
+            return "redirect:/user/userOrganizersGroupedList/" + organizerListId + "/show";
+        } else {
+            return "redirect:/user/userOrganizersList/" + organizerListId + "/show";
+        }
+
     }
 
 

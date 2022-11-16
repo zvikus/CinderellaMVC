@@ -141,8 +141,32 @@
                 <strong>Добавлено! </strong>
               </div>
 
-              <a class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove}">Удалить</a><br/>
+<!--              <a class="btn btn-outline-primary regular-button" th:href="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove/true}">Удалить</a><br/>-->
 
+              <button type="button" class="btn btn-outline-primary regular-button "
+                      data-toggle="modal" th:data-target="@{#remove} + ${el.id}">
+                Удалить
+              </button>
+              <div class="modal fade" tabindex="-1" th:id="@{remove} + ${el.id}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Удаление из списка</h5>
+                      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Вы действительно хотите удалить органайзер <strong th:text="${el.organizer.name}"/>?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
+
+                      <form th:action="@{/user/userOrganizersList/} + ${organizerList.id} + @{/} + ${el.id} + @{/remove/true}">
+                        <button type="submit" class="btn btn-outline-primary regular-button mb-0">Удалить</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
           </tr>
           </tbody>

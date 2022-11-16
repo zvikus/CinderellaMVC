@@ -40,10 +40,10 @@ public class OrganizerScheduler {
     @Autowired
     private OrganizerRepo organizerRepo;
 
-    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000, initialDelay = 1000)
+    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000, initialDelay = 10000)
     @Async
     public void wildberriesPriceScheduler() throws IOException, InterruptedException {
-        while (Currency.RUB.rate.getCurrencyRate() == null) {
+        while (Currency.RUB.rate.getCurrencyRate() == null || Currency.RUB.rate.getCurrencyRate().equals(1.0)) {
             Thread.sleep(4000);
         }
 

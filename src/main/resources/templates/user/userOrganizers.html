@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="name" class="form-control rounded-4" id="name"/>
+                                    <input type="text" name="name" class="form-control rounded-4" id="name" maxlength="240"/>
                                     <label for="name">Название списка</label>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
 
 
                                     <form th:action="@{/user/userOrganizers/} + ${el.id} + @{/remove}">
-                                        <button type="submit" class="btn btn-outline-primary regular-button">Удалить</button>
+                                        <button type="submit" class="btn btn-outline-primary regular-button mb-0">Удалить</button>
                                     </form>
                                 </div>
                             </div>

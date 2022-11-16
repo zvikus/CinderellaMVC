@@ -18,6 +18,8 @@ public class User {
     private String password;
     private boolean active;
 
+    private boolean proAccount;
+
     private String email;
     private String activationCode;
 
@@ -142,5 +144,13 @@ public class User {
 
     public void setCreatedOrganizers(Set<Organizer> createdOrganizers) {
         this.createdOrganizers = createdOrganizers;
+    }
+
+    public boolean isProAccount() {
+        return proAccount;
+    }
+
+    public void setProAccount(boolean proAccount) {
+        this.proAccount = proAccount;
     }
 }

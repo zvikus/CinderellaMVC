@@ -250,7 +250,7 @@ public class AdminController extends BaseController {
 
         organizerService.save(organizer);
 
-        return "redirect:/admin/organizers";
+        return "redirect:/user/organizers";
     }
 
     @PostMapping("/checkOrganizer")
@@ -296,21 +296,21 @@ public class AdminController extends BaseController {
     public String removeOrganizer(@PathVariable(value = "organizerId") Long organizerId,
                                 Model model) {
         if (!organizerRepo.existsById(organizerId)) {
-            return "redirect:/admin/organizers";
+            return "redirect:/user/organizers";
         }
 
         Optional<Organizer> organizer = organizerRepo.findById(organizerId);
 
         organizerRepo.delete(organizer.get());
 
-        return "redirect:/admin/organizers";
+        return "redirect:/user/organizers";
     }
 
     @GetMapping("/organizer/{organizerId}/edit")
     public String editOrganizer(@PathVariable(value = "organizerId") Long organizerId,
                                   Model model) {
         if (!organizerRepo.existsById(organizerId)) {
-            return "redirect:/admin/organizers";
+            return "redirect:/user/organizers";
         }
 
         Optional<Organizer> organizer = organizerRepo.findById(organizerId);
@@ -326,7 +326,7 @@ public class AdminController extends BaseController {
     public String copyOrganizer(@PathVariable(value = "organizerId") Long organizerId,
                                 Model model) {
         if (!organizerRepo.existsById(organizerId)) {
-            return "redirect:/admin/organizers";
+            return "redirect:/user/organizers";
         }
 
         Optional<Organizer> organizer = organizerRepo.findById(organizerId);
@@ -379,7 +379,7 @@ public class AdminController extends BaseController {
 
 
 
-        return "redirect:/admin/organizers#organizer" + organizer.getId();
+        return "redirect:/user/organizers#organizer" + organizer.getId();
     }
 
     @GetMapping("/destroyFilter")

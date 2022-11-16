@@ -36,7 +36,9 @@ public enum Currency implements Serializable {
     public static class Rate {
         private Double currencyRate;
 
-        public Rate() {}
+        public Rate() {
+            this.currencyRate = Double.valueOf(1);
+        }
 
         public Rate(Double currencyRate) {
             this.currencyRate = currencyRate;

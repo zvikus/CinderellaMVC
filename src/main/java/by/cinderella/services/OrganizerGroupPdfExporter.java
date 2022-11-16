@@ -33,7 +33,9 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
         font.setColor(BaseColor.WHITE);
         String priceHeader = "Цена(" + userService.getUserCurrency().CUR_ABBREVIATION + ")";
         Stream.of("", "Ссылка", priceHeader,
-                        "Ширина", "Глубина", "Высота", "Комментарий", "Категории", "Материал", "Продавец")
+                        "Ширина", "Глубина", "Высота", "Комментарий",
+//                        "Категории",
+                        "Материал", "Продавец")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -47,7 +49,11 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
     public void export(HttpServletResponse response) throws DocumentException, IOException, DocumentException, URISyntaxException {
         Document document = new Document(PageSize.A4.rotate());
         //document.setPageSize(PageSize.A4.rotate());
-        PdfWriter.getInstance(document, response.getOutputStream());
+        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+
+        if (!userService.getAuthUser().isProAccount()) {
+            writer.setPageEvent(new OrganizerPDFExporter.Header());
+        }
 
         document.open();
         Font font = new Font(baseFont, 14, Font.NORMAL, fontColor);
@@ -83,9 +89,11 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
             document.add(paragraph);
 
 
-            PdfPTable table = new PdfPTable(10);
+            PdfPTable table = new PdfPTable(9);
             table.setWidthPercentage(100f);
-            table.setWidths(new float[]{2f, 3.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 2.0f, 1.5f, 3.0f});
+            table.setWidths(new float[]{2f, 3.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f,
+//                    2.0f,
+                    2.0f, 3.0f});
             table.setSpacingBefore(10f);
 
 
@@ -148,7 +156,7 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
                 categories.append(category.getLabel()).append("\n");
             };
 
-            table.addCell(new Phrase(categories.toString(), regularFont));
+            //table.addCell(new Phrase(categories.toString(), regularFont));
 
             table.addCell(new Phrase(String.valueOf(organizer.getMaterial().label), regularFont));
             table.addCell(new Phrase(String.valueOf(organizer.getSeller().label), regularFont));

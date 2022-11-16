@@ -43,6 +43,12 @@
                 <organizer.search.service.id>
                     74
                 </organizer.search.service.id>
+                <apilayer.api.key>
+                    wP2jO5bW3raqgzoHmkmtql4jMvM4uQCl
+                </apilayer.api.key>
+                <enable.google.analytics>
+                    false
+                </enable.google.analytics>
             </properties>
         </profile>
 
@@ -65,6 +71,12 @@
                 <organizer.search.service.id>
                     256
                 </organizer.search.service.id>
+                <apilayer.api.key>
+                    kugN6tNFIoVdnFTxO21dwJpRs928Sso0
+                </apilayer.api.key>
+                <enable.google.analytics>
+                    true
+                </enable.google.analytics>
             </properties>
         </profile>
     </profiles>
@@ -139,6 +151,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>2.5.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.0.1</version>
         </dependency>
 
         <dependency>

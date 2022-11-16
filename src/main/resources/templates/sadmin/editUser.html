@@ -27,7 +27,7 @@
 <!--                    th:name="registrationDate"-->
 <!--                    th:value="${user.registrationDate}" />-->
             <div class="row">
-                <div class="col-md-9 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="username">
                         Имя пользователя
                     </label>
@@ -38,6 +38,12 @@
                         Активация
                     </label>
                     <input id="active" type="checkbox" name="active" th:checked="${user.active}" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="active">
+                        Про аккаунт
+                    </label>
+                    <input id="proAccount" type="checkbox" name="proAccount" th:checked="${user.proAccount}" />
                 </div>
             </div>
             <div class="mb-3">
@@ -50,7 +56,7 @@
                 <label for="email">
                     Код активации
                 </label>
-                <input th:value="${user.activationCode}"  type="activationCode" id="activationCode" name="activationCode" class="form-control mt-2">
+                <input th:value="${user.activationCode}" type="activationCode" id="activationCode" name="activationCode" class="form-control mt-2">
             </div>
 
             <div class="mb-3">

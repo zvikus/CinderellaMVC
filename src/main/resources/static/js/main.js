@@ -127,7 +127,7 @@ $( document ).ready(function() {
                                    });
                                });
 
-    $(".auto-submit-form").on("change paste", function(event) {
+    $(".auto-submit-form").on("change paste blur", function(event) {
         var token = $("meta[name='_csrf']").attr("content");
                         var header = $("meta[name='_csrf_header']").attr("content");
 

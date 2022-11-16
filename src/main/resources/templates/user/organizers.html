@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:insert="blocks/user/userHead :: userHead">
 
@@ -29,6 +29,13 @@
                                     Сбросить фильтр
                                 </button>
                         </form>
+                </div>
+                <div class="col-md-2"  sec:authorize="hasAuthority('ADMIN')">
+                    <form method="get" th:action="@{/admin/addOrganizer}">
+                        <button class="btn btn-outline-primary regular-button" type="submit" >
+                            Добавить органайзер
+                        </button>
+                    </form>
                 </div>
                 <div class="col-md-2">
                     <div class="btn-group">
@@ -314,7 +321,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="el : ${organizerPage.content}" class="">
+                <tr th:each="el : ${organizerPage.content}" class="" th:id="@{organizer} + ${el.id}">
                     <td>
                         <a th:href="${el.link}"  target="_blank">
                             <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
@@ -361,7 +368,7 @@
                                 </form>
                                 <div class="dropdown-item">
                                     <form th:action="@{/user/createListAndAdd/} + ${el.id}" method="post">
-                                        <input class="" name="newListName" type="text" maxlength="24" placeholder="Новый список" required/>
+                                        <input class="" name="newListName" type="text" maxlength="240" placeholder="Новый список" required/>
                                         <button class="btn btn-outline-primary regular-button" type="submit">OK</button>
                                     </form>
                                 </div>
@@ -370,7 +377,7 @@
                         <div class="alert alert-primary" role="alert" id="success-alert" style="display: none;">
                             <strong>Добавлено! </strong>
                         </div>
-                        <button type="button" class="btn btn-info  mt-2 fs-6" data-toggle="modal" th:data-target="@{#feedback} + ${el.id}">
+                        <button type="button" class="btn btn-info  mt-2 fs-6 mb-2" data-toggle="modal" th:data-target="@{#feedback} + ${el.id}">
                             <small>Сообщить о неточности</small>
                         </button>
                         <div class="modal fade" tabindex="-1" th:id="@{feedback} + ${el.id}" aria-hidden="true">
@@ -396,6 +403,36 @@
                                             <button type="submit" class="btn btn-outline-primary regular-button">Отправить</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/edit}" class="btn btn-outline-primary regular-button mb-2" sec:authorize="hasAuthority('ADMIN')">Редактировать</a>
+                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/copy}" class="btn btn-outline-primary regular-button mb-2" sec:authorize="hasAuthority('ADMIN')">Копировать</a><br/>
+<!--                        <a th:href="@{/admin/organizer/} + ${el.id} + @{/remove}" class="btn btn-danger" sec:authorize="hasAuthority('SADMIN')">Удалить</a><br/>-->
+
+                        <button type="button" sec:authorize="hasAuthority('SADMIN')" class="btn btn-danger "
+                                data-toggle="modal" th:data-target="@{#remove} + ${el.id}">
+                            Удалить
+                        </button>
+                        <div class="modal fade" tabindex="-1" th:id="@{remove} + ${el.id}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Удаление списка</h5>
+                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Вы действительно хотите удалить органайзер <strong th:text="${el.name}"/>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>
+
+
+                                        <form th:action="@{/admin/organizer/} + ${el.id} + @{/remove}">
+                                            <button type="submit" class="btn btn-outline-primary regular-button">Удалить</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
