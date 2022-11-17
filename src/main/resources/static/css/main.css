@@ -99,6 +99,7 @@ a.btn {
 .reg-image {
     border-radius: 3px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    max-width: 100%;
 }
 
 .reg-image.left {
@@ -131,6 +132,10 @@ footer {
         background-color: #6370a4;
         font-weight: bold;
         margin-bottom: .5rem;
+}
+
+.card-header {
+    text-align: center;
 }
 
 .btn-outline-primary.regular-button:hover {

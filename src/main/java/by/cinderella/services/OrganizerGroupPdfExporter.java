@@ -56,7 +56,7 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
         }
 
         document.open();
-        Font font = new Font(baseFont, 14, Font.NORMAL, fontColor);
+        Font font = new Font(baseFont, 17, Font.NORMAL, fontColor);
         Paragraph paragraph = new Paragraph(this.organizerList.getName(), font);
         document.add(paragraph);
 
@@ -79,7 +79,7 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
                 this.organizerList.getUserOrganizerList().stream()
                         .collect(groupingBy(m -> m.getOrganizerGroup() == null ?
                                 "Без группы" : m.getOrganizerGroup()));
-        font = new Font(baseFont, 12, Font.NORMAL, fontColor);
+        font = new Font(baseFont, 16, Font.BOLD, fontColor);
         for (Map.Entry<String, java.util.List<UserOrganizer>> entry : organizerListsGroup.entrySet()) {
             List<UserOrganizer> sortedList;
             sortedList = entry.getValue().stream().

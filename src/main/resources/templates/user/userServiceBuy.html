@@ -123,7 +123,9 @@
                             </h5>
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${service.name}"></h5>
-                                <p class="card-text" th:text="${service.shortDescription}"></p>
+                                <p class="card-text">
+                                    <p th:utext="${service.shortDescription}"></p>
+                                </p>
                                 <h1 class="card-title pricing-card-title"
                                     th:text="${userServiceCost}"></h1>
                                 <form method="POST"

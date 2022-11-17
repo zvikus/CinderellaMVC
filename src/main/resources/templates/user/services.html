@@ -19,10 +19,11 @@
                 <div th:class="@{services-card mb-3 col-sm-} + @{12/${services.size()}}" th:each="service : ${services}">
                     <div class="card bg-light">
                         <h5 class="card-header" th:text="${service.name}"></h5>
-                        <div class="card-body">
-                            <p class="card-text" th:text="${service.shortDescription}" style="height: 9rem;">
+                        <div class="card-body" style="min-height: 19rem;">
+                            <div class="card-text" th:utext="${service.shortDescription}">
 
-                            </p>
+                            </div>
+
                             <p class="text-center">
                                 <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}"
                                     th:if="${!@userService.checkUserRestriction(service.id)}">Подробнее</a>

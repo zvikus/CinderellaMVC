@@ -27,6 +27,7 @@ public class Service {
     @Column(length = Integer.MAX_VALUE)
     private String product;
 
+    @Column(length = Integer.MAX_VALUE)
     private String shortDescription;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
