@@ -7,6 +7,7 @@ import by.cinderella.repos.UserRepo;
 import by.cinderella.services.OrganizerService;
 import by.cinderella.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
@@ -74,5 +75,7 @@ public class BaseController {
     UserService userService;
     @Autowired
     OrganizerService organizerService;
+    @Value("${organizer.search.service.id}")
+    Long searchServiceId;
 
 }

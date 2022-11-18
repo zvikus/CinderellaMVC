@@ -14,7 +14,8 @@ public enum Seller {
     GROSHYK("Грошык", Currency.BYN, null),
     OMA("ОМА", Currency.BYN, null),
     EASYDOM("easydom.by", Currency.BYN, "По промокоду \"Cinderella\" скидка 5%"),
-    FIXPRICE("Fix Price", Currency.BYN, null);
+    FIXPRICE("Fix Price", Currency.BYN, null),
+    LEROY_MERLIN("Leroy Merlin", Currency.RUB, null);
 
     public final String label;
     public final Currency currency;

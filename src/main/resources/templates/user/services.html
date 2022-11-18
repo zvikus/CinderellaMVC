@@ -25,7 +25,7 @@
                             </div>
 
                             <p class="text-center">
-                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}"
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}"
                                     th:if="${!@userService.checkUserRestriction(service.id)}">Подробнее</a>
                                 <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/details}"
                                     th:if="${@userService.checkUserRestriction(service.id)}">Перейти</a>
@@ -36,7 +36,7 @@
                              th:if="${@userService.getServiceExpirationDate(service.id) != null}" >
                             <span>Подписка до </span><span th:text="${#calendars.format(@userService.getServiceExpirationDate(service.id), 'dd MMMM yyyy')}"></span>
                             <span>
-                                <a class="" th:href="@{/user/userService/} + ${service.id} + @{/buy}"
+                                <a class="" th:href="@{/userService/} + ${service.id} + @{/buy}"
                                    th:if="${@userService.checkUserRestriction(service.id) && service.cost == null}">
                                     <h4 class="right">Продлить</h4>
                                 </a>

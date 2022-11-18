@@ -44,7 +44,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost1}"></h5>
                                     <p class="card-text" style="height: 6rem;">Для тех, кто хочет попробовать.</p>
-                                    <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                                    <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost3}"></h5>
                                     <p class="card-text" style="height: 6rem;">Для тех, кто основательно подходит к делу.</p>
-                                    <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                                    <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost6}"></h5>
                                     <p class="card-text " style="height: 6rem;" >Для тех, кто затеял ремонт.</p>
-                                    <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                                    <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${userServiceCost12}"></h5>
                                     <p class="card-text" style="height: 6rem;">Самое выгодное предложение.</p>
-                                    <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+                                    <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,8 @@
                                 </p>
                                 <h1 class="card-title pricing-card-title"
                                     th:text="${userServiceCost}"></h1>
-                                <a class="btn btn-outline-primary regular-button" th:href="@{/user/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
+
+                                <a class="btn btn-outline-primary regular-button" th:href="@{/userService/} + ${service.id} + @{/buy}" type="submit">НАЧАТЬ</a>
                             </div>
                         </div>
                     </div>

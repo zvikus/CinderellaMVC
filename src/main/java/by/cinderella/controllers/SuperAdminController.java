@@ -171,21 +171,22 @@ public class SuperAdminController extends BaseController {
         userRepo.save(user.get());
         restrictionRepo.save(restriction);
 
+        if (user.get().getEmail() != null) {
+            StringBuilder message = new StringBuilder(
+                    "Здравствуйте, " + user.get().getUsername() + "!\n" +
+                            "Услуга \"" + service.get().getName() + "\" успешно добавлена!\n"
+            );
 
-        StringBuilder message = new StringBuilder(
-                "Здравствуйте, " + user.get().getUsername() + "!\n" +
-                        "Услуга \"" + service.get().getName() + "\" успешно добавлена!\n"
-        );
+            if (service.get().isSubscription()) {
+                message.append("Подписка истекает " + new SimpleDateFormat("dd-MM-YYYY").format(restriction.getExpirationDate()) + "\n");
+            }
 
-        if (service.get().isSubscription()) {
-            message.append("Подписка истекает " + new SimpleDateFormat("dd-MM-YYYY").format(restriction.getExpirationDate()) + "\n");
+            message.append("Спасибо! Всего Вам доброго!");
+
+            mailSender.send(user.get().getEmail(),
+                    "Сообщение о добавлении услуги",
+                    message.toString());
         }
-
-        message.append( "Спасибо! Всего Вам доброго!");
-
-        mailSender.send(user.get().getEmail(),
-                "Сообщение о добавлении услуги",
-                message.toString());
 
         return "redirect:/admin/user/" + userId.get() + "/edit";
     }

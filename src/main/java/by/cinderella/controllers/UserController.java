@@ -106,7 +106,7 @@ public class UserController extends BaseController {
     public String getUserOrganizers(HttpServletRequest request, Model model) {
         if (userService.getAuthUser().getOrganizerLists().isEmpty() &&
                 !userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user/userService/" + searchServiceId + "/buy";
+            return "redirect:/userService/" + searchServiceId + "/buy";
         }
 
         model.addAttribute("organizerList", userService.getAuthUser().getOrganizerLists());
@@ -218,7 +218,7 @@ public class UserController extends BaseController {
     public String addUserOrganizerList(OrganizerList organizerList,
             HttpServletRequest request, Model model) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user/userService/" + searchServiceId + "/buy";
+            return "redirect:/userService/" + searchServiceId + "/buy";
         }
 
         User user = userService.getAuthUser();
@@ -383,7 +383,7 @@ public class UserController extends BaseController {
                                 ) {
 
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user/userService/" + searchServiceId + "/buy";
+            return "redirect:/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
@@ -581,7 +581,7 @@ public class UserController extends BaseController {
             user.setCurrency(currency);
             userRepo.save(user);
         }
-        return "redirect:/user/userService/" + serviceId + "/buy";
+        return "redirect:/userService/" + serviceId + "/buy";
     }
 
     @GetMapping("/userService/{serviceId}/buy")

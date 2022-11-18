@@ -110,7 +110,7 @@ public class AdminController extends BaseController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user/userService/" + searchServiceId + "/buy";
+            return "redirect:/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_ORGANIZER_LAST_PAGE)).orElse(1));
@@ -412,7 +412,7 @@ public class AdminController extends BaseController {
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
         if (!userService.checkUserRestriction((long) searchServiceId)) {
-            return "redirect:/user/userService/" + searchServiceId + "/buy";
+            return "redirect:/userService/" + searchServiceId + "/buy";
         }
 
         int currentPage = page.orElse((int) Optional.ofNullable(request.getSession().getAttribute(Constants.SESSION_USER_ORGANIZER_LAST_PAGE)).orElse(1));

@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Controller
-public class MainController {
+public class MainController extends BaseController {
     @GetMapping("")
     public String mainPage(HttpServletRequest request, Model model) {
         model.addAttribute("title", "Главная");
@@ -36,9 +36,6 @@ public class MainController {
 
     @Autowired
     private CinderellaMailSender mailSender;
-
-    @Value("${organizer.search.service.id}")
-    private Long searchServiceId;
 
     @GetMapping("/about")
     public String aboutPage(HttpServletRequest request, Model model) {
@@ -126,7 +123,11 @@ public class MainController {
             }
             request.getSession().setAttribute("currency", currency);
         }
-        return "redirect:/organizersServiceDetails";
+        if (serviceId.equals(searchServiceId)) {
+            return "redirect:/organizersServiceDetails";
+        } else {
+            return "redirect:/userService/" + serviceId + "/buy";
+        }
     }
 
 
@@ -191,4 +192,63 @@ public class MainController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/userService/{serviceId}/buy")
+    public String userServiceBuy(HttpServletRequest request, Model model,
+                                 @PathVariable("serviceId") Long serviceId) {
+        Currency userCurrency;
+        if (userService.getAuthUser() != null) {
+            userCurrency = userService.getAuthUser().getCurrency();
+        } else {
+            userCurrency = Currency.BYN;
+            if (request.getSession().getAttribute("currency") != null) {
+                userCurrency = (Currency) request.getSession().getAttribute("currency");
+            }
+        }
+        Service service = serviceRepo.findById(serviceId).get();
+        model.addAttribute("service", service);
+        model.addAttribute("userCurrency", userCurrency);
+
+        model.addAttribute("userServiceCost",
+                CurrencyRateService.convert(service.getCost(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCostRub",
+                CurrencyRateService.convert(service.getCost(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost1",
+                CurrencyRateService.convert(service.getCost1(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost1Rub",
+                CurrencyRateService.convert(service.getCost1(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost3",
+                CurrencyRateService.convert(service.getCost3(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost3Rub",
+                CurrencyRateService.convert(service.getCost3(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost6",
+                CurrencyRateService.convert(service.getCost6(),
+                        Currency.BYN,
+                        userCurrency) + " " +  userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost6Rub",
+                CurrencyRateService.convert(service.getCost6(),
+                        Currency.BYN,
+                        Currency.RUB));
+        model.addAttribute("userServiceCost12",
+                CurrencyRateService.convert(service.getCost12(),
+                        Currency.BYN,
+                        userCurrency) + " " + userCurrency.CUR_ABBREVIATION);
+        model.addAttribute("serviceCost12Rub",
+                CurrencyRateService.convert(service.getCost12(),
+                        Currency.BYN,
+                        Currency.RUB));
+
+        return "user/userServiceBuy";
+    }
 }
