@@ -70,16 +70,16 @@
             <tbody>
             <tr th:each="el : ${organizerList.userOrganizerList}" class="">
                 <td>
-                    <a th:href="${el.organizer.link}"  target="_blank">
+                    <a th:href="${el.organizer.parsedLink}"  target="_blank">
                         <img th:src="@{/image/} + ${el.organizer.imageName}" class="organizer-image">
                     </a>
                 </td>
                 <td>
-                    <a th:href="${el.organizer.link}" target="_blank">
+                    <a th:href="${el.organizer.parsedLink}" target="_blank">
                         <h4 th:text="${el.organizer.name}"/>
                         <span  class="badge badge-info" th:text="${el.organizer.seller?.promo}"></span>
                     </a>
-                    <a class="link-copy" th:attr="data-url=${el.organizer.link}" href="#do_nothing">
+                    <a class="link-copy" th:attr="data-url=${el.organizer.parsedLink}" href="#do_nothing">
                         <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                     </a>
                 </td>

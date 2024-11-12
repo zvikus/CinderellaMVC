@@ -43,11 +43,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return (UserDetails) userRepo.findByUsername(userName);
+        return (UserDetails) userRepo.findTopByUsername(userName);
     }
 
     public String addUser(User user) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+        User userFromDb = userRepo.findTopByUsername(user.getUsername());
         if (userFromDb != null) {
             return "Пользователь с таким именем существует!";
         }
@@ -160,7 +160,7 @@ public class UserService implements UserDetailsService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             String currentUserName = auth.getName();
-            User user = userRepo.findByUsername(currentUserName);
+            User user = userRepo.findTopByUsername(currentUserName);
             return user;
         }
         return null;

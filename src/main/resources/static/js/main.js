@@ -50,10 +50,10 @@ $( document ).ready(function() {
                 var header = $("meta[name='_csrf_header']").attr("content");
 
                 var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
+                /*var header = $("meta[name='_csrf_header']").attr("content");
                 $(document).ajaxSend(function(e, xhr, options) {
                 xhr.setRequestHeader(header, token);
-                });
+                });*/
 
                 $().dropdown('dispose');
                 $().dropdown('close');
@@ -92,10 +92,10 @@ $( document ).ready(function() {
                 var header = $("meta[name='_csrf_header']").attr("content");
 
                 var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
+                /*var header = $("meta[name='_csrf_header']").attr("content");
                   $(document).ajaxSend(function(e, xhr, options) {
                     xhr.setRequestHeader(header, token);
-                  });
+                  });*/
 
                   $().dropdown('dispose');
                   $().dropdown('close');
@@ -129,13 +129,13 @@ $( document ).ready(function() {
 
     $(".auto-submit-form").on("change paste blur", function(event) {
         var token = $("meta[name='_csrf']").attr("content");
-                        var header = $("meta[name='_csrf_header']").attr("content");
-
-                        var token = $("meta[name='_csrf']").attr("content");
-                        var header = $("meta[name='_csrf_header']").attr("content");
-                          $(document).ajaxSend(function(e, xhr, options) {
-                            xhr.setRequestHeader(header, token);
-                          });
+//                        var header = $("meta[name='_csrf_header']").attr("content");
+//
+//                        var token = $("meta[name='_csrf']").attr("content");
+//                        var header = $("meta[name='_csrf_header']").attr("content");
+//                          $(document).ajaxSend(function(e, xhr, options) {
+//                            xhr.setRequestHeader(header, token);
+//                          });
 
         var form = $(this).parent(),
                             self = this,

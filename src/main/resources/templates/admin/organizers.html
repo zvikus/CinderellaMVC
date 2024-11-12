@@ -292,15 +292,15 @@
             <tbody>
                 <tr th:each="el : ${organizerPage.content}" class="" th:id="@{organizer} + ${el.id}">
                     <td>
-                        <a th:href="${el.link}"  target="_blank">
+                        <a th:href="${el.parsedLink}"  target="_blank">
                             <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
                         </a>
                     </td>
                     <td>
-                        <a th:href="${el.link}" target="_blank">
+                        <a th:href="${el.parsedLink}" target="_blank">
                             <h4 th:text="${el.name}"/>
                         </a>
-                        <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
+                        <a class="link-copy" th:attr="data-url=${el.parsedLink}" href="#do_nothing">
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>

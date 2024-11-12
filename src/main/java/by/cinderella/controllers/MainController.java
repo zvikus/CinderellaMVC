@@ -205,6 +205,11 @@ public class MainController extends BaseController {
             }
         }
         Service service = serviceRepo.findById(serviceId).get();
+
+        if (userService.checkUserRestriction(serviceId)) {
+            return "redirect:/userService/" + serviceId + "/details";
+        }
+
         model.addAttribute("service", service);
         model.addAttribute("userCurrency", userCurrency);
 

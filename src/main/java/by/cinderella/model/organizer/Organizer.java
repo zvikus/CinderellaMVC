@@ -147,6 +147,14 @@ public class Organizer {
         this.link = link;
     }
 
+    public String getParsedLink() {
+        if (this.seller.equals(Seller.WB)) {
+            return "https://www.wildberries.ru/catalog/" + this.articleNumber.trim() + "/detail.aspx";
+        } else {
+            return link;
+        }
+    }
+
     public Date getLastUpdated() {
         return lastUpdated;
     }

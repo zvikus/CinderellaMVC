@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:insert="blocks/head :: head">
 
@@ -13,7 +13,115 @@
     </header>
 
     <main>
-        <h1>ПОРЯДОК В ДОМЕ</h1>
+        <h1 style="display: none;">ПОРЯДОК В ДОМЕ</h1>
+
+        <div class="container mb-4" style="display: none;">
+            <div class="card m-auto" style="width: 18rem;">
+                <div class="card-header">
+                    СБОРНИК ОРГАНАЙЗЕРОВ ДЛЯ КУХНИ
+                </div>
+                <div class="card-body">
+                    <a href="https://cinderella.by/user/userService/2806/buy">
+                        <img th:src="@{/img/temporary/target.jpg}" class="card-img-top" alt="...">
+                    </a>
+                    <p class="lead" align="center">Новый мега-сборник органайзеров для кухни! Спешите приобрести до 1 декабря с супер-выгодой в 30%!</p>
+                    <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/userService/2806/buy"
+                       th:if="${!@userService.checkUserRestriction(2806)}">ПОДРОБНЕЕ</a>
+                    <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/user/userService/2806/details"
+                       th:if="${@userService.checkUserRestriction(2806)}">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="" style="height: 25rem; display: none;">
+<!--            <div class="card m-auto" style="width: 18rem;">-->
+<!--                <div class="card-header">-->
+<!--                    СБОРНИК ОРГАНАЙЗЕРОВ ДЛЯ КУХНИ-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <a href="https://cinderella.by/user/userService/2806/buy">-->
+<!--                        <img th:src="@{/img/temporary/target.jpg}" class="card-img-top" alt="...">-->
+<!--                    </a>-->
+<!--                    <p class="lead" align="center">Новый мега-сборник органайзеров для кухни! Спешите приобрести до 1 декабря с супер-выгодой в 30%!</p>-->
+<!--                    <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/userService/2806/buy"-->
+<!--                       th:if="${!@userService.checkUserRestriction(2806)}">ПОДРОБНЕЕ</a>-->
+<!--                    <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/user/userService/2806/details"-->
+<!--                       th:if="${@userService.checkUserRestriction(2806)}">Перейти</a>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div id="mainCarousel" class="carousel slide" data-ride="carousel" style="height: 25rem;">
+                <ol class="carousel-indicators">
+                    <li data-target="#mainCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#mainCarousel" data-slide-to="1"></li>
+                    <li data-target="#mainCarousel" data-slide-to="2"></li>
+                    <li data-target="#mainCarousel" data-slide-to="3"></li>
+                    <li data-target="#mainCarousel" data-slide-to="4"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" style="height: 25rem;">
+                        <a ref="https://cinderella.by/user/userService/2806/details">
+                            <img th:src="@{/img/temporary/target.jpg}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>СБОРНИК ОРГАНАЙЗЕРОВ ДЛЯ КУХНИ</h5>
+                                <p>Новый мега-сборник органайзеров для кухни! Спешите приобрести до 1 декабря с супер-выгодой в 30%!</p>
+                                <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/userService/2806/buy"
+                                   th:if="${!@userService.checkUserRestriction(2806)}">ПОДРОБНЕЕ</a>
+                                <a class="btn btn-outline-primary regular-button m-auto" href="https://cinderella.by/user/userService/2806/details"
+                                   th:if="${@userService.checkUserRestriction(2806)}">Перейти</a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item" style="height: 25rem;">
+                        <a th:href="@{/services/order}">
+                            <img th:src="@{/img/order.jpg}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Порядок в доме</h5>
+                                <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item" style="height: 25rem;">
+                        <a th:href="@{/services/design}">
+                            <img th:src="@{/img/design.jpg}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Проекты мебели</h5>
+                                <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item" style="height: 25rem;">
+                        <a th:src="@{/img/organizerDBService.png}">
+                            <img th:src="@{/img/organizerDBService.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>База органайзеров</h5>
+                                <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+                                <a class="btn btn-outline-primary regular-button btn-lg w-100" th:href="@{/organizersServiceDetails}" sec:authorize="!isAuthenticated()">Подробнее об услуге</a>
+                                <a class="btn btn-outline-primary regular-button btn-lg w-100" th:href="@{/user/organizers}" sec:authorize="isAuthenticated()">База органайзеров</a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item" style="height: 25rem;">
+                        <a th:href="@{/onlineServices}">
+                            <img th:src="@{/img/onlineServices.jpg}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Метка первого слайда</h5>
+                                <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#mainCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Предыдущий</span>
+                </a>
+                <a class="carousel-control-next" href="#mainCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Следующий</span>
+                </a>
+            </div>
+
+
+        </div>
 
         <img th:src="@{/img/photo/L1.jpg}" class="reg-image"  style="float: right;
                                             max-width: 350px;"/>
@@ -102,6 +210,13 @@
 
 
     </main>
+
+
+    <script>
+        $('.carousel').carousel({
+          interval: 2000
+        })
+    </script>
 
     <footer th:insert="blocks/footer :: footer" class="text-muted mt-5">
 

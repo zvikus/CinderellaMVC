@@ -323,16 +323,16 @@
             <tbody>
                 <tr th:each="el : ${organizerPage.content}" class="" th:id="@{organizer} + ${el.id}">
                     <td>
-                        <a th:href="${el.link}"  target="_blank">
+                        <a th:href="${el.parsedLink}"  target="_blank">
                             <img th:src="@{/image/} + ${el.imageName}" class="organizer-image">
                         </a>
                     </td>
                     <td>
-                        <a th:href="${el.link}" target="_blank">
+                        <a th:href="${el.parsedLink}" target="_blank">
                             <h4 th:text="${el.name}"/>
                             <span  class="badge badge-info" th:text="${el.seller?.promo}"></span>
                         </a>
-                        <a class="link-copy" th:attr="data-url=${el.link}" href="#do_nothing">
+                        <a class="link-copy" th:attr="data-url=${el.parsedLink}" href="#do_nothing">
                             <img th:src="@{/img/icons/copy.png}" width="30" height="30">
                         </a>
                     </td>
@@ -393,10 +393,10 @@
                                             <textarea name="message" maxlength="508" required
                                                       class="form-control rounded-4 auto-submit-form">
                                             </textarea>
-                                            <input
-                                                    type="hidden"
-                                                    th:name="${_csrf.parameterName}"
-                                                    th:value="${_csrf.token}" />
+<!--                                            <input-->
+<!--                                                    type="hidden"-->
+<!--                                                    th:name="${_csrf.parameterName}"-->
+<!--                                                    th:value="${_csrf.token}" />-->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary " data-dismiss="modal">Отмена</button>

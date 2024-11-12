@@ -49,6 +49,9 @@
                 <enable.google.analytics>
                     false
                 </enable.google.analytics>
+                <enable.facebook.pixel>
+                    true
+                </enable.facebook.pixel>
             </properties>
         </profile>
 
@@ -77,12 +80,15 @@
                 <enable.google.analytics>
                     true
                 </enable.google.analytics>
+                <enable.facebook.pixel>
+                    false
+                </enable.facebook.pixel>
             </properties>
         </profile>
     </profiles>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -202,6 +208,26 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.ErrorxCode</groupId>
+            <artifactId>EasyInsta</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ErrorxCode</groupId>
+            <artifactId>AsyncTask</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
+
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
 </project>

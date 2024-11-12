@@ -126,7 +126,7 @@ public class OrganizerGroupPdfExporter extends OrganizerPDFExporter {
 
             Phrase phrase = new Phrase();
             Chunk chunk = new Chunk(organizer.getName(), linkFont);
-            chunk.setAnchor(String.valueOf(organizer.getLink()));
+            chunk.setAnchor(String.valueOf(organizer.getParsedLink()));
             phrase.add(chunk);
 
             table.addCell(phrase);
