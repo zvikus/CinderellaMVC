@@ -53,7 +53,8 @@ public class OrganizerScheduler {
         for(Organizer organizer : organizers) {
             if (organizer.getArticleNumber() != null
                     && !organizer.getArticleNumber().isEmpty()) {
-                String urlString = new String("https://wbx-content-v2.wbstatic.net/price-history/" + organizer.getArticleNumber() + ".json");
+//                String urlString = new String("https://wbx-content-v2.wbstatic.net/price-history/" + organizer.getArticleNumber() + ".json");
+                String urlString = new String("https://card.wb.ru/cards/detail?appType=128&curr=rub&dest=-1257786&nm=" + organizer.getArticleNumber());
                 URL url = new URL(urlString.replaceAll("\\s+",""));
                 InputStream is = url.openStream();
                 int ptr = 0;
@@ -63,21 +64,26 @@ public class OrganizerScheduler {
                 }
                 try {
                     Object obj = new JSONParser().parse(buffer.toString());
-                    JSONArray jo = (JSONArray) obj;
-                    JSONObject last = (JSONObject) jo.get(jo.size()-1);
-                    if (!last.isEmpty()) {
-                        JSONObject price = (JSONObject) last.get("price");
-                        Long priceRub = (Long) price.get("RUB")/100;
+                    JSONObject jo = (JSONObject) obj;
+                    JSONObject data = (JSONObject) jo.get("data");
+                    JSONArray products = (JSONArray) data.get("products");
+
+                   JSONObject product = (JSONObject) products.get(0);
+
+                    if (!product.isEmpty()) {
+                        Long priceRub = (Long) product.get("salePriceU")/100;
 
                         organizer.setPrice(new Double(priceRub));
 
                         organizerService.save(organizer);
+                    } else {
+                        failedOrganizers.add(organizer);
                     }
                 } catch (Exception ex) {
                     System.out.println("Wildberries update failed! Organizer ID: " + organizer.getId() + " Article number: " + organizer.getArticleNumber());
-                    if (organizer.getPrice() == null) {
+                    //if (organizer.getPrice() == null || organizer.getPrice() == 0 || organizer.getPrice().isNaN()) {
                         failedOrganizers.add(organizer);
-                    }
+                    //}
                 }
             }
         }

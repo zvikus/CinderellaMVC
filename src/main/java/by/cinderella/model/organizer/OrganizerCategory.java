@@ -68,6 +68,7 @@ public enum OrganizerCategory {
     BATHROOM_COSMETICS("Косметика", ParentCategory.BATHROOM),
     BATHROOM_TOILET("Туалет", ParentCategory.BATHROOM),
     BATHROOM_RESERVES("Зона хранения", ParentCategory.BATHROOM),
+    BATHROOM_TOOTHBRUSH("Хранение зубных щеток", ParentCategory.BATHROOM),
 
     CHILDREN_CREATION("Зона творчества", ParentCategory.CHILDREN),
     CHILDREN_BOARD_GAMES("Настольные игры", ParentCategory.CHILDREN),

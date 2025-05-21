@@ -76,7 +76,7 @@ public class SuperAdminController extends BaseController {
         user.setPassword(parentUser.getPassword());
         user.setActivationDate(new Date());
         userRepo.save(user);
-        return "redirect:/admin/users";
+        return "redirect:/sadmin/users";
     }
 
 

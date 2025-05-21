@@ -589,6 +589,11 @@ public class UserController extends BaseController {
                                  @PathVariable("serviceId") Long serviceId) {
         Currency userCurrency = userService.getAuthUser().getCurrency();
         Service service = serviceRepo.findById(serviceId).get();
+
+        if (userService.checkUserRestriction(serviceId)) {
+            return "redirect:/user/userService/" + serviceId + "/details";
+        }
+
         model.addAttribute("service", service);
 
         model.addAttribute("userServiceCost",

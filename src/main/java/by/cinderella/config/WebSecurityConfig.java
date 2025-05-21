@@ -39,9 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
-                    .csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository())
-                    .ignoringAntMatchers(publicUrls)
-                .and()
+                    .csrf().disable()
+//                csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+//                    .ignoringAntMatchers(publicUrls)
                     .rememberMe().key("uniqueAndSecret")
 
                 .and()

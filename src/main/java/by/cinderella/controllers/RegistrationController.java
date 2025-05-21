@@ -1,6 +1,5 @@
 package by.cinderella.controllers;
 
-import by.cinderella.model.user.Role;
 import by.cinderella.model.user.User;
 import by.cinderella.repos.UserRepo;
 import by.cinderella.services.CinderellaMailSender;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -50,6 +47,16 @@ public class RegistrationController {
 
         if (!confirmPassword.equals(user.getPassword())) {
             model.put("message", "Пароли не совпадают!");
+            return "registration";
+        }
+
+        if (userRepo.findTopByUsername(user.getUsername()) != null) {
+            model.put("message", "Пользователь с таким логином уже существует!");
+            return "registration";
+        }
+
+        if (userRepo.findTopByEmail(user.getEmail()) != null) {
+            model.put("message", "Пользователь с таким почтовым адресом уже существует!");
             return "registration";
         }
 

@@ -232,7 +232,8 @@ public class AdminController extends BaseController {
         }
 
 
-        if (image != null) {
+        if (image != null
+                && !image.isEmpty()) {
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
